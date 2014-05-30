@@ -1,2 +1,2 @@
 hello
-gearswapの移行で悪戦苦闘中。
+spellcastからgearswapの移行で悪戦苦闘中。
