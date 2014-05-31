@@ -289,7 +289,7 @@ function self_command(command)
 end
 
 function myGetProperties(t)
-    if _settings.debug_mode then
+    if not _settings.debug_mode then
         return
     end
     if type(t) == 'table' then
