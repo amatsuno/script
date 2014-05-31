@@ -129,17 +129,41 @@ function get_sets()
     
 --属性帯
     local obi = {}
-    
+    --所持している属性帯の属性を列挙
+    obi.weathers = T{'風','土','火',}
+    --所持している属性帯の装備コマンド
     obi['風']={waist="風輪の帯",}
     obi['土']={waist="土輪の帯",}
     obi['火']={waist="火輪の帯",}
+    --陣のID
     obi.buffs ={}
     obi.buffs['風'] = 180 --烈風の陣
     obi.buffs['土'] = 181 --砂塵の陣
     obi.buffs['火'] = 178 --熱波の陣
 --神聖
     local divine = enfeebling
-
+--待機装備
+    local idle = {
+        main="アーススタッフ",
+        sub="ビビドストラップ",
+        ammo="インカントストーン",
+        head="槌の髪飾り",
+        body="ハゴンデスコート",
+        legs="ナレストルーズ",
+        feet="ヘラルドゲートル",
+        left_ear="胡蝶のイヤリング",
+    }
+    local idle_def = set_combine(idle, 
+        {head="ゲンデサカウビーン",
+        hands="ＨＡカフス+1",
+        legs="ハゴンデスパンツ",
+        feet="アートシクブーツ",
+        neck="黄昏の光輪",
+        left_ring="ダークリング",
+        right_ring="ダークリング",
+        back="チェビオットケープ",
+        });
+    
     sets.precast = {}
     sets.precast['ケアル']= fc_light
     sets.precast['スタン'] = stun
@@ -182,6 +206,8 @@ function get_sets()
     sets.equip['スタンリキャ'] = stun_recast
     sets.equip['スタンFC'] = stun_fc
     sets.equip['強化魔法'] = enhance
+    sets.equip['IDLE'] = idle
+    sets.equip['IDLE_DEF'] = idle_def
     sets.equip.obi = obi
 end
 
@@ -210,7 +236,6 @@ function precast(spell)
             equip(sets.equip['強化魔法'])
         elseif spell.cast_time >= 8 then
             --詠唱が2秒以上の魔法はFC着替え
-            debug_mode_chat('debug: fastcast element.')
             equip(sets.precast.FC[spell.element])
         end
     end
@@ -240,10 +265,10 @@ function midcast(spell)
             else
                 sets_equip = sets.midcast.element[sets.midcast.element.mode]
             end
-            if sets.equip.obi:contains(spell.element) then
+            if sets.equip.obi.weathers:contains(spell.element) then
+                --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
                 if world.weather_element == spell.element 
-                    or sets.equip.obi.buff[spell.element] then
-                    windower.add_to_chat(123, 'use OBI')
+                    or buffactive[sets.equip.obi.buffs[spell.element]] then
                     if sets.equip.obi[spell.element] ~= nil then
                         sets_equip = set_combine(sets_equip, 
                             sets.equip.obi[spell.element])
