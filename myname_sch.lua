@@ -1,7 +1,5 @@
 function get_sets()
     set_language('japanese')
-function get_sets()
-    set_language('japanese')
 --FC_BASE
     local fc_base ={
         main=empty,
@@ -102,8 +100,43 @@ function get_sets()
         back="リフラクトケープ",
     }
     local renkan={
-    	legs="ＡＧパンツ+2",
+        legs="ＡＧパンツ+2",
     }
+--精霊
+    local element_acc={
+    main="ヴェナバラム",
+    sub="メフィテスグリップ",
+    range="オウレオール",
+    head="アートシクハット",
+    body="アートシクジュバ",
+    hands="ハゴンデスカフス",
+    legs="アートシクロップス",
+    feet="アートシクブーツ",
+    neck="エディネクラス",
+    waist="アスワングサッシュ",
+    left_ear="ライストームピアス",
+    right_ear="サイストームピアス",
+    left_ring="ストレンドゥリング",
+    right_ring="サンゴマリング",
+    back="ブックワームケープ",
+}
+    local element_attk = set_combine(
+          element_acc
+        , {hands="ＨＡカフス+1",legs="ハゴンデスパンツ",feet="ウンバニブーツ",})
+    local element_fullattk = set_combine(
+          element_attk
+        , {head="ハゴンデスハット",left_ear="怯懦の耳", right_ear="フリオミシピアス",})
+    
+--属性帯
+    local obi = {}
+    
+    obi['風']={waist="風輪の帯",}
+    obi['土']={waist="土輪の帯",}
+    obi['火']={waist="火輪の帯",}
+    obi.buffs ={}
+    obi.buffs['風'] = 180 --烈風の陣
+    obi.buffs['土'] = 181 --砂塵の陣
+    obi.buffs['火'] = 178 --熱波の陣
 --神聖
     local divine = enfeebling
 
@@ -129,6 +162,11 @@ function get_sets()
     sets.midcast['神聖魔法'] = divine
     sets.midcast['ケアル'] = cure
     sets.midcast['ヘイスト'] = frc_wind
+    sets.midcast.element = {}
+    sets.midcast.element.mode = '魔命'
+    sets.midcast.element['魔命'] = element_acc
+    sets.midcast.element['魔攻'] = element_attk
+    sets.midcast.element['FULL魔攻'] = element_fullattk
     sets.midcast.RECAST = {}
     sets.midcast.RECAST['光'] =frc_light
     sets.midcast.RECAST['闇'] =frc_base
@@ -144,10 +182,11 @@ function get_sets()
     sets.equip['スタンリキャ'] = stun_recast
     sets.equip['スタンFC'] = stun_fc
     sets.equip['強化魔法'] = enhance
+    sets.equip.obi = obi
 end
 
 function precast(spell)
-    myGetProperties(spell)
+    --myGetProperties(spell)
     if spell.type == 'Scholar' then
         if spell.name == '疾風迅雷の章' then
             equip(sets.precast['スタン'])
@@ -168,9 +207,9 @@ function precast(spell)
                 equip(sets.precast['スタン'])
             end
         elseif spell.name == 'オーラ' then
-        	equip(sets.equip['強化魔法'])
-        elseif spell.cast_time >= 12 then
-            --詠唱が3秒以上の魔法はFC着替え
+            equip(sets.equip['強化魔法'])
+        elseif spell.cast_time >= 8 then
+            --詠唱が2秒以上の魔法はFC着替え
             debug_mode_chat('debug: fastcast element.')
             equip(sets.precast.FC[spell.element])
         end
@@ -187,9 +226,31 @@ function midcast(spell)
             sets_equip = sets.midcast['ヘイスト']
         elseif spell.name == 'スタン' then
             sets_equip = sets.midcast['スタン']
-        elseif spell.skill=='強化魔法' or 
-               spell.skill=='弱体魔法' or
-               spell.skill=='神聖魔法'then
+        elseif spell.skill== '強化魔法' then
+            if string.startswith(spell.name, 'バ')
+               or spell.name == 'ストンスキン' 
+               or spell.name == 'ファランクス' then
+                sets_equip = sets.midcast['強化魔法']
+            else
+                sets_equip = sets.midcast.RECAST[spell.element]
+            end
+        elseif spell.skill=='精霊魔法' then
+            if buffactive['一心精進の章'] then
+                sets_equip = sets.midcast.element['魔攻']
+            else
+                sets_equip = sets.midcast.element[sets.midcast.element.mode]
+            end
+            if sets.equip.obi:contains(spell.element) then
+                if world.weather_element == spell.element 
+                    or sets.equip.obi.buff[spell.element] then
+                    windower.add_to_chat(123, 'use OBI')
+                    if sets.equip.obi[spell.element] ~= nil then
+                        sets_equip = set_combine(sets_equip, 
+                            sets.equip.obi[spell.element])
+                    end
+                 end
+            end
+        elseif spell.skill=='弱体魔法' then
             sets_equip = sets.midcast[spell.skill]
         else
             sets_equip = sets.midcast.RECAST[spell.element]
@@ -218,11 +279,19 @@ function self_command(command)
             if sets.equip[args[2]] ~= nil then
                 sets.precast['スタン'] = sets.equip[args[2]]
             end
+        elseif args[1] == 'elementmode' then
+            if args[2] == '魔命' or args[2] == '魔攻' or args[2] == 'FULL魔攻' then
+                sets.midcast.element.mode =args[2]
+            end
+            equip(sets.midcast.element[sets.midcast.element.mode])
         end
     end
 end
 
 function myGetProperties(t)
+    if _settings.debug_mode then
+        return
+    end
     if type(t) == 'table' then
         local key,val
         for key,val in pairs(t)
