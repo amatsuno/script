@@ -1,2 +1,1 @@
-hello
 spellcastからgearswapの移行で悪戦苦闘中。
