@@ -1,5 +1,12 @@
 function get_sets()
     set_language('japanese')
+    ancient_spells = T{
+        'トルネド','フリーズ','フレア','フラッド','バースト','クエイク',
+        'トルネドII','フリーズII','フレアII','フラッドII','バーストII','クエイクII',
+    }
+    ignore_spells = T{
+        'ディア','ディアII','ディアガ'
+    }
 --FC_BASE
     local pre_base ={
         main=empty,
@@ -7,9 +14,8 @@ function get_sets()
         ammo="インカントストーン",
         head="ナティラハット",
         body="アンフルローブ",
-        hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
         legs="アートシクロップス",
-        feet="ＰＤローファー+1",
+        feet="ケロナブーツ",
         waist="ニヌルタサッシュ",
         left_ear="胡蝶のイヤリング",
         right_ear="ロケイシャスピアス",
@@ -43,10 +49,8 @@ function get_sets()
     local enhance = {
         main="麒麟棍",
         sub="ビビドストラップ",
-        head="ＳＶボネット+2",
+        head="ウムシクハト",
         body="アンフルローブ",
-        hands="ＳＶブレーサー+2",
-        legs="ＡＣパンツ+1",
         feet="ルベウスブーツ",
         neck="コロッサストルク",
         waist="オリンポスサッシュ",
@@ -55,14 +59,14 @@ function get_sets()
     local baXX = enhance
 --stun
     local stun = {
-        main="ヴェナバラム",
+        main="カラダンダ",
         sub="ビビドストラップ",
         ammo="インカントストーン",
-        head="ＰＤボード+1",
+        head="ナティラハット",
         body="ヴァニアコタルディ",
-        hands="アカデミブレーサー",
+        hands="ハゴンデスカフス",
         legs="アートシクロップス",
-        feet="ＰＤローファー+1",
+        feet="アートシクブーツ",
         neck="エーシルトルク",
         waist="ニヌルタサッシュ",
         left_ear="ロケイシャスピアス",
@@ -77,9 +81,6 @@ function get_sets()
 --CURE
     local cure ={
         main="アーカIV",
-        head="ゲンデサカウビーン",
-        body="ゲンデサブリオー",
-        hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
     }
 --弱体
     local enfeebling = {
@@ -99,33 +100,30 @@ function get_sets()
         right_ring="サンゴマリング",
         back="リフラクトケープ",
     }
-    local renkan={
-        legs="ＡＧパンツ+2",
-    }
 --精霊
     local element_acc={
     main="ヴェナバラム",
     sub="メフィテスグリップ",
     range="オウレオール",
-    head="アートシクハット",
-    body="アートシクジュバ",
+    head="ＡＲペタソス+1",
+    body="ＳＰコート+1",
     hands="ハゴンデスカフス",
-    legs="アートシクロップス",
-    feet="アートシクブーツ",
+    legs="ハゴンデスパンツ",
+    feet="ＡＲサボ+1",
     neck="エディネクラス",
     waist="アスワングサッシュ",
-    left_ear="ライストームピアス",
-    right_ear="サイストームピアス",
+    left_ear="怯懦の耳",
+    right_ear="フリオミシピアス",
     left_ring="ストレンドゥリング",
     right_ring="サンゴマリング",
-    back="ブックワームケープ",
+    back="トーロケープ",
 }
     local element_attk = set_combine(
           element_acc
-        , {hands="ＨＡカフス+1",legs="ハゴンデスパンツ",feet="ウンバニブーツ",})
+        , {hands="ＨＡカフス+1",feet="ウンバニブーツ",})
     local element_fullattk = set_combine(
           element_attk
-        , {head="ハゴンデスハット",left_ear="怯懦の耳", right_ear="フリオミシピアス",})
+        , {head="ハゴンデスハット",body="アートシクジュバ",left_ear="怯懦の耳", right_ear="フリオミシピアス",})
     
 --属性帯
     local obi = {}
@@ -154,8 +152,10 @@ function get_sets()
         left_ear="胡蝶のイヤリング",
     }
     local idle_def = set_combine(idle, 
-        {head="ゲンデサカウビーン",
+        {
+        head="ハゴンデスハット",
         hands="ＨＡカフス+1",
+        body="ハゴンデスコート",
         legs="ハゴンデスパンツ",
         feet="アートシクブーツ",
         neck="黄昏の光輪",
@@ -167,7 +167,6 @@ function get_sets()
     sets.precast = {}
     sets.precast['ケアル']= pre_light
     sets.precast['スタン'] = stun
-    sets.precast['連環計'] = renkan
     sets.precast['ヘイスト'] = pre_wind
     sets.precast.FC = {}
     sets.precast.FC['光'] = pre_light
@@ -187,10 +186,12 @@ function get_sets()
     sets.midcast['ケアル'] = cure
     sets.midcast['ヘイスト'] = mid_wind
     sets.midcast.element = {}
-    sets.midcast.element.mode = '魔命'
-    sets.midcast.element['魔命'] = element_acc
-    sets.midcast.element['魔攻'] = element_attk
-    sets.midcast.element['FULL魔攻'] = element_fullattk
+    sets.midcast.element.mode = 'ACC'
+    sets.midcast.element['古代'] = element_acc
+    sets.midcast.element['ACC'] = element_acc
+    sets.midcast.element['ATTK'] = element_attk
+    sets.midcast.element['FULL'] = element_fullattk
+    sets.midcast.element['VW'] = pre_base
     sets.midcast.RECAST = {}
     sets.midcast.RECAST['光'] =mid_light
     sets.midcast.RECAST['闇'] =mid_base
@@ -211,20 +212,15 @@ function get_sets()
     sets.equip['IDLE'] = idle
     sets.equip['IDLE_DEF'] = idle_def
     sets.equip.obi = obi
+    
+    disable('main','sub','ammo')
+    
 end
 
 function precast(spell)
     --myGetProperties(spell)
-    if spell.type == 'Scholar' then
-        if spell.name == '疾風迅雷の章' then
-            equip(sets.precast['スタン'])
-        elseif spell.name == '令狸執鼠の章' then
-            equip(sets.equip['強化魔法'])
-        end
-    elseif spell.type == 'JobAbility' then
-        if spell.name == '連環計' then
-            equip(sets.precast['連環計'])
-        end
+    if ignore_spells:contains(spell.name) then return end
+    if spell.type == 'JobAbility' then
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
         windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
         if spell.skill == '回復魔法' then
@@ -250,18 +246,12 @@ function precast(spell)
                 equip(sets.midcast.RECAST[spell.element])
             end
         elseif spell.name == 'スタン' then
-            if buffactive['疾風迅雷の章'] then
-                equip(sets.precast['スタン'], {feet="ＰＤローファー+1",})
-            else
-                equip(sets.precast['スタン'])
-            end
-        elseif spell.name == 'オーラ' then
-            equip(sets.equip['強化魔法'])
+            equip(sets.precast['スタン'])
         elseif spell.skill=='精霊魔法' then
             if spell.cast_time > 3 then
                 equip(sets.precast.FC[spell.element])
             else
-                equip(set_element(spell.element))
+                equip(set_element(spell))
             end
         elseif spell.skill=='弱体魔法' or
                spell.skill=='神聖魔法' or 
@@ -280,6 +270,7 @@ function precast(spell)
 end
 
 function midcast(spell)
+    if ignore_spells:contains(spell.name) then return end
     local sets_equip = nil
     if spell.type == 'JobAbility' then
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
@@ -304,7 +295,7 @@ function midcast(spell)
             end
         elseif spell.skill=='精霊魔法' then
             if spell.cast_time > 3 then
-                equip(set_element(spell.element))
+                equip(set_element(spell))
             end
         elseif spell.skill=='弱体魔法' then
             if spell.cast_time > 3 then
@@ -320,20 +311,26 @@ function midcast(spell)
     end
 end
 
-function set_element(spell_element)
+function set_element(spell)
     local sets_equip = nil
-    if buffactive['一心精進の章'] then
-        sets_equip = sets.midcast.element['魔攻']
+    
+    if ancient_spells:contains(spell.name) then
+        sets_equip = sets.midcast.element['古代']
+    elseif buffactive['精霊の印'] or buffactive['サテルソーサリー'] then
+        sets_equip = sets.midcast.element['ATTK']
     else
         sets_equip = sets.midcast.element[sets.midcast.element.mode]
     end
-    if sets.equip.obi.weathers:contains(spell_element) then
+    if buffactive['魔力の雫'] then
+        sets_equip = set_combine(sets_equip, {body='ヴァニアコタルディ'})
+    end
+    if sets.equip.obi.weathers:contains(spell.element) then
         --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
-        if world.weather_element == spell_element 
-            or buffactive[sets.equip.obi.buffs[spell_element]] then
-            if sets.equip.obi[spell_element] ~= nil then
+        if world.weather_element == spell.element 
+            or buffactive[sets.equip.obi.buffs[spell.element]] then
+            if sets.equip.obi[spell.element] ~= nil then
                 sets_equip = set_combine(sets_equip, 
-                    sets.equip.obi[spell_element])
+                    sets.equip.obi[spell.element])
             end
          end
     end
@@ -351,22 +348,29 @@ end
 
 function self_command(command)
     local args = windower.from_shift_jis(command):split(' ')
+    if #args >= 1 then
+        if args[1] == 'lock' then
+            windower.add_to_chat(123,'lock')
+            disable('main','sub','ammo')
+        elseif args[1] == 'unlock' then
+            windower.add_to_chat(123,'unlock')
+            enable('main','sub','ammo')
+        end
+    end
     if #args >= 2 then
         if args[1] == 'equip' then
             if sets.equip[args[2]] ~= nil then
                 equip(sets.equip[args[2]])
             end
-        elseif args[1] == 'stunmode' then
-            if sets.equip[args[2]] ~= nil then
-                sets.precast['スタン'] = sets.equip[args[2]]
-            end
         elseif args[1] == 'elementmode' then
             if args[2] == 'ACC' then
-                sets.midcast.element.mode = '魔命'
+                sets.midcast.element.mode = 'ACC'
             elseif args[2] == 'ATTK' then
-                sets.midcast.element.mode = '魔攻'
+                sets.midcast.element.mode = 'ATTK'
             elseif args[2] == 'FULL' then
-                sets.midcast.element.mode = 'FULL魔攻'
+                sets.midcast.element.mode = 'FULL'
+            elseif args[2] == 'VW' then
+                sets.midcast.element.mode = 'VW'
             end
             equip(sets.midcast.element[sets.midcast.element.mode])
         elseif args[1] == 'idle' then
