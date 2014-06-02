@@ -30,6 +30,7 @@ function get_sets()
         head="ナティラハット",
         body="アンフルローブ",
     }
+    local pre_stoneskin = set_combine(pre_base,{head="ウムシクハット"})
     local mid_base = pre_base
     
     --光属性
@@ -54,12 +55,13 @@ function get_sets()
         feet="ルベウスブーツ",
         neck="コロッサストルク",
         waist="オリンポスサッシュ",
+        left_ear="アンドアーピアス",
         back="慈悲の羽衣",
     }
     local baXX = enhance
 --stun
     local stun = {
-        main="カラダンダ",
+        main="ヴェナバラム",
         sub="ビビドストラップ",
         ammo="インカントストーン",
         head="ナティラハット",
@@ -81,6 +83,7 @@ function get_sets()
 --CURE
     local cure ={
         main="アーカIV",
+        legs="ナレストルーズ",
     }
 --弱体
     local enfeebling = {
@@ -168,6 +171,7 @@ function get_sets()
     sets.precast['ケアル']= pre_light
     sets.precast['スタン'] = stun
     sets.precast['ヘイスト'] = pre_wind
+    sets.precast['ストンスキン'] = pre_stoneskin
     sets.precast.FC = {}
     sets.precast.FC['光'] = pre_light
     sets.precast.FC['闇'] = pre_base
@@ -185,6 +189,7 @@ function get_sets()
     sets.midcast['神聖魔法'] = divine
     sets.midcast['ケアル'] = cure
     sets.midcast['ヘイスト'] = mid_wind
+    sets.precast['ストンスキン'] = enhance
     sets.midcast.element = {}
     sets.midcast.element.mode = 'ACC'
     sets.midcast.element['古代'] = element_acc
@@ -240,6 +245,8 @@ function precast(spell)
                 else
                     equip(sets.midcast['強化魔法'])
                 end
+            elseif spell.name == 'ストンスキン' then
+                equip(sets.precast['ストンスキン'])
             elseif spell.cast_time > 3 then
                 equip(sets.precast.FC[spell.element])
             else
@@ -287,9 +294,10 @@ function midcast(spell)
             end
         elseif spell.skill== '強化魔法' then
             if string.startswith(spell.name, 'バ')
-               or spell.name == 'ストンスキン' 
                or spell.name == 'ファランクス' then
                 sets_equip = sets.midcast['強化魔法']
+            elseif spell.name == 'ストンスキン' then
+                sets_equip = sets.midcast['ストンスキン']
             elseif  spell.cast_time > 3 then
                 sets_equip = sets.midcast.RECAST[spell.element]
             end
