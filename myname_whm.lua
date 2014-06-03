@@ -1,5 +1,8 @@
 function get_sets()
     set_language('japanese')
+    ignore_spells = T{
+        'ディア','ディアII','ディアガ'
+    }
 --pre_BASE
     local pre_base ={
         main=empty,
@@ -187,7 +190,14 @@ end
 function pretarget(spell)
 end
 function precast(spell)
+    if ignore_spells:contains(spell.name) then return end
     if spell.type == 'JobAbility' then
+    elseif spell.type == 'Ninjutsu' then
+        if spell.cast_time > 3 then
+            equip(sets.precast.FC[spell.element])
+        else
+            equip(sets.midcast.RECAST[spell.element])
+        end
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
         --windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
         if spell.skill == '回復魔法' then
@@ -228,7 +238,12 @@ function precast(spell)
     end
 end
 function midcast(spell)
+    if ignore_spells:contains(spell.name) then return end
     if spell.type == 'JobAbility' then
+    elseif spell.type == 'Ninjutsu' then
+        if spell.cast_time > 3 then
+            equip(sets.midcast.RECAST[spell.element])
+        end
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
         if spell.name == 'ヘイスト' then
             equip(sets.midcast['ヘイスト'])

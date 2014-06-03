@@ -1,5 +1,8 @@
 function get_sets()
     set_language('japanese')
+    ignore_spells = T{
+        'ディア','ディアII','ディアガ'
+    }
 --FC_BASE
     local pre_base ={
         main=empty,
@@ -214,6 +217,7 @@ function get_sets()
 end
 
 function precast(spell)
+    if ignore_spells:contains(spell.name) then return end
     --myGetProperties(spell)
     if spell.type == 'Scholar' then
         if spell.name == '疾風迅雷の章' then
@@ -224,6 +228,12 @@ function precast(spell)
     elseif spell.type == 'JobAbility' then
         if spell.name == '連環計' then
             equip(sets.precast['連環計'])
+        end
+    elseif spell.type == 'Ninjutsu' then
+        if spell.cast_time > 3 then
+            equip(sets.precast.FC[spell.element])
+        else
+            equip(sets.midcast.RECAST[spell.element])
         end
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
         windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
@@ -280,8 +290,13 @@ function precast(spell)
 end
 
 function midcast(spell)
+    if ignore_spells:contains(spell.name) then return end
     local sets_equip = nil
     if spell.type == 'JobAbility' then
+    elseif spell.type == 'Ninjutsu' then
+        if spell.cast_time > 3 then
+            equip(sets.midcast.RECAST[spell.element])
+        end
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
         if spell.name == 'スタン' then
             sets_equip = sets.midcast['スタン']
