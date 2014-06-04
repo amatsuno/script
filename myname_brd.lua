@@ -191,7 +191,7 @@ function get_sets()
     }
 --マズルカ
     local mazurka = {
-        main="ヴェナバラム",
+        main="バユバタII",
         sub="ビビドストラップ",
         range="ダウルダヴラ",
         head="ＡＤキャロ+2",
@@ -239,7 +239,6 @@ function get_sets()
     local bard_acc = {
         main="ヴェナバラム",
         sub="メフィテスグリップ",
-        range="ダウルダヴラ",
         head="ＢＲランドリト+1",
         body="ＢＲジュスト+1",
         hands="ＡＤマンシェト+2",
@@ -310,6 +309,7 @@ function get_sets()
     sets.midcast['メヌエット'] = minuet
     sets.midcast['マドリガル'] = Madrigal
     sets.midcast['マズルカ'] = mazurka
+    sets.midcast['プレリュード'] = Prelude
     sets.midcast['スケルツォ'] = Scherzo
     sets.midcast['バラード'] = Ballad
     sets.midcast['バラードI'] = Ballad1
@@ -355,7 +355,7 @@ function precast(spell)
             equip(sets.precast.JA['ナイトル'])
         end
     elseif spell.type == 'BardSong' then
-        if buffactive['ナイチンゲール'] then
+        if buffactive['ナイチンゲール'] or spell.target.type == 'MONSTER' then
             equip(set_song(spell))
         else
             equip(sets.precast.FC.song[spell.element])
@@ -367,7 +367,7 @@ function precast(spell)
             equip(sets.midcast.RECAST[spell.element])
         end
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
-        windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
+        --windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
         if spell.skill == '回復魔法' then
             if string.find(spell.name, 'ケアル') then
                 equip(sets.precast['ケアル'])
@@ -402,7 +402,7 @@ function midcast(spell)
     if ignore_spells:contains(spell.name) then return end
     local sets_equip = nil
     if spell.type == 'JobAbility' then
-    elseif spell.type == 'BardSong' then
+    elseif spell.type == 'BardSong' or spell.target.type == 'MONSTER' then
         if buffactive['ナイチンゲール'] then
             --何もしない
         else
@@ -455,8 +455,10 @@ function set_song(spell)
         set_equip = sets.midcast['マドリガル'] 
     elseif spell.name:find('スケルツォ') then
         set_equip= sets.midcast['スケルツォ'] 
+    elseif spell.name:find('プレリュード') then
+        set_equip= sets.midcast['プレリュード'] 
     elseif spell.name:find('マズルカ') then
-        set_equip= sets.midcast['スケルツォ'] 
+        set_equip= sets.midcast['マズルカ'] 
     elseif spell.name == '魔道士のバラードIII'
         or spell.name == '魔道士のバラードII' then
         set_equip = sets.midcast['バラード']

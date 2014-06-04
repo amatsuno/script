@@ -83,6 +83,7 @@ function get_sets()
 --CURE
     local cure ={
         main="アーカIV",
+        hands="ボクワスグローブ",
         legs="ナレストルーズ",
     }
 --弱体
