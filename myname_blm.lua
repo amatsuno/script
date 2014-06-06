@@ -190,7 +190,7 @@ function get_sets()
     sets.midcast['神聖魔法'] = divine
     sets.midcast['ケアル'] = cure
     sets.midcast['ヘイスト'] = mid_wind
-    sets.precast['ストンスキン'] = enhance
+    sets.midcast['ストンスキン'] = enhance
     sets.midcast.element = {}
     sets.midcast.element.mode = 'ACC'
     sets.midcast.element['古代'] = element_acc
