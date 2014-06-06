@@ -341,6 +341,7 @@ function pretarget(spell)
         and spell.target.type == 'PLAYER' 
         and not buffactive['ピアニッシモ'] 
         and not spell.target.charmed then
+        windower.add_to_chat(8,'---------- ピアニッシモがない！ -----------------------')
         cancel_spell()
         return
     end
