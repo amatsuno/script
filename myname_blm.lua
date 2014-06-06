@@ -11,7 +11,7 @@ function get_sets()
     local pre_base ={
         main=empty,
         sub="ビビドストラップ",
-        ammo="インカントストーン",
+        ammo=empty,
         head="ナティラハット",
         body="アンフルローブ",
         legs="アートシクロップス",
@@ -26,7 +26,7 @@ function get_sets()
     local pre_low = {
         main=empty,
         sub=empty,
-        ammo="インカントストーン",
+        ammo=empty,
         head="ナティラハット",
         body="アンフルローブ",
     }
@@ -63,7 +63,7 @@ function get_sets()
     local stun = {
         main="ヴェナバラム",
         sub="ビビドストラップ",
-        ammo="インカントストーン",
+        ammo=empty,
         head="ナティラハット",
         body="ヴァニアコタルディ",
         hands="ハゴンデスカフス",
@@ -148,7 +148,7 @@ function get_sets()
     local idle = {
         main="アーススタッフ",
         sub="ビビドストラップ",
-        ammo="インカントストーン",
+        ammo=empty,
         head="槌の髪飾り",
         body="ハゴンデスコート",
         legs="ナレストルーズ",
@@ -228,7 +228,7 @@ function precast(spell)
     if ignore_spells:contains(spell.name) then return end
     if spell.type == 'JobAbility' then
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
-        windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
+        --windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
         if spell.skill == '回復魔法' then
             if string.find(spell.name, 'ケアル') then
                 equip(sets.precast['ケアル'])
@@ -290,7 +290,7 @@ function midcast(spell)
             elseif spell.name:find('レイズ') then
                 sets_equip = sets.midcast.RECAST[spell.element]
             elseif spell.cast_time > 3 then
-                windower.add_to_chat(123,'equip midcast healingmagic')
+                --windower.add_to_chat(123,'equip midcast healingmagic')
                 sets_equip = sets.midcast[spell.skill]
             end
         elseif spell.skill== '強化魔法' then
