@@ -5,7 +5,7 @@ function get_sets()
     }
 --pre_BASE
     local pre_base ={
-        main=empty,
+        main={ name="レブレイルグ+2", augments={'DMG:+7','CHR+1','Mag. Acc.+11',}},
         sub="ビビドストラップ",
         ammo="インカントストーン",
         head="ナティラハット",
@@ -22,8 +22,8 @@ function get_sets()
         back="スイスケープ",
     }
     local pre_low = {
-        main=empty,
-        sub=empty,
+        main={ name="レブレイルグ+2", augments={'DMG:+7','CHR+1','Mag. Acc.+11',}},
+        sub="メフィテスグリップ",
         ammo="インカントストーン",
         head="ナティラハット",
         body="ＭＫジュバ+1",

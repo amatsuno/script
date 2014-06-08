@@ -9,9 +9,8 @@ function get_sets()
     }
 --FC_BASE
     local pre_base ={
-        main=empty,
+        main="ヴェナバラム",
         sub="ビビドストラップ",
-        ammo=empty,
         head="ナティラハット",
         body="アンフルローブ",
         legs="アートシクロップス",
@@ -24,9 +23,6 @@ function get_sets()
         back="スイスケープ",
     }
     local pre_low = {
-        main=empty,
-        sub=empty,
-        ammo=empty,
         head="ナティラハット",
         body="アンフルローブ",
     }
@@ -63,7 +59,6 @@ function get_sets()
     local stun = {
         main="ヴェナバラム",
         sub="ビビドストラップ",
-        ammo=empty,
         head="ナティラハット",
         body="ヴァニアコタルディ",
         hands="ハゴンデスカフス",
@@ -148,7 +143,6 @@ function get_sets()
     local idle = {
         main="アーススタッフ",
         sub="ビビドストラップ",
-        ammo=empty,
         head="槌の髪飾り",
         body="ハゴンデスコート",
         legs="ナレストルーズ",
@@ -211,6 +205,7 @@ function get_sets()
     sets.aftercast.idle = nil    
     --コマンド着替え用 //gs c equip スタン とか
     sets.equip = {}
+    sets.equip.treasure = false
     sets.equip['スタン'] = stun
     sets.equip['スタンリキャ'] = stun_recast
     sets.equip['スタンFC'] = stun_fc
@@ -219,7 +214,7 @@ function get_sets()
     sets.equip['IDLE_DEF'] = idle_def
     sets.equip.obi = obi
     
-    disable('main','sub','ammo')
+    enable('main','sub','ammo')
     
 end
 
@@ -323,25 +318,30 @@ end
 function set_element(spell)
     local sets_equip = nil
     
-    if ancient_spells:contains(spell.name) then
-        sets_equip = sets.midcast.element['古代']
-    elseif buffactive['精霊の印'] or buffactive['サテルソーサリー'] then
-        sets_equip = sets.midcast.element['ATTK']
-    else
-        sets_equip = sets.midcast.element[sets.midcast.element.mode]
+    if sets.midcast.element.mode ~= 'VW' then
+        if ancient_spells:contains(spell.name) then
+            sets_equip = sets.midcast.element['古代']
+        elseif buffactive['精霊の印'] or buffactive['サテルソーサリー'] then
+            sets_equip = sets.midcast.element['ATTK']
+        else
+            sets_equip = sets.midcast.element[sets.midcast.element.mode]
+        end
+        if buffactive['魔力の雫'] or buffactive['魔力の泉'] then
+            sets_equip = set_combine(sets_equip, {body='ヴァニアコタルディ'})
+        end
+        if sets.equip.obi.weathers:contains(spell.element) then
+            --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
+            if world.weather_element == spell.element 
+                or buffactive[sets.equip.obi.buffs[spell.element]] then
+                if sets.equip.obi[spell.element] ~= nil then
+                    sets_equip = set_combine(sets_equip, 
+                        sets.equip.obi[spell.element])
+                end
+             end
+        end
     end
-    if buffactive['魔力の雫'] then
-        sets_equip = set_combine(sets_equip, {body='ヴァニアコタルディ'})
-    end
-    if sets.equip.obi.weathers:contains(spell.element) then
-        --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
-        if world.weather_element == spell.element 
-            or buffactive[sets.equip.obi.buffs[spell.element]] then
-            if sets.equip.obi[spell.element] ~= nil then
-                sets_equip = set_combine(sets_equip, 
-                    sets.equip.obi[spell.element])
-            end
-         end
+    if sets.equip.treasure and spell.name == 'ストンガ' then
+        sets_equip = set_combine(sets_equip, {waist="チャークベルト"})
     end
     return sets_equip
 end
@@ -364,6 +364,14 @@ function self_command(command)
         elseif args[1] == 'unlock' then
             windower.add_to_chat(123,'unlock')
             enable('main','sub','ammo')
+        elseif args[1] == 'treasure' then
+            if sets.equip.treasure then
+                sets.equip.treasure = false
+                windower.add_to_chat(8,tostring('トレハンOFF'))
+            else
+                sets.equip.treasure = true
+                windower.add_to_chat(8,tostring('トレハンON'))
+            end
         end
     end
     if #args >= 2 then
@@ -448,6 +456,7 @@ end
 -----------------------------------------------------------------------------------
 function debug_mode_chat(message)
     if _settings.debug_mode then
-        windower.add_to_chat(8,"GearSwap (Debug Mode): "..tostring(message))
+        windower.add_to_chat(8,"GearSwap (Debug Mode): "..
+            tostring(message))
     end
 end
