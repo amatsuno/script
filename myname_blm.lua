@@ -151,13 +151,13 @@ function get_sets()
     }
     local idle_def = set_combine(idle, 
         {
-        head="ハゴンデスハット",
+        head="ＨＡハット+1",
         hands="ＨＡカフス+1",
         body="ハゴンデスコート",
         legs="ハゴンデスパンツ",
         feet="アートシクブーツ",
         neck="黄昏の光輪",
-        left_ring="ダークリング",
+        left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
         });
@@ -206,6 +206,7 @@ function get_sets()
     --コマンド着替え用 //gs c equip スタン とか
     sets.equip = {}
     sets.equip.treasure = false
+    sets.equip.treasure_spells = T{'ストンガ'}
     sets.equip['スタン'] = stun
     sets.equip['スタンリキャ'] = stun_recast
     sets.equip['スタンFC'] = stun_fc
@@ -340,7 +341,8 @@ function set_element(spell)
              end
         end
     end
-    if sets.equip.treasure and spell.name == 'ストンガ' then
+    if sets.equip.treasure 
+        and sets.equip.treasure_spells:contains(spell.name) then
         sets_equip = set_combine(sets_equip, {waist="チャークベルト"})
     end
     return sets_equip

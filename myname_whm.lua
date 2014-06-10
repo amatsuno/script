@@ -141,7 +141,7 @@ function get_sets()
         {head="ゲンデサカウビーン",legs="アートシクロップス",
         feet="アートシクブーツ",
         neck="黄昏の光輪",
-        left_ring="ダークリング",
+        left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
         });

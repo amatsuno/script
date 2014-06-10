@@ -7,7 +7,6 @@ function get_sets()
     local pre_song_base ={
         main="ヴェナバラム",
         sub="ビビドストラップ",
-        ammo=empty,
         head="ＡＤキャロ+2",
         body="ＭＫジュバ+1",
         hands="ＧＥゲージ+1",
@@ -24,7 +23,6 @@ function get_sets()
     local pre_magic_base ={
         main="ヴェナバラム",
         sub="ビビドストラップ",
-        ammo=empty,
         head="ナティラハット",
         body="ＭＫジュバ+1",
         hands="ＧＥゲージ+1",
@@ -65,7 +63,7 @@ function get_sets()
         waist="アエドベルト",
         left_ear="ロケイシャスピアス",
         right_ear="アエドピアス",
-        left_ring="ダークリング",
+        left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
 }

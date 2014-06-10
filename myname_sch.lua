@@ -157,12 +157,13 @@ function get_sets()
         left_ear="胡蝶のイヤリング",
     }
     local idle_def = set_combine(idle, 
-        {head="ゲンデサカウビーン",
+        {
+        head="ＨＡハット+1",
         hands="ＨＡカフス+1",
         legs="ハゴンデスパンツ",
         feet="アートシクブーツ",
         neck="黄昏の光輪",
-        left_ring="ダークリング",
+        left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
         });
