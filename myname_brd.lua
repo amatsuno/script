@@ -80,7 +80,7 @@ function get_sets()
         waist="アエドベルト",
         left_ear="ロケイシャスピアス",
         right_ear="アエドピアス",
-        left_ring="ダークリング",
+        left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
     }
@@ -97,7 +97,7 @@ function get_sets()
         waist="アエドベルト",
         left_ear="ロケイシャスピアス",
         right_ear="アエドピアス",
-        left_ring="ダークリング",
+        left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
     }
@@ -114,7 +114,7 @@ function get_sets()
         waist="アエドベルト",
         left_ear="ロケイシャスピアス",
         right_ear="アエドピアス",
-        left_ring="ダークリング",
+        left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
     }
@@ -131,7 +131,7 @@ function get_sets()
         waist="アエドベルト",
         left_ear="ロケイシャスピアス",
         right_ear="アエドピアス",
-        left_ring="ダークリング",
+        left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
     }
@@ -148,7 +148,7 @@ function get_sets()
         waist="アエドベルト",
         left_ear="ロケイシャスピアス",
         right_ear="アエドピアス",
-        left_ring="ダークリング",
+        left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
     }
@@ -165,7 +165,7 @@ function get_sets()
         waist="アエドベルト",
         left_ear="ロケイシャスピアス",
         right_ear="アエドピアス",
-        left_ring="ダークリング",
+        left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
     }
@@ -183,7 +183,7 @@ function get_sets()
         waist="アエドベルト",
         left_ear="ロケイシャスピアス",
         right_ear="アエドピアス",
-        left_ring="ダークリング",
+        left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
     }
@@ -201,7 +201,7 @@ function get_sets()
         waist="アエドベルト",
         left_ear="ロケイシャスピアス",
         right_ear="アエドピアス",
-        left_ring="ダークリング",
+        left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
     }
@@ -223,7 +223,7 @@ function get_sets()
         waist="アエドベルト",
         left_ear="アエドピアス",
         right_ear="ロケイシャスピアス",
-        left_ring="ダークリング",
+        left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
     }
@@ -270,6 +270,19 @@ function get_sets()
     }
     local idle_def = set_combine(idle, 
         {
+        main="アーススタッフ",
+        head="ゲンデサカウビーン",
+        body="ゲンデサブリオー",
+        hands="ＧＥゲージ+1",
+        legs="ゲンデサスパッツ",
+        feet="ＡＤコテュルヌ+2",
+        neck="黄昏の光輪",
+        waist="デモンリーサッシュ",
+        left_ear="ライストームピアス",
+        right_ear="サイストームピアス",
+        left_ring="守りの指輪",
+        right_ring="ダークリング",
+        back="チェビオットケープ",
         });
     
     sets.precast = {}
