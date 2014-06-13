@@ -5,7 +5,6 @@ function get_sets()
     }
 --FC_BASE
     local pre_base ={
-        main=empty,
         sub="ビビドストラップ",
         ammo="インカントストーン",
         head="ナティラハット",
@@ -21,8 +20,6 @@ function get_sets()
         back="スイスケープ",
     }
     local pre_low = {
-        main=empty,
-        sub=empty,
         ammo="インカントストーン",
         head="ナティラハット",
         body="アンフルローブ",
@@ -311,7 +308,8 @@ function midcast(spell)
                 sets_equip = sets.midcast[spell.skill]
             end
         elseif spell.skill== '強化魔法' then
-            if string.startswith(spell.name, 'バ')
+            if spell.name:startswith('バ')
+               or spell.name:startswith('エン')
                or spell.name == 'ストンスキン' 
                or spell.name == 'ファランクス' then
                 sets_equip = sets.midcast['強化魔法']
