@@ -24,7 +24,7 @@ function get_sets()
     }
     local pre_low = {
         head="ナティラハット",
-        body="アンフルローブ",
+        legs="アートシクロップス",
     }
     local pre_stoneskin = set_combine(pre_base,{head="ウムシクハット"})
     local mid_base = pre_base
@@ -110,7 +110,7 @@ function get_sets()
     legs="ハゴンデスパンツ",
     feet="ＡＲサボ+1",
     neck="エディネクラス",
-    waist="アスワングサッシュ",
+    waist="ワニオンベルト",
     left_ear="怯懦の耳",
     right_ear="フリオミシピアス",
     left_ring="ストレンドゥリング",
@@ -119,7 +119,7 @@ function get_sets()
 }
     local element_attk = set_combine(
           element_acc
-        , {hands="ＨＡカフス+1",feet="ウンバニブーツ",})
+        , {hands="ＨＡカフス+1",waist="アスワングサッシュ",feet="ウンバニブーツ",})
     local element_fullattk = set_combine(
           element_attk
         , {head="ハゴンデスハット",body="アートシクジュバ",left_ear="怯懦の耳", right_ear="フリオミシピアス",})
@@ -215,7 +215,7 @@ function get_sets()
     sets.equip['IDLE_DEF'] = idle_def
     sets.equip.obi = obi
     
-    enable('main','sub','ammo')
+    --enable('main','sub','ammo')
     
 end
 
@@ -252,8 +252,10 @@ function precast(spell)
         elseif spell.name == 'スタン' then
             equip(sets.precast['スタン'])
         elseif spell.skill=='精霊魔法' then
-            if spell.cast_time > 3 then
+            if spell.cast_time > 8 then
                 equip(sets.precast.FC[spell.element])
+            elseif spell.cast_time > 3 then
+                equip(sets.precast.FC.FC_LOW)
             else
                 equip(set_element(spell))
             end
