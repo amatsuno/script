@@ -5,7 +5,7 @@ function get_sets()
     }
 --FC_BASE
     local pre_song_base ={
-        main="ヴェナバラム",
+        main="レブレイルグ+2",
         sub="ビビドストラップ",
         head="ＡＤキャロ+2",
         body="ＭＫジュバ+1",
@@ -21,7 +21,7 @@ function get_sets()
         back="スイスケープ",
     }
     local pre_magic_base ={
-        main="ヴェナバラム",
+        main="レブレイルグ+2",
         sub="ビビドストラップ",
         head="ナティラハット",
         body="ＭＫジュバ+1",
@@ -153,7 +153,7 @@ function get_sets()
         back="チェビオットケープ",
     }
     local Ballad1 = {
-        main="ヴェナバラム",
+        main="レブレイルグ+2",
         sub="ビビドストラップ",
         range="ダウルダヴラ",
         head="ＡＤキャロ+2",
@@ -171,7 +171,7 @@ function get_sets()
     }
 --スケルツォ
     local Scherzo = {
-        main="ヴェナバラム",
+        main="ビシュラバII",
         sub="ビビドストラップ",
         range="ダウルダヴラ",
         head="ＡＤキャロ+2",
@@ -235,7 +235,7 @@ function get_sets()
     }
 --敵うた
     local bard_acc = {
-        main="ヴェナバラム",
+        main="レブレイルグ+2",
         sub="メフィテスグリップ",
         head="ＢＲランドリト+1",
         body="ＢＲジュスト+1",
@@ -338,12 +338,15 @@ function get_sets()
     sets.midcast.RECAST['火'] = mid_base
     sets.midcast.RECAST['氷'] = mid_base
     sets.aftercast = {}
+    sets.aftercast.skip = false
     sets.aftercast.idle = nil    
     --コマンド着替え用 //gs c equip スタン とか
     sets.equip = {}
     sets.equip['IDLE'] = idle
     sets.equip['IDLE_DEF'] = idle_def
     sets.equip.obi = obi
+    
+    send_command('input /macro book 5;wait .2;input /macro set 1')
 end
 
 function pretarget(spell)
@@ -367,7 +370,10 @@ function precast(spell)
             equip(sets.precast.JA['ナイトル'])
         end
     elseif spell.type == 'BardSong' then
-        if buffactive['ナイチンゲール'] or spell.target.type == 'MONSTER' then
+        if buffactive['ナイチンゲール']  then
+            equip(set_song(spell))
+            sets.aftercast.skip = true
+        elseif spell.target.type == 'MONSTER' then
             equip(set_song(spell))
         else
             equip(sets.precast.FC.song[spell.element])
@@ -486,9 +492,10 @@ function set_element(spell)
 end
 
 function aftercast(spell)
-    if sets.aftercast.idle ~= nil then
+    if sets.aftercast.idle ~= nil and sets.aftercast.skip == false then
         equip(sets.aftercast.idle)
     end
+    sets.aftercast.skip = false
 end
 
 function status_change(new,old)
