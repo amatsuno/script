@@ -112,9 +112,9 @@ function get_sets()
         body="ハゴンデスコート",
         hands="ハゴンデスカフス",
         legs="ボクワススロップス",
-        feet="アートシクブーツ",
+        feet="ハゴンデスサボ",
         neck="エディネクラス",
-        waist="アスワングサッシュ",
+        waist="デモンリーサッシュ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
         left_ring="バルラーンリング",
@@ -123,10 +123,10 @@ function get_sets()
     }
     local element_attk = set_combine(
           element_acc
-        , {hands="ＨＡカフス+1",legs="ハゴンデスパンツ",feet="ウンバニブーツ",})
+        , {head="ハゴンデスハット",legs="ハゴンデスパンツ",})
     local element_fullattk = set_combine(
           element_attk
-        , {head="ハゴンデスハット",left_ear="怯懦の耳", right_ear="フリオミシピアス",})
+        , {left_ear="怯懦の耳", right_ear="フリオミシピアス",})
     
 --属性帯
     local obi = {}
@@ -155,8 +155,8 @@ function get_sets()
     }
     local idle_def = set_combine(idle, 
         {
-        head="ＨＡハット+1",
-        hands="ＨＡカフス+1",
+        head="ハゴンデスハット",
+        hands="ハゴンデスカフス",
         legs="ハゴンデスパンツ",
         feet="アートシクブーツ",
         neck="黄昏の光輪",
