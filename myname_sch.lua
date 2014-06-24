@@ -36,8 +36,8 @@ function get_sets()
     local mid_wind = set_combine(mid_base, {main="バユバタII",})
 
     --土属性
-    local pre_earth = pre_base 
-    local mid_earth = mid_base
+    local pre_earth = set_combine(pre_base, {main="ビシュラバI",})
+    local mid_earth = set_combine(mid_base, {main="ビシュラバII",})
 
     --強化
     local enhance = {

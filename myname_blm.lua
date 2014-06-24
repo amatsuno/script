@@ -26,7 +26,6 @@ function get_sets()
         head="ナティラハット",
         legs="アートシクロップス",
     }
-    local pre_stoneskin = set_combine(pre_base,{head="ウムシクハット"})
     local mid_base = pre_base
     
     --光属性
@@ -39,8 +38,9 @@ function get_sets()
     local mid_wind = set_combine(mid_base, {main="バユバタII",})
 
     --土属性
-    local pre_earth = pre_base 
-    local mid_earth = mid_base
+    local pre_earth = set_combine(pre_base, {main="ビシュラバI",})
+    local mid_earth = set_combine(mid_base, {main="ビシュラバII",})
+    local pre_stoneskin = set_combine(pre_earth,{head="ウムシクハット"})
 
     --強化
     local enhance = {
@@ -244,6 +244,7 @@ function precast(spell)
                 end
             elseif spell.name == 'ストンスキン' then
                 equip(sets.precast['ストンスキン'])
+                send_command('@wait 1.5;cancel 37')
             elseif spell.cast_time > 3 then
                 equip(sets.precast.FC[spell.element])
             else

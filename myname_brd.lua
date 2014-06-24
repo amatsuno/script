@@ -39,11 +39,13 @@ function get_sets()
     local pre_song_light = set_combine(pre_song_base, {main="アーカI"})
     local pre_song_thunder = set_combine(pre_song_base, {main="アパマジャI"})
     local pre_song_wind = set_combine(pre_song_base, {main="バユバタI"})
+    local pre_song_earth = set_combine(pre_song_base, {main="ビシュラバI"})
     
     local pre_magic_fire = set_combine(pre_magic_base, {main="アターI"})
     local pre_magic_light = set_combine(pre_magic_base, {main="アーカI"})
     local pre_magic_thunder = set_combine(pre_magic_base, {main="アパマジャI"})
     local pre_magic_wind = set_combine(pre_magic_base, {main="バユバタI"})
+    local pre_magic_earth = set_combine(pre_magic_base, {main="ビシュラバI"})
     
     local mid_base = pre_base
 --ナイトル
@@ -296,7 +298,7 @@ function get_sets()
     sets.precast.FC.song['光'] = pre_song_light
     sets.precast.FC.song['闇'] = pre_song_base
     sets.precast.FC.song['風'] = pre_song_wind
-    sets.precast.FC.song['土'] = pre_song_base
+    sets.precast.FC.song['土'] = pre_song_earth
     sets.precast.FC.song['雷'] = pre_song_thunder
     sets.precast.FC.song['水'] = pre_song_base
     sets.precast.FC.song['火'] = pre_song_fire
@@ -306,7 +308,7 @@ function get_sets()
     sets.precast.FC.magic['光'] = pre_magic_light
     sets.precast.FC.magic['闇'] = pre_magic_base
     sets.precast.FC.magic['風'] = pre_magic_wind
-    sets.precast.FC.magic['土'] = pre_magic_base
+    sets.precast.FC.magic['土'] = pre_magic_earth
     sets.precast.FC.magic['雷'] = pre_magic_thuner
     sets.precast.FC.magic['水'] = pre_magic_base
     sets.precast.FC.magic['火'] = pre_magic_fire
@@ -347,6 +349,9 @@ function get_sets()
     sets.equip.obi = obi
     
     send_command('input /macro book 5;wait .2;input /macro set 1')
+    --歌残り時間監視タイマー
+	timer_reg = {}
+    
 end
 
 function pretarget(spell)
@@ -460,7 +465,6 @@ function midcast(spell)
         equip(sets_equip)
     end
 end
-
 function set_song(spell)
     local set_equip = nil
     if spell.name:find('ピーアン') then
@@ -492,10 +496,134 @@ function set_element(spell)
 end
 
 function aftercast(spell)
+    if spell.type == 'BardSong' and not spell.interrupted then
+        update_timer(spell)
+    end
+
     if sets.aftercast.idle ~= nil and sets.aftercast.skip == false then
-        equip(sets.aftercast.idle)
+      equip(sets.aftercast.idle)
     end
     sets.aftercast.skip = false
+end
+function update_timer(spell)
+	local t = os.time()
+
+	-- 効果時間切れの歌を削除
+	local tempreg = {}
+	for i,v in pairs(timer_reg) do
+		if v < t then tempreg[i] = true end
+	end
+	for i,v in pairs(tempreg) do
+		timer_reg[i] = nil
+	end
+	
+	local dur = calculate_duration(spell)
+	windower.add_to_chat(0xCE, "効果時間 "..spell.name..' '..dur)
+	if timer_reg[spell.english] then
+		send_command('timers delete "'..spell.english..'"')
+		timer_reg[spell.english] = t + dur
+		send_command('timers create "'..spell.english..'" '..dur..' down')
+	else
+		local maxsongs = 2
+		if player.equipment.range == 'ダウルダヴラ' then
+			maxsongs = maxsongs+1
+		end
+		if buffactive['クラリオンコール'] then
+			maxsongs = maxsongs+1
+		end
+		if maxsongs < table.length(timer_reg) then
+			maxsongs = table.length(timer_reg)
+		end
+		windower.add_to_chat( 8, 'range '..player.equipment.range..' song '..maxsongs )
+		
+		if table.length(timer_reg) < maxsongs then
+			timer_reg[spell.english] = t+dur
+			send_command('timers create "'..spell.english..'" '..dur..' down')
+		else
+			local rep,repsong
+			for i,v in pairs(timer_reg) do
+				if t+dur > v then
+					if not rep or rep > v then
+						rep = v
+						repsong = i
+					end
+				end
+			end
+			if repsong then
+				timer_reg[repsong] = nil
+				send_command('timers delete "'..repsong..'"')
+				timer_reg[spell.english] = t+dur
+				send_command('timers create "'..spell.english..'" '..dur..' down')
+			end
+		end
+	end
+end
+function calculate_duration(spell)
+	local mult = 1.0
+	if player.equipment.range == "ダウルダヴラ" then mult = mult + 0.25 end
+	if player.equipment.range == "ギャッラルホルン" then mult = mult + 0.4 end
+	if player.equipment.range == "エミネンフルート" then mult = mult + 0.2 end
+	if player.equipment.neck == "アエドマティネ" then mult = mult + 0.1 end
+	if player.equipment.feet == "ブリオソスリッパー" then mult = mult + 0.1 end
+	if player.equipment.feet == "ＢＲスリッパー+1" then mult = mult + 0.11 end
+	if player.equipment.body == "ＡＤオングルリヌ+2" then mult = mult + 0.1 end
+	if player.equipment.legs == "ＭＫシャルワ+1" then mult = mult + 0.1 end
+	if player.equipment.main == "レガートダガー" then mult = mult + 0.05 end
+	--if player.equipment.main == "カルンウェナン" then mult = mult + 0.5 end
+	
+	if string.find(spell.name,'マーチ') then
+	    if player.equipment.hands == 'ＡＤマンシェト+2' then 
+	        mult = mult + 0.1
+	    end
+	    if player.equipment.range == 'ランゲレイク' then
+	        mult = mult + 0.3
+	    end
+	end
+	if string.find(spell.name,'メヌエット') then
+	    if player.equipment.body == "ＡＤオングルリヌ+2" then 
+	        mult = mult + 0.1 
+	    end
+	    if player.equipment.range == 'アポロフルート' then
+	        mult = mult + 0.3
+	    end
+	end
+	if string.find(spell.name,'マドリガル') then
+	    if player.equipment.head == "ＡＤキャロ+2" then 
+	        mult = mult + 0.1 
+	    end
+	    if player.equipment.range == 'カンタバンクホルン' then
+	        mult = mult + 0.3
+	    end
+	end
+	if string.find(spell.name,'プレリュード') then
+	    if player.equipment.range == 'カンタバンクホルン' then
+	        mult = mult + 0.3
+	    end
+	end
+	if string.find(spell.name,'バラード') then
+	    if player.equipment.legs == "ＡＤラングラヴ+2" then 
+	        mult = mult + 0.1 
+	    end
+	end
+	if string.find(spell.name,'スケルツォ') then
+	    if player.equipment.feet == "ＡＤコテュルヌ+2" then 
+	        mult = mult + 0.1 
+	    end
+    end
+    if buffactive['トルバドゥール'] then
+		mult = mult*2
+		windower.add_to_chat( 8, 'mult '..mult..' '..buffactive['トルバドゥール'] )
+	end
+	
+	if string.find(spell.name,'スケルツォ') and buffactive['ソウルボイス'] then
+		mult = mult*2
+		windower.add_to_chat( 8, 'mult '..mult..' '..buffactive['ソウルボイス'] )
+	elseif string.find(spell.name,'スケルツォ') and buffactive['マルカート'] then
+		mult = mult*1.5
+		windower.add_to_chat( 8, 'mult '..mult..' '..buffactive['マルカート'] )
+	end
+	
+	return mult*120
 end
 
 function status_change(new,old)
@@ -517,17 +645,6 @@ function self_command(command)
             if sets.equip[args[2]] ~= nil then
                 equip(sets.equip[args[2]])
             end
-        elseif args[1] == 'elementmode' then
-            if args[2] == 'ACC' then
-                sets.midcast.element.mode = 'ACC'
-            elseif args[2] == 'ATTK' then
-                sets.midcast.element.mode = 'ATTK'
-            elseif args[2] == 'FULL' then
-                sets.midcast.element.mode = 'FULL'
-            elseif args[2] == 'VW' then
-                sets.midcast.element.mode = 'VW'
-            end
-            equip(sets.midcast.element[sets.midcast.element.mode])
         elseif args[1] == 'idle' then
             local param = args[2]:lower()
             if param == 'none' then
@@ -583,6 +700,13 @@ function myGetProperties(t)
         debug_mode_chat(' type is '..type(val))
     end
 end
+
+windower.register_event('zone change',function (...)
+	for i,v in pairs(timer_reg) do
+		send_command('timers delete "'..i..'"')
+	end
+	timer_reg = {}
+end)
 -----------------------------------------------------------------------------------
 --Name: debug_mode_chat(message)
 --Desc: Checks _settings.debug_mode and outputs the message if necessary
@@ -591,6 +715,7 @@ end
 -----------------------------------------------------------------------------------
 --Returns:
 ---- none
+
 -----------------------------------------------------------------------------------
 function debug_mode_chat(message)
     if _settings.debug_mode then
