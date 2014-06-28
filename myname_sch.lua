@@ -126,7 +126,8 @@ function get_sets()
     local element_fullattk = set_combine(
           element_attk
         , {head="ハゴンデスハット",left_ear="怯懦の耳", right_ear="フリオミシピアス",})
-    
+    local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
+
 --属性帯
     local obi = {}
     --所持している属性帯の属性を列挙
@@ -170,6 +171,7 @@ function get_sets()
     sets.precast['スタン'] = stun
     sets.precast['連環計'] = renkan
     sets.precast['ヘイスト'] = pre_wind
+    sets.precast['インパクト'] = impact
     sets.precast.FC = {}
     sets.precast.FC['光'] = pre_light
     sets.precast.FC['闇'] = pre_base
@@ -181,6 +183,7 @@ function get_sets()
     sets.precast.FC['氷'] = pre_base
     sets.precast.FC['FC_LOW'] = pre_low
     sets.midcast = {}
+    sets.midcast['インパクト'] = impact
     sets.midcast['強化魔法'] = enhance
     sets.midcast['バ系'] = baXX
     sets.midcast['弱体魔法'] = enfeebling
@@ -266,7 +269,9 @@ function precast(spell)
         elseif spell.name == 'オーラ' then
             equip(sets.equip['強化魔法'])
         elseif spell.skill=='精霊魔法' then
-            if spell.cast_time > 3 then
+            if spell.name == 'インパクト' then
+                equip(sets.precast['インパクト'])
+            elseif spell.cast_time > 3 then
                 equip(sets.precast.FC[spell.element])
             else
                 equip(set_element(spell.element))
@@ -317,7 +322,9 @@ function midcast(spell)
                 sets_equip = sets.midcast.RECAST[spell.element]
             end
         elseif spell.skill=='精霊魔法' then
-            if spell.cast_time > 3 then
+            if spell.name == 'インパクト' then
+                equip(sets.midcast['インパクト'])
+            elseif spell.cast_time > 3 then
                 equip(set_element(spell.element))
             end
         elseif spell.skill=='弱体魔法' then

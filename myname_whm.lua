@@ -66,8 +66,8 @@ function get_sets()
 
 --CURE
     local cure ={
-        main="アーカIV",
-        sub="ビビドストラップ",
+        main="タマシチ",
+        sub="玄武盾",
         ammo="インカントストーン",
         head="ゲンデサカウビーン",
         body="ＯＲブリオー+2",
@@ -81,6 +81,23 @@ function get_sets()
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
         back="パートリケープ",
+    }
+    local midcure ={
+        main="タマシチ",
+        sub="玄武盾",
+        ammo="インカントストーン",
+        head="ゲンデサカウビーン",
+        body="ＯＲブリオー+2",
+        hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
+        legs="ＯＲパンタロン+2",
+        feet="ケアルクロッグ",
+        neck="アケソチョーカー",
+        waist="ウィトフルベルト",
+        left_ear="ラウンデルピアス",
+        right_ear="ノーヴィアピアス",
+        left_ring="クチェクラリング",
+        right_ring="サンゴマリング",
+        back="メンディングケープ",
     }
 --弱体
     local enfeebling = {
@@ -139,7 +156,10 @@ function get_sets()
         back="リフラクトケープ",
     }
     local idle_def = set_combine(idle, 
-        {head="ゲンデサカウビーン",legs="アートシクロップス",
+        {
+        main="タマシチ",
+        sub="玄武盾",
+        head="ゲンデサカウビーン",legs="アートシクロップス",
         feet="アートシクブーツ",
         neck="黄昏の光輪",
         left_ring="守りの指輪",
@@ -162,6 +182,7 @@ function get_sets()
     sets.precast.FC['氷'] = pre_base
     sets.precast.FC['FC_LOW'] = pre_low
     sets.midcast = {}
+    sets.midcast['ケアル'] = midcure
     sets.midcast['強化魔法'] = enhance
     sets.midcast['バ系'] = baXX
     sets.midcast['弱体魔法'] = enfeebling
@@ -250,7 +271,7 @@ function midcast(spell)
             equip(sets.midcast['ヘイスト'])
         elseif spell.skill=='回復魔法' then
             if string.find(spell.name, 'ケアル') then
-            --何もしない
+                equip(sets.midcast['ケアル'])
             elseif spell.name:find('レイズ') then
                 equip(sets.midcast.RECAST[spell.element])
             elseif spell.cast_time > 3 then

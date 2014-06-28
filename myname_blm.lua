@@ -40,7 +40,7 @@ function get_sets()
     --土属性
     local pre_earth = set_combine(pre_base, {main="ビシュラバI",})
     local mid_earth = set_combine(mid_base, {main="ビシュラバII",})
-    local pre_stoneskin = set_combine(pre_earth,{head="ウムシクハット"})
+    local pre_stoneskin = set_combine(pre_earth,{head="ウムシクハット",waist="ジーゲルサッシュ",})
 
     --強化
     local enhance = {
@@ -55,6 +55,8 @@ function get_sets()
         back="慈悲の羽衣",
     }
     local baXX = enhance
+    local stoneskin = set_combine(enhance, {waist="ジーゲルサッシュ",})
+    
 --stun
     local stun = {
         main="ヴェナバラム",
@@ -116,14 +118,15 @@ function get_sets()
     left_ring="ストレンドゥリング",
     right_ring="サンゴマリング",
     back="トーロケープ",
-}
+    }
     local element_attk = set_combine(
           element_acc
         , {hands="ＨＡカフス+1",waist="アスワングサッシュ",feet="ウンバニブーツ",})
     local element_fullattk = set_combine(
           element_attk
-        , {head="ハゴンデスハット",body="アートシクジュバ",left_ear="怯懦の耳", right_ear="フリオミシピアス",})
-    
+        , {head="ハゴンデスハット",range=empty,ammo="ウィッチストーン",right_ring="ダイアリング",})
+    local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
+
 --属性帯
     local obi = {}
     --所持している属性帯の属性を列挙
@@ -153,7 +156,7 @@ function get_sets()
         {
         head="ＨＡハット+1",
         hands="ＨＡカフス+1",
-        body="ハゴンデスコート",
+        body="ＨＡコート+1",
         legs="ハゴンデスパンツ",
         feet="アートシクブーツ",
         neck="黄昏の光輪",
@@ -167,6 +170,7 @@ function get_sets()
     sets.precast['スタン'] = stun
     sets.precast['ヘイスト'] = pre_wind
     sets.precast['ストンスキン'] = pre_stoneskin
+    sets.precast['インパクト'] = impact
     sets.precast.FC = {}
     sets.precast.FC['光'] = pre_light
     sets.precast.FC['闇'] = pre_base
@@ -178,13 +182,14 @@ function get_sets()
     sets.precast.FC['氷'] = pre_base
     sets.precast.FC['FC_LOW'] = pre_low
     sets.midcast = {}
+    sets.midcast['インパクト'] = impact
     sets.midcast['強化魔法'] = enhance
     sets.midcast['バ系'] = baXX
     sets.midcast['弱体魔法'] = enfeebling
     sets.midcast['神聖魔法'] = divine
     sets.midcast['ケアル'] = cure
     sets.midcast['ヘイスト'] = mid_wind
-    sets.midcast['ストンスキン'] = enhance
+    sets.midcast['ストンスキン'] = stoneskin
     sets.midcast.element = {}
     sets.midcast.element.mode = 'ACC'
     sets.midcast.element['古代'] = element_acc
@@ -244,7 +249,7 @@ function precast(spell)
                 end
             elseif spell.name == 'ストンスキン' then
                 equip(sets.precast['ストンスキン'])
-                send_command('@wait 1.5;cancel 37')
+                send_command('@wait 1.2;cancel 37')
             elseif spell.cast_time > 3 then
                 equip(sets.precast.FC[spell.element])
             else
@@ -253,7 +258,9 @@ function precast(spell)
         elseif spell.name == 'スタン' then
             equip(sets.precast['スタン'])
         elseif spell.skill=='精霊魔法' then
-            if spell.cast_time > 8 then
+            if spell.name == 'インパクト' then
+                equip(sets.precast['インパクト'])
+            elseif spell.cast_time > 8 then
                 equip(sets.precast.FC[spell.element])
             elseif spell.cast_time > 3 then
                 equip(sets.precast.FC.FC_LOW)
@@ -302,7 +309,9 @@ function midcast(spell)
                 sets_equip = sets.midcast.RECAST[spell.element]
             end
         elseif spell.skill=='精霊魔法' then
-            if spell.cast_time > 3 then
+            if spell.name == 'インパクト' then
+                equip(sets.midcast['インパクト'])
+            elseif spell.cast_time > 3 then
                 equip(set_element(spell))
             end
         elseif spell.skill=='弱体魔法' then
