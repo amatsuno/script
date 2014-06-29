@@ -236,12 +236,12 @@ function precast(spell)
         elseif spell.skill=='強化魔法' then
             if spell.name:startswith('バ') then
                 if spell.cast_time > 3 then
-                    equip(sets.precast.FC[spell.element])
+                    equip(sets.precast.FC[spell.element], {waist="ジーゲルサッシュ",})
                 else
                     equip(sets.midcast['バ系'])
                 end
             elseif spell.cast_time > 3 then
-                equip(sets.precast.FC[spell.element])
+                equip(sets.precast.FC[spell.element], {waist="ジーゲルサッシュ",})
             else
                 equip(sets.midcast.RECAST[spell.element])
             end
