@@ -3,6 +3,13 @@ function get_sets()
     ignore_spells = T{
         'ディア','ディアII','ディアガ'
     }
+    watchtime_songs = T{
+         '猛者のメヌエットV','猛者のメヌエットIV','猛者のメヌエットIII','猛者のメヌエットII','猛者のメヌエット'
+        ,'栄光の凱旋マーチ','無敵の進撃マーチ','弓師のプレリュード','狩人のプレリュード'
+        ,'剣豪のマドリガル','剣闘士のマドリガル'
+        ,'魔道士のバラードIII','魔道士のバラードII','魔道士のバラード'
+        ,'警戒のスケルツォ'
+    }
 --FC_BASE
     local pre_song_base ={
         main="レブレイルグ+2",
@@ -497,7 +504,9 @@ end
 
 function aftercast(spell)
     if spell.type == 'BardSong' and not spell.interrupted then
-        update_timer(spell)
+        if watchtime_songs:contains(spell.name) then
+            update_timer(spell)
+        end
     end
 
     if sets.aftercast.idle ~= nil and sets.aftercast.skip == false then
@@ -551,7 +560,7 @@ function update_timer(spell)
 			end
 			if repsong then
 				timer_reg[repsong] = nil
-				send_command('timers delete "'..repsong..'"')
+				--send_command('timers delete "'..repsong..'"')
 				timer_reg[spell.english] = t+dur
 				send_command('timers create "'..spell.english..'" '..dur..' down')
 			end
