@@ -85,7 +85,7 @@ function get_sets()
     }
 --弱体
     local enfeebling = {
-        main={ name="レブレイルグ+2", augments={'DMG:+7','CHR+1','Mag. Acc.+11',}},
+        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
         sub="メフィテスグリップ",
         range="オウレオール",
         head="アートシクハット",
@@ -124,7 +124,9 @@ function get_sets()
         , {hands="ＨＡカフス+1",waist="アスワングサッシュ",feet="ウンバニブーツ",})
     local element_fullattk = set_combine(
           element_attk
-        , {head="ハゴンデスハット",range=empty,ammo="ウィッチストーン",right_ring="ダイアリング",})
+        , {head={ name="ＨＡハット+1", augments={'Phys. dmg. taken -1%','"Mag.Atk.Bns."+21',}},
+            range=empty,ammo="ウィッチストーン",right_ring="ダイアリング",})
+
     local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 
 --属性帯
@@ -221,7 +223,7 @@ function get_sets()
     sets.equip.obi = obi
     
     --enable('main','sub','ammo')
-    
+    rev_attk = { name="レブレイルグ+2", augments={'DMG:+7','"Mag.Atk.Bns."+24',}}
 end
 
 function precast(spell)
@@ -374,10 +376,25 @@ function self_command(command)
     if #args >= 1 then
         if args[1] == 'lock' then
             windower.add_to_chat(123,'lock')
-            disable('main','sub','ammo')
+            disable('main','sub','ammo','range')
         elseif args[1] == 'unlock' then
             windower.add_to_chat(123,'unlock')
-            enable('main','sub','ammo')
+            enable('main','sub','ammo','range')
+        elseif args[1] == 'togglemain' then
+            if type(sets.midcast.element['古代'].main) == 'string' and 
+                sets.midcast.element['古代'].main == "ヴェナバラム" then
+                windower.add_to_chat(0xCE,'main武器魔攻レヴ')
+                sets.midcast.element['古代'].main = rev_attk
+                sets.midcast.element['ACC'].main = rev_attk
+                sets.midcast.element['ATTK'].main = rev_attk
+                sets.midcast.element['FULL'].main = rev_attk
+             else
+                windower.add_to_chat(0xCE,'main武器ヴェナバラム')
+                sets.midcast.element['古代'].main = "ヴェナバラム"
+                sets.midcast.element['ACC'].main = "ヴェナバラム"
+                sets.midcast.element['ATTK'].main = "ヴェナバラム"
+                sets.midcast.element['FULL'].main = "ヴェナバラム"
+             end
         elseif args[1] == 'treasure' then
             if sets.equip.treasure then
                 sets.equip.treasure = false
