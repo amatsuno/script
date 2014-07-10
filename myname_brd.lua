@@ -246,7 +246,7 @@ function get_sets()
     local bard_acc = {
         main="レブレイルグ+2",
         sub="メフィテスグリップ",
-        head="ＢＲランドリト+1",
+        head="ＢＩランドリト+1",
         body="ＢＲジュスト+1",
         hands="ＢＲカフス+1",
         legs="ＢＩキャニオンズ+1",
