@@ -52,7 +52,7 @@ function get_sets()
         head="ウムシクハット",
         body="アンフルローブ",
         hands="ダイナスティミトン",
-        legs="ＣＲパンタロン+2",
+        legs="パエティパンタロン",
         feet="ＯＲダックビル+2",
         neck="コロッサストルク",
         waist="オリンポスサッシュ",
@@ -63,7 +63,7 @@ function get_sets()
         back="慈悲の羽衣",
     }
     local baXX = set_combine(enhance, {body="ＯＲブリオー+2"})
-
+    local protectshell = set_combine(mid_light, {legs="パエティパンタロン", feet='パエティダックビル',})
 --CURE
     local cure ={
         main="タマシチ",
@@ -82,23 +82,16 @@ function get_sets()
         right_ring="サンゴマリング",
         back="パートリケープ",
     }
-    local midcure ={
-        main="タマシチ",
-        sub="玄武盾",
-        ammo="インカントストーン",
-        head="ゲンデサカウビーン",
-        body="ＯＲブリオー+2",
-        hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
-        legs="ＯＲパンタロン+2",
-        feet="ケアルクロッグ",
-        neck="アケソチョーカー",
-        waist="ウィトフルベルト",
-        left_ear="ラウンデルピアス",
-        right_ear="ノーヴィアピアス",
-        left_ring="クチェクラリング",
-        right_ring="サンゴマリング",
-        back="メンディングケープ",
-    }
+    if player.sub_job == '赤' then
+        cure = set_combine(cure, {left_ear="胡蝶のイヤリング",feet='パエティダックビル'})
+    end
+    local midcure = set_combine(cure,
+        {
+            right_ear="ノーヴィアピアス",
+            left_ring="クチェクラリング",
+            back="メンディングケープ",
+        })
+    
 --弱体
     local enfeebling = {
         main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
@@ -184,6 +177,7 @@ function get_sets()
     sets.midcast = {}
     sets.midcast['ケアル'] = midcure
     sets.midcast['強化魔法'] = enhance
+    sets.midcast['プロシェル'] = protectshell
     sets.midcast['バ系'] = baXX
     sets.midcast['弱体魔法'] = enfeebling
     sets.midcast['神聖魔法'] = divine
@@ -290,6 +284,9 @@ function midcast(spell)
                     or spell.name:startswith('アディ'))
                 and sets.midcast[spell.skill] ~= nil then
                 equip(sets.midcast['強化魔法'])
+            elseif spell.name:startswith('プロテ') or
+                spell.name:startswith('シェル') then
+                equip(sets.midcast['プロシェル'])
             elseif spell.name == 'イレース' then
                 equip(sets.midcast['回復魔法'])
             elseif spell.cast_time > 3 then
