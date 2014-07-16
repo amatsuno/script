@@ -126,7 +126,7 @@ function get_sets()
         , {head="ハゴンデスハット",legs="ハゴンデスパンツ",})
     local element_fullattk = set_combine(
           element_attk
-        , {left_ear="怯懦の耳", right_ear="フリオミシピアス",})
+        , {left_ear="ヘカテーピアス", right_ear="フリオミシピアス",})
     
 --属性帯
     local obi = {}
@@ -158,11 +158,11 @@ function get_sets()
         head="ハゴンデスハット",
         hands="ハゴンデスカフス",
         legs="ハゴンデスパンツ",
-        feet="アートシクブーツ",
+        feet="ハゴンデスサボ",
         neck="黄昏の光輪",
         left_ring="ダークリング",
         right_ring="ダークリング",
-        back="チェビオットケープ",
+        back="リパルスマント",
         });
     
     sets.precast = {}
