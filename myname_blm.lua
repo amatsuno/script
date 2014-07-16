@@ -9,7 +9,7 @@ function get_sets()
     }
 --FC_BASE
     local pre_base ={
-        main="ヴェナバラム",
+        main= {name="レブレイルグ+2", augments={'DMG:+7','"Mag.Atk.Bns."+24',}},
         sub="ビビドストラップ",
         head="ナティラハット",
         body="アンフルローブ",
@@ -59,7 +59,7 @@ function get_sets()
     
 --stun
     local stun = {
-        main="ヴェナバラム",
+        main= {name="レブレイルグ+2", augments={'DMG:+7','"Mag.Atk.Bns."+24',}},
         sub="ビビドストラップ",
         head="ナティラハット",
         body="ヴァニアコタルディ",
@@ -103,7 +103,7 @@ function get_sets()
     }
 --精霊
     local element_acc={
-    main="ヴェナバラム",
+    main= {name="レブレイルグ+2", augments={'DMG:+7','"Mag.Atk.Bns."+24',}},
     sub="メフィテスグリップ",
     range="オウレオール",
     head="ＡＲペタソス+1",
