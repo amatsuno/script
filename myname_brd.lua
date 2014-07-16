@@ -12,7 +12,7 @@ function get_sets()
     }
 --FC_BASE
     local pre_song_base ={
-        main="レブレイルグ+2",
+        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
         sub="ビビドストラップ",
         head="ＡＤキャロ+2",
         body="ＭＫジュバ+1",
@@ -28,7 +28,7 @@ function get_sets()
         back="スイスケープ",
     }
     local pre_magic_base ={
-        main="レブレイルグ+2",
+        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
         sub="ビビドストラップ",
         head="ナティラハット",
         body="ＭＫジュバ+1",
@@ -162,7 +162,7 @@ function get_sets()
         back="チェビオットケープ",
     }
     local Ballad1 = {
-        main="レブレイルグ+2",
+        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
         sub="ビビドストラップ",
         range="ダウルダヴラ",
         head="ＡＤキャロ+2",
@@ -244,9 +244,9 @@ function get_sets()
     }
 --敵うた
     local bard_acc = {
-        main="レブレイルグ+2",
+        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
         sub="メフィテスグリップ",
-        head="ＢＩランドリト+1",
+        head="ＢＩラウンドリト+1",
         body="ＢＲジュスト+1",
         hands="ＢＲカフス+1",
         legs="ＢＩキャニオンズ+1",
@@ -280,8 +280,8 @@ function get_sets()
     local idle_def = set_combine(idle, 
         {
         main="アーススタッフ",
-        head="ゲンデサカウビーン",
-        body="ゲンデサブリオー",
+        head="ＢＩラウンドリト+1",
+        body="ＢＲジュスト+1",
         hands="ＧＥゲージ+1",
         legs="ＢＩキャニオンズ+1",
         feet="ＡＤコテュルヌ+2",
