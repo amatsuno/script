@@ -202,6 +202,9 @@ function get_sets()
     sets.equip['FC_LIGHT'] = pre_light
     sets.equip['IDLE'] = idle
     sets.equip['IDLE_DEF'] = idle_def
+
+    send_command('input /macro book 2;wait .2;input /macro set 1')
+    
 end
 function pretarget(spell)
 end
