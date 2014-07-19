@@ -212,6 +212,8 @@ function get_sets()
     sets.equip['IDLE'] = idle
     sets.equip['IDLE_DEF'] = idle_def
     sets.equip.obi = obi
+    send_command('input /macro book 7;wait .2;input /macro set 1')
+    
 end
 
 function precast(spell)
