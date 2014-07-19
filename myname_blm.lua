@@ -125,6 +125,7 @@ function get_sets()
     local element_fullattk = set_combine(
           element_attk
         , {head={ name="ＨＡハット+1", augments={'Phys. dmg. taken -1%','"Mag.Atk.Bns."+21',}},
+            sub="ズーゾーウグリップ",
             range=empty,ammo="ウィッチストーン",right_ring="ダイアリング",})
 
     local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
@@ -224,6 +225,8 @@ function get_sets()
     
     --enable('main','sub','ammo')
     rev_attk = { name="レブレイルグ+2", augments={'DMG:+7','"Mag.Atk.Bns."+24',}}
+
+    send_command('input /macro book 4;wait .2;input /macro set 10')
 end
 
 function precast(spell)
@@ -347,6 +350,7 @@ function set_element(spell)
         if sets.equip.obi.weathers:contains(spell.element) then
             --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
             if world.weather_element == spell.element 
+                or world.day_element == spell_element
                 or buffactive[sets.equip.obi.buffs[spell.element]] then
                 if sets.equip.obi[spell.element] ~= nil then
                     sets_equip = set_combine(sets_equip, 
