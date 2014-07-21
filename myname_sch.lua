@@ -53,9 +53,10 @@ function get_sets()
         back="慈悲の羽衣",
     }
     local baXX = enhance
+    local regen = enhance
 --stun
     local stun = {
-        main="ヴェナバラム",
+        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
         sub="ビビドストラップ",
         ammo="インカントストーン",
         head="ＰＤボード+1",
@@ -83,7 +84,7 @@ function get_sets()
     }
 --弱体
     local enfeebling = {
-        main={ name="レブレイルグ+2", augments={'DMG:+7','CHR+1','Mag. Acc.+11',}},
+        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
         sub="メフィテスグリップ",
         range="オウレオール",
         head="アートシクハット",
@@ -104,29 +105,51 @@ function get_sets()
     }
 --精霊
     local element_acc={
-    main="ヴェナバラム",
-    sub="メフィテスグリップ",
-    range="オウレオール",
-    head="アートシクハット",
-    body="アートシクジュバ",
-    hands="ハゴンデスカフス",
-    legs="アートシクロップス",
-    feet="アートシクブーツ",
-    neck="エディネクラス",
-    waist="アスワングサッシュ",
-    left_ear="ライストームピアス",
-    right_ear="サイストームピアス",
-    left_ring="ストレンドゥリング",
-    right_ring="サンゴマリング",
-    back="ブックワームケープ",
-}
+        main= {name="レブレイルグ+2", augments={'DMG:+7','"Mag.Atk.Bns."+24',}},
+        sub="メフィテスグリップ",
+        range="オウレオール",
+        head="アートシクハット",
+        body="アートシクジュバ",
+        hands="ハゴンデスカフス",
+        legs="アートシクロップス",
+        feet="アートシクブーツ",
+        neck="エディネクラス",
+        waist="アスワングサッシュ",
+        left_ear="ライストームピアス",
+        right_ear="サイストームピアス",
+        left_ring="ストレンドゥリング",
+        right_ring="サンゴマリング",
+        back="ブックワームケープ",
+    }
     local element_attk = set_combine(
           element_acc
         , {hands="ＨＡカフス+1",legs="ハゴンデスパンツ",feet="ウンバニブーツ",})
     local element_fullattk = set_combine(
           element_attk
-        , {head="ハゴンデスハット",left_ear="怯懦の耳", right_ear="フリオミシピアス",})
+        , {head="ＨＡハット+1",sub="ズーゾーウグリップ",left_ear="怯懦の耳", right_ear="フリオミシピアス",})
     local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
+--暗黒
+    local dark_acc={
+        main= {name="レブレイルグ+2", augments={'DMG:+7','"Mag.Atk.Bns."+24',}},
+        sub="メフィテスグリップ",
+        range="オウレオール",
+        head="アートシクハット",
+        body="アートシクジュバ",
+        hands="ハゴンデスカフス",
+        legs="アートシクロップス",
+        feet="アートシクブーツ",
+        neck="エディネクラス",
+        waist="アスワングサッシュ",
+        left_ear="ライストームピアス",
+        right_ear="サイストームピアス",
+        left_ring="ストレンドゥリング",
+        right_ring="サンゴマリング",
+        back="ブックワームケープ",
+    }
+    local meltdown = set_combine(dark_acc
+        ,{hands="ＨＡカフス+1",legs="ハゴンデスパンツ",feet="ウンバニブーツ",
+          head="ＨＡハット+1",sub="ズーゾーウグリップ",left_ear="怯懦の耳", right_ear="フリオミシピアス",
+        })
 
 --属性帯
     local obi = {}
@@ -149,7 +172,8 @@ function get_sets()
         sub="ビビドストラップ",
         ammo="インカントストーン",
         head="槌の髪飾り",
-        body="ハゴンデスコート",
+        body="ＨＡコート+1",
+        hands="ＨＡカフス+1",
         legs="ナレストルーズ",
         feet="ヘラルドゲートル",
         left_ear="胡蝶のイヤリング",
@@ -157,8 +181,7 @@ function get_sets()
     local idle_def = set_combine(idle, 
         {
         head="ＨＡハット+1",
-        hands="ＨＡカフス+1",
-        legs="ハゴンデスパンツ",
+        legs="ＨＡパンツ+1",
         feet="アートシクブーツ",
         neck="黄昏の光輪",
         left_ring="守りの指輪",
@@ -183,6 +206,7 @@ function get_sets()
     sets.precast.FC['氷'] = pre_base
     sets.precast.FC['FC_LOW'] = pre_low
     sets.midcast = {}
+    sets.midcast['暗黒魔法'] = dark_acc
     sets.midcast['インパクト'] = impact
     sets.midcast['強化魔法'] = enhance
     sets.midcast['バ系'] = baXX
@@ -190,6 +214,8 @@ function get_sets()
     sets.midcast['神聖魔法'] = divine
     sets.midcast['ケアル'] = cure
     sets.midcast['ヘイスト'] = mid_wind
+    sets.midcast['メルトン'] = meltdown
+    sets.midcast['リジェネ'] = regen
     sets.midcast.element = {}
     sets.midcast.element.mode = '魔命'
     sets.midcast.element['魔命'] = element_acc
@@ -215,6 +241,9 @@ function get_sets()
     sets.equip['IDLE'] = idle
     sets.equip['IDLE_DEF'] = idle_def
     sets.equip.obi = obi
+    
+    send_command('input /macro book 6;wait .2;input /macro set 1')
+
 end
 
 function precast(spell)
@@ -251,12 +280,12 @@ function precast(spell)
         elseif spell.skill=='強化魔法' then
             if spell.name:startswith('バ') then
                 if spell.cast_time > 3 then
-                    equip(sets.precast.FC[spell.element])
+                    equip(sets.precast.FC[spell.element], {waist="ジーゲルサッシュ",})
                 else
                     equip(sets.midcast['強化魔法'])
                 end
             elseif spell.cast_time > 3 then
-                equip(sets.precast.FC[spell.element])
+                equip(sets.precast.FC[spell.element],{waist="ジーゲルサッシュ",})
             else
                 equip(sets.midcast.RECAST[spell.element])
             end
@@ -271,16 +300,20 @@ function precast(spell)
         elseif spell.skill=='精霊魔法' then
             if spell.name == 'インパクト' then
                 equip(sets.precast['インパクト'])
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 8 then
                 equip(sets.precast.FC[spell.element])
+            elseif spell.cast_time > 3 then
+                equip(sets.precast.FC.FC_LOW)
             else
                 equip(set_element(spell.element))
             end
         elseif spell.skill=='弱体魔法' or
                spell.skill=='神聖魔法' or 
                spell.skill=='暗黒魔法' then
-            if spell.cast_time > 3 then
+            if spell.cast_time > 8 then
                 equip(sets.precast.FC[spell.element])
+            elseif spell.cast_time > 3 then
+                equip(sets.precast.FC.FC_LOW)
             else
                 equip(sets.midcast[spell.skill])
             end
@@ -313,22 +346,32 @@ function midcast(spell)
                 sets_equip = sets.midcast[spell.skill]
             end
         elseif spell.skill== '強化魔法' then
-            if spell.name:startswith('バ')
+            if spell.name == 'ストンスキン' then
+                sets_equip = sets.midcast['強化魔法']
+                send_command('@wait 1.2;cancel 37')
+            elseif spell.name:startswith('バ')
                or spell.name:startswith('エン')
-               or spell.name == 'ストンスキン' 
                or spell.name == 'ファランクス' then
                 sets_equip = sets.midcast['強化魔法']
+            elseif spell.name:startswith('リジェネ') then
+                sets_equip = sets.midcast['リジェネ']
             elseif  spell.cast_time > 3 then
                 sets_equip = sets.midcast.RECAST[spell.element]
             end
         elseif spell.skill=='精霊魔法' then
             if spell.name == 'インパクト' then
-                equip(sets.midcast['インパクト'])
+                sets_equip = sets.midcast['インパクト']
             elseif spell.cast_time > 3 then
-                equip(set_element(spell.element))
+                equip(set_element(spell))
             end
         elseif spell.skill=='弱体魔法' then
             if spell.cast_time > 3 then
+                sets_equip = sets.midcast[spell.skill]
+            end
+        elseif spell.skill=='暗黒魔法' then
+            if spell.name == 'メルトン' then
+                sets_equip = sets.midcast['メルトン']
+            elseif spell.cast_time > 3 then
                 sets_equip = sets.midcast[spell.skill]
             end
         else
@@ -351,6 +394,7 @@ function set_element(spell_element)
     if sets.equip.obi.weathers:contains(spell_element) then
         --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
         if world.weather_element == spell_element 
+            or world.day_element == spell_element
             or buffactive[sets.equip.obi.buffs[spell_element]] then
             if sets.equip.obi[spell_element] ~= nil then
                 sets_equip = set_combine(sets_equip, 
