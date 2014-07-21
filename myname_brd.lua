@@ -27,6 +27,12 @@ function get_sets()
         right_ring="サンゴマリング",
         back="スイスケープ",
     }
+    local pre_song_low = set_combine(
+        pre_song_base,
+        {
+            main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
+            body="ＢＲジュスト+1",
+        })
     local pre_magic_base ={
         main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
         sub="ビビドストラップ",
@@ -186,7 +192,7 @@ function get_sets()
         head="ＡＤキャロ+2",
         body="ＡＤオングルリヌ+2",
         hands="ＡＤマンシェト+2",
-        legs="ＡＤラングラヴ+2",
+        legs="ＭＫシャルワ+1",
         feet="ＡＤコテュルヌ+2",
         neck="アエドマティネ",
         waist="アエドベルト",
@@ -201,15 +207,10 @@ function get_sets()
         main="バユバタII",
         sub="ビビドストラップ",
         range="ダウルダヴラ",
-        head="ＡＤキャロ+2",
         body="ＡＤオングルリヌ+2",
-        hands="ＡＤマンシェト+2",
-        legs="ＡＤラングラヴ+2",
-        feet="ＡＤコテュルヌ+2",
+        legs="ＭＫシャルワ+1",
+        feet="ブリオソスリッパー",
         neck="アエドマティネ",
-        waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
         left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
@@ -276,6 +277,11 @@ function get_sets()
     local divine = enfeebling
 --待機装備
     local idle = {
+        head="槌の髪飾り",
+        body="ゲンデサブリオー",
+        legs="ナレストルーズ",
+        feet="ＡＤコテュルヌ+2",
+        left_ear="胡蝶のイヤリング",
     }
     local idle_def = set_combine(idle, 
         {
@@ -284,11 +290,7 @@ function get_sets()
         body="ＢＲジュスト+1",
         hands="ＧＥゲージ+1",
         legs="ＢＩキャニオンズ+1",
-        feet="ＡＤコテュルヌ+2",
         neck="黄昏の光輪",
-        waist="デモンリーサッシュ",
-        left_ear="ライストームピアス",
-        right_ear="サイストームピアス",
         left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
@@ -310,6 +312,7 @@ function get_sets()
     sets.precast.FC.song['水'] = pre_song_base
     sets.precast.FC.song['火'] = pre_song_fire
     sets.precast.FC.song['氷'] = pre_song_base
+    sets.precast.FC.song['low'] = pre_song_low
 
     sets.precast.FC.magic = {}
     sets.precast.FC.magic['光'] = pre_magic_light
@@ -386,7 +389,8 @@ function precast(spell)
             equip(set_song(spell))
             sets.aftercast.skip = true
         elseif spell.target.type == 'MONSTER' then
-            equip(set_song(spell))
+            equip(sets.precast.FC.song['low'])
+            --equip(set_song(spell))
         else
             equip(sets.precast.FC.song[spell.element])
         end
@@ -435,6 +439,8 @@ function midcast(spell)
     elseif spell.type == 'BardSong' or spell.target.type == 'MONSTER' then
         if buffactive['ナイチンゲール'] then
             --何もしない
+        elseif spell.target.type == 'MONSTER' then
+            equip(set_song(spell))
         else
             equip(set_song(spell))
         end
