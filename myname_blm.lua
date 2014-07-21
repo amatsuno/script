@@ -126,7 +126,7 @@ function get_sets()
           element_attk
         , {head={ name="ＨＡハット+1", augments={'Phys. dmg. taken -1%','"Mag.Atk.Bns."+21',}},
             sub="ズーゾーウグリップ",
-            range=empty,ammo="ウィッチストーン",right_ring="ダイアリング",})
+            range=empty,ammo="ウィッチストーン",right_ring="女王の指輪",})
 
     local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 
@@ -161,7 +161,7 @@ function get_sets()
         hands="ＨＡカフス+1",
         body="ＨＡコート+1",
         legs="ＨＡパンツ+1",
-        feet="アートシクブーツ",
+        feet="ＨＡサボ+1",
         neck="黄昏の光輪",
         left_ring="守りの指輪",
         right_ring="ダークリング",
@@ -379,11 +379,21 @@ function self_command(command)
     local args = windower.from_shift_jis(command):split(' ')
     if #args >= 1 then
         if args[1] == 'lock' then
-            windower.add_to_chat(123,'lock')
-            disable('main','sub','ammo','range')
+            if #args >= 2 then
+                windower.add_to_chat(123,'lock '..args[2])
+                disable(args[2])
+            else
+                windower.add_to_chat(123,'lock')
+                disable('main','sub','ammo','range')
+            end
         elseif args[1] == 'unlock' then
-            windower.add_to_chat(123,'unlock')
-            enable('main','sub','ammo','range')
+            if #args >= 2 then
+                windower.add_to_chat(123,'unlock '..args[2])
+                enable(args[2])
+            else
+                windower.add_to_chat(123,'unlock')
+                enable('main','sub','ammo','range')
+            end
         elseif args[1] == 'togglemain' then
             if type(sets.midcast.element['古代'].main) == 'string' and 
                 sets.midcast.element['古代'].main == "ヴェナバラム" then
