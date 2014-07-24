@@ -64,6 +64,7 @@ function get_sets()
 --ナイトル
     local night_trou = {
         body="ＢＤジュストコル+2",
+        legs="ＢＩキャニオンズ+1",
         feet="ＢＩスリッパー+1",
     }
 --ピーアン
@@ -381,7 +382,8 @@ function precast(spell)
     if ignore_spells:contains(spell.name) then return end
     if spell.type == 'JobAbility' then
         if spell.name == 'ナイチンゲール'
-            or spell.name == 'トルバドゥール' then
+            or spell.name == 'トルバドゥール' 
+            or spell.name == 'ソウルボイス' then
             equip(sets.precast.JA['ナイトル'])
         end
     elseif spell.type == 'BardSong' then
