@@ -63,7 +63,7 @@ function get_sets()
         sub="ビビドストラップ",
         head="ナティラハット",
         body="ヴァニアコタルディ",
-        hands="ハゴンデスカフス",
+        hands="ＨＡカフス+1",
         legs="アートシクロップス",
         feet="アートシクブーツ",
         neck="エーシルトルク",
@@ -90,7 +90,7 @@ function get_sets()
         range="オウレオール",
         head="アートシクハット",
         body="ハゴンデスコート",
-        hands="ハゴンデスカフス",
+        hands="ＨＡカフス+1",
         legs="アートシクロップス",
         feet="アートシクブーツ",
         neck="ワイケトルク",
@@ -108,7 +108,7 @@ function get_sets()
     range="オウレオール",
     head="ＡＲペタソス+1",
     body="ＳＰコート+1",
-    hands="ハゴンデスカフス",
+    hands="ＨＡカフス+1",
     legs="ハゴンデスパンツ",
     feet="ＡＲサボ+1",
     neck="エディネクラス",
@@ -121,7 +121,7 @@ function get_sets()
     }
     local element_attk = set_combine(
           element_acc
-        , {hands="ＨＡカフス+1",waist="アスワングサッシュ",feet="ウンバニブーツ",})
+        , {hands="ハゴンデスカフス",waist="アスワングサッシュ",feet="ウンバニブーツ",})
     local element_fullattk = set_combine(
           element_attk
         , {head={ name="ＨＡハット+1", augments={'Phys. dmg. taken -1%','"Mag.Atk.Bns."+21',}},

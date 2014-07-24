@@ -89,7 +89,7 @@ function get_sets()
         range="オウレオール",
         head="アートシクハット",
         body="ハゴンデスコート",
-        hands="ハゴンデスカフス",
+        hands="ＨＡカフス+1",
         legs="アートシクロップス",
         feet="アートシクブーツ",
         neck="ワイケトルク",
@@ -110,7 +110,7 @@ function get_sets()
         range="オウレオール",
         head="アートシクハット",
         body="アートシクジュバ",
-        hands="ハゴンデスカフス",
+        hands="ＨＡカフス+1",
         legs="アートシクロップス",
         feet="アートシクブーツ",
         neck="エディネクラス",
@@ -123,7 +123,7 @@ function get_sets()
     }
     local element_attk = set_combine(
           element_acc
-        , {hands="ＨＡカフス+1",legs="ハゴンデスパンツ",feet="ウンバニブーツ",})
+        , {hands="ハゴンデスカフス",legs="ハゴンデスパンツ",feet="ウンバニブーツ",})
     local element_fullattk = set_combine(
           element_attk
         , {head="ＨＡハット+1",sub="ズーゾーウグリップ",left_ear="怯懦の耳", right_ear="フリオミシピアス",})
@@ -135,7 +135,7 @@ function get_sets()
         range="オウレオール",
         head="アートシクハット",
         body="アートシクジュバ",
-        hands="ハゴンデスカフス",
+        hands="ＨＡカフス+1",
         legs="アートシクロップス",
         feet="アートシクブーツ",
         neck="エディネクラス",
@@ -147,7 +147,7 @@ function get_sets()
         back="ブックワームケープ",
     }
     local meltdown = set_combine(dark_acc
-        ,{hands="ＨＡカフス+1",legs="ハゴンデスパンツ",feet="ウンバニブーツ",
+        ,{hands="ハゴンデスカフス",legs="ハゴンデスパンツ",feet="ウンバニブーツ",
           head="ＨＡハット+1",sub="ズーゾーウグリップ",left_ear="怯懦の耳", right_ear="フリオミシピアス",
         })
 
