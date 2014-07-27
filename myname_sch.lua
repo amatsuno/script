@@ -78,7 +78,7 @@ function get_sets()
 --CURE
     local cure ={
         main="アーカIV",
-        head="ゲンデサカウビーン",
+        head="ＧＥカウビーン+1",
         body="ゲンデサブリオー",
         hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
     }
@@ -358,6 +358,9 @@ function midcast(spell)
             elseif  spell.cast_time > 3 then
                 sets_equip = sets.midcast.RECAST[spell.element]
             end
+            if buffactive['令狸執鼠の章'] then
+                sets_equip = set_combine(sets_equip, {hands="ＳＶブレーサー+2",})
+            endif
         elseif spell.skill=='精霊魔法' then
             if spell.name == 'インパクト' then
                 sets_equip = sets.midcast['インパクト']
