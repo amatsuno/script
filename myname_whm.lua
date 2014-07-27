@@ -69,7 +69,7 @@ function get_sets()
         main="タマシチ",
         sub="玄武盾",
         ammo="インカントストーン",
-        head="ゲンデサカウビーン",
+        head="ＧＥカウビーン+1",
         body="ＯＲブリオー+2",
         hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
         legs="シファヒジパンツ",
@@ -79,7 +79,7 @@ function get_sets()
         left_ear="ラウンデルピアス",
         right_ear="ノーヴィアピアス",
         left_ring="プロリクスリング",
-        right_ring="サンゴマリング",
+        right_ring="クチェクラリング",
         back="パートリケープ",
     }
     if player.sub_job == '赤' then
@@ -87,8 +87,6 @@ function get_sets()
     end
     local midcure = set_combine(cure,
         {
-            right_ear="ノーヴィアピアス",
-            left_ring="クチェクラリング",
             back="メンディングケープ",
         })
     
@@ -152,7 +150,7 @@ function get_sets()
         {
         main="タマシチ",
         sub="玄武盾",
-        head="ゲンデサカウビーン",legs="アートシクロップス",
+        head="ＧＥカウビーン+1",legs="アートシクロップス",
         legs="シファヒジパンツ",
         neck="黄昏の光輪",
         left_ring="守りの指輪",

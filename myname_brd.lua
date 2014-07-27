@@ -3,6 +3,7 @@ function get_sets()
     ignore_spells = T{
         'ディア','ディアII','ディアガ'
     }
+    --timersで監視する歌を列挙
     watchtime_songs = T{
          '猛者のメヌエットV','猛者のメヌエットIV','猛者のメヌエットIII','猛者のメヌエットII','猛者のメヌエット'
         ,'栄光の凱旋マーチ','無敵の進撃マーチ','弓師のプレリュード','狩人のプレリュード'
@@ -225,7 +226,7 @@ function get_sets()
         main="アーカIV",
         sub="ビビドストラップ",
         range="ダウルダヴラ",
-        head="ゲンデサカウビーン",
+        head="ＧＥカウビーン+1",
         body="ゲンデサブリオー",
         hands="ゲンデサゲージ",
         legs="ゲンデサスパッツ",
@@ -511,12 +512,13 @@ function set_element(spell)
 end
 
 function aftercast(spell)
+    --監視対象の歌の監視状態を更新
     if spell.type == 'BardSong' and not spell.interrupted then
         if watchtime_songs:contains(spell.name) then
             update_timer(spell)
         end
     end
-
+    --詠唱完了後着替えが指定されてたら着替えを実行（ただしナイトル時は着替えない）
     if sets.aftercast.idle ~= nil and sets.aftercast.skip == false then
       equip(sets.aftercast.idle)
     end
@@ -645,7 +647,14 @@ end
 
 function status_change(new,old)
 end
-
+--/console gs c equip XXXX
+--sets.equip.XXXの装備に着替える
+--/console gs c idle none
+--詠唱完了後の着替えを中止する
+--/console gs c idle idle
+--詠唱完了後にリフレ装備に着替える
+--/console gs c idle idle_def
+--詠唱完了後に被ダメカット装備に着替える
 function self_command(command)
     local args = windower.from_shift_jis(command):split(' ')
     if #args >= 1 then
