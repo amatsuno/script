@@ -257,7 +257,7 @@ function precast(spell)
             elseif spell.cast_time > 3 then
                 equip(sets.precast.FC[spell.element])
             else
-                equip(sets.midcast.RECAST[spell.element])
+                equip(sets.midcast['強化魔法'])
             end
         elseif spell.name == 'スタン' then
             if buffactive['疾風迅雷の章'] then
@@ -310,13 +310,18 @@ function midcast(spell)
                 sets_equip = sets.midcast[spell.skill]
             end
         elseif spell.skill== '強化魔法' then
-            if spell.name:startswith('バ')
+            if spell.name == 'ストンスキン' then
+                sets_equip = sets.midcast['強化魔法']
+                send_command('@wait 1.2;cancel 37')
+            elseif spell.name:startswith('バ')
                or spell.name:startswith('エン')
-               or spell.name == 'ストンスキン' 
                or spell.name == 'ファランクス' then
                 sets_equip = sets.midcast['強化魔法']
             elseif  spell.cast_time > 3 then
                 sets_equip = sets.midcast.RECAST[spell.element]
+            end
+            if buffactive['令狸執鼠の章'] then
+                sets_equip = set_combine(sets_equip, {hands="ＳＶブレーサー+2",})
             end
         elseif spell.skill=='精霊魔法' then
             if spell.cast_time > 3 then
