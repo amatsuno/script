@@ -46,7 +46,7 @@ function get_sets()
     local evation = set_combine(base,
         {
             body="マニボゾジャーキン",
-            neck="レーロトルク",
+            neck="トレーロトルク",
             waist="カシリベルト",
             left_ring="ダークリング",
             right_ring="ダークリング",
