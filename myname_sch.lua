@@ -360,7 +360,7 @@ function midcast(spell)
             end
             if buffactive['令狸執鼠の章'] then
                 sets_equip = set_combine(sets_equip, {hands="ＳＶブレーサー+2",})
-            endif
+            end
         elseif spell.skill=='精霊魔法' then
             if spell.name == 'インパクト' then
                 sets_equip = sets.midcast['インパクト']
@@ -412,6 +412,7 @@ function aftercast(spell)
     if sets.aftercast.idle ~= nil then
         equip(sets.aftercast.idle)
     end
+    --windower.add_to_chat(123,'after cast name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
 end
 
 function status_change(new,old)
