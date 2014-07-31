@@ -152,6 +152,7 @@ function get_sets()
         sub="玄武盾",
         head="ＧＥカウビーン+1",legs="アートシクロップス",
         legs="シファヒジパンツ",
+        feet="アートシクブーツ",
         neck="黄昏の光輪",
         left_ring="守りの指輪",
         right_ring="ダークリング",
