@@ -105,7 +105,7 @@ function get_sets()
     }
 --精霊
     local element_acc={
-        main= {name="レブレイルグ+2", augments={'DMG:+7','"Mag.Atk.Bns."+24',}},
+        main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
         sub="メフィテスグリップ",
         range="オウレオール",
         head="アートシクハット",
@@ -114,7 +114,7 @@ function get_sets()
         legs="アートシクロップス",
         feet="アートシクブーツ",
         neck="エディネクラス",
-        waist="アスワングサッシュ",
+        waist="オティラサッシュ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
         left_ring="ストレンドゥリング",
@@ -130,7 +130,7 @@ function get_sets()
     local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 --暗黒
     local dark_acc={
-        main= {name="レブレイルグ+2", augments={'DMG:+7','"Mag.Atk.Bns."+24',}},
+        main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
         sub="メフィテスグリップ",
         range="オウレオール",
         head="アートシクハット",
@@ -139,7 +139,7 @@ function get_sets()
         legs="アートシクロップス",
         feet="アートシクブーツ",
         neck="エディネクラス",
-        waist="アスワングサッシュ",
+        waist="ニヌルタサッシュ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
         left_ring="ストレンドゥリング",
