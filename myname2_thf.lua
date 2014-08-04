@@ -14,6 +14,7 @@ function get_sets()
     recover_spells['スロウ'] = 'イレース'
     recover_spells['ヘヴィ'] = 'イレース'
     recover_spells['ドラウン'] = 'イレース'
+    recover_spells['イレース回復'] = 'イレース'
     buff_spells = {
         ['ヘイスト'] = 'ヘイスト',
         ['リジェネ'] = 'リジェネV'
@@ -37,12 +38,10 @@ function get_sets()
         {
             neck='アスパーネックレス',
         })
-    local treasure = set_combine(base,
-        {
+    local treasure = {
             hands="プランダアムレット",
             feet="ＲＤプーレーヌ+2",
-            
-        })
+        }
     local evation = set_combine(base,
         {
             body="マニボゾジャーキン",
@@ -80,12 +79,13 @@ function get_sets()
     sets.idle = {}
     sets.idle.idle = idle
     sets.engaged = {}
+    sets.engaged.treasure = false
     sets.engaged.fight = normal
     sets.engaged.normal = normal
-    sets.engaged.treasure = treasure
     sets.engaged.evation = evation
     sets.engaged.def = def
-
+    sets.equip = {}
+    sets.equip.treasure = treasure;
     send_command('input /macro book 3;wait .2;input /macro set 1')
     
 end
@@ -105,7 +105,7 @@ end
 function aftercast(spell)
     local equips = nil
     if player.status=='Engaged' then
-        equip(sets.engaged.fight)
+        equip(set_fight())
     else
         equip(sets.idle.idle)
     end
@@ -127,7 +127,7 @@ function status_change(new,old)
                 )
             gain()
         end
-        equip(sets.engaged.fight)
+        equip(set_fight())
     end
 end
 function buff_change(buff, gain)
@@ -147,6 +147,14 @@ function buff_change(buff, gain)
         
     end
 end
+function set_fight()
+    if sets.equip.treasure then
+        return set_combine(sets.engaged.fight, sets.equip.treasure)
+    else
+        return sets.engaged.fight
+    end
+end
+
 function execbuff(buff)
     if use_sub.pc == nil or buff == nil then return end
     
@@ -174,10 +182,13 @@ function getDebuff()
         return '暗闇'
     elseif buffactive['バインド'] then
         return 'バインド'
-    elseif buffactive['毒'] then
-        return '毒'
     elseif buffactive['ヘヴィ'] then
         return 'ヘヴィ'
+    elseif buffactive['防御力ダウン'] 
+        or buffactive['魔法防御力ダウン'] then
+        return 'イレース回復'
+    elseif buffactive['毒'] then
+        return '毒'
     elseif buffactive['ドラウン'] or buffactive['バーン'] or buffactive['チョーク'] 
         or buffactive['ラスプ'] or buffactive['ショック'] or buffactive['フロスト'] then
         return 'ドラウン'
@@ -233,9 +244,6 @@ end
 function self_command(command)
     if command == 'toggle TP set' then
         if sets.engaged.fight == sets.engaged.normal then
-            windower.add_to_chat(0xCE, 'トレハン')
-            sets.engaged.fight = sets.engaged.treasure
-        elseif sets.engaged.fight == sets.engaged.treasure then
             windower.add_to_chat(0xCE, '回避')
             sets.engaged.fight = sets.engaged.evation
         elseif sets.engaged.fight == sets.engaged.evation then
@@ -246,20 +254,24 @@ function self_command(command)
             sets.engaged.fight = sets.engaged.normal
         end
         if sets.engaged.fight ~= nil then
-            equip(sets.engaged.fight)
+            equip(set_fight())
         end
     elseif command == 'evation' then
         windower.add_to_chat(0xCE, '回避')
         sets.engaged.fight = sets.engaged.evation
-        equip(sets.engaged.fight)
+        equip(set_fight())
     elseif command == 'fight' then
         windower.add_to_chat(0xCE, '通常')
         sets.engaged.fight = sets.engaged.normal
-        equip(sets.engaged.fight)
+        equip(set_fight())
     elseif command == 'treasure' then
-        windower.add_to_chat(0xCE, 'トレハン')
-        sets.engaged.fight = sets.engaged.treasure
-        equip(sets.engaged.fight)
+        if sets.engaged.treasure then
+            windower.add_to_chat(0xCE, 'トレハンOFF')
+            sets.engaged.treasure = false
+        else
+            windower.add_to_chat(0xCE, 'トレハンON')
+            sets.engaged.treasure = true
+        end
     elseif command:startswith('use sub') then
         local args = windower.from_shift_jis(command):split(' ')
         if use_sub.pc ~= nil then
