@@ -9,7 +9,7 @@ function get_sets()
     }
 --FC_BASE
     local pre_base ={
-        main= {name="レブレイルグ+2", augments={'DMG:+7','"Mag.Atk.Bns."+24',}},
+        main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
         sub="ビビドストラップ",
         head="ナティラハット",
         body="アンフルローブ",
@@ -59,7 +59,7 @@ function get_sets()
     
 --stun
     local stun = {
-        main= {name="レブレイルグ+2", augments={'DMG:+7','"Mag.Atk.Bns."+24',}},
+        main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
         sub="ビビドストラップ",
         head="ナティラハット",
         body="ヴァニアコタルディ",
@@ -103,7 +103,7 @@ function get_sets()
     }
 --精霊
     local element_acc={
-    main= {name="レブレイルグ+2", augments={'DMG:+7','"Mag.Atk.Bns."+24',}},
+    main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
     sub="メフィテスグリップ",
     range="オウレオール",
     head="ＡＲペタソス+1",
@@ -121,11 +121,11 @@ function get_sets()
     }
     local element_attk = set_combine(
           element_acc
-        , {hands="ハゴンデスカフス",waist="アスワングサッシュ",feet="ウンバニブーツ",})
+        , {hands="ハゴンデスカフス",feet="ウンバニブーツ",})
     local element_fullattk = set_combine(
           element_attk
         , {head={ name="ＨＡハット+1", augments={'Phys. dmg. taken -1%','"Mag.Atk.Bns."+21',}},
-            sub="ズーゾーウグリップ",
+            sub="ズーゾーウグリップ",waist="オティラサッシュ",
             range=empty,ammo="ウィッチストーン",right_ring="女王の指輪",})
 
     local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
@@ -224,7 +224,7 @@ function get_sets()
     sets.equip.obi = obi
     
     --enable('main','sub','ammo')
-    rev_attk = { name="レブレイルグ+2", augments={'DMG:+7','"Mag.Atk.Bns."+24',}}
+    rev_attk = { name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}}
 
     send_command('input /macro book 4;wait .2;input /macro set 10')
 end
