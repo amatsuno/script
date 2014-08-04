@@ -63,7 +63,8 @@ function get_sets()
         back="慈悲の羽衣",
     }
     local baXX = set_combine(enhance, {body="ＯＲブリオー+2"})
-    local protectshell = set_combine(mid_light, {legs="パエティパンタロン", feet='パエティダックビル',})
+    local protectshell = set_combine(mid_light, 
+        {legs="パエティパンタロン", feet='パエティダックビル',right_ring="シェルターリング"})
 --CURE
     local cure ={
         main="タマシチ",
@@ -130,8 +131,8 @@ function get_sets()
     }
     --待機時の装備（リフレ装備とかカット装備とか)
     local idle = {
-        main="アーススタッフ",
-        sub="メフィテスグリップ",
+        main="タマシチ",
+        sub="玄武盾",
         range="オウレオール",
         head="槌の髪飾り",
         body="ゲンデサブリオー",
@@ -148,8 +149,6 @@ function get_sets()
     }
     local idle_def = set_combine(idle, 
         {
-        main="タマシチ",
-        sub="玄武盾",
         head="ＧＥカウビーン+1",legs="アートシクロップス",
         legs="シファヒジパンツ",
         feet="アートシクブーツ",
