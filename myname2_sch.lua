@@ -372,7 +372,15 @@ end
 
 function self_command(command)
     local args = windower.from_shift_jis(command):split(' ')
-    if #args >= 2 then
+    if #args == 1 then    
+        if args[1] == 'lock' then
+            windower.add_to_chat(123,'lock')
+            disable('main','sub','ammo','range')
+        elseif args[1] == 'unlock' then
+            windower.add_to_chat(123,'unlock')
+            enable('main','sub','ammo','range')
+        end
+    elseif #args >= 2 then
         if args[1] == 'equip' then
             if sets.equip[args[2]] ~= nil then
                 equip(sets.equip[args[2]])
