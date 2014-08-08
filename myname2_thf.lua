@@ -37,6 +37,7 @@ function get_sets()
     local normal = set_combine(base,
         {
             neck='アスパーネックレス',
+           body="カークソハーネス",
         })
     local treasure = {
             hands="プランダアムレット",
@@ -45,7 +46,7 @@ function get_sets()
     local evation = set_combine(base,
         {
             body="マニボゾジャーキン",
-            neck="トレーロトルク",
+            body="カークソハーネス",
             waist="カシリベルト",
             left_ring="ダークリング",
             right_ring="ダークリング",
@@ -60,7 +61,9 @@ function get_sets()
     local we_exenterator = set_combine(base,
         {
             neck="ブリーズゴルゲット",
-            body="マニボゾジャーキン",
+           body="カークソハーネス",
+            feet="マニボゾブーツ",
+            left_ring="突風の指輪",
             waist="ブリーズベルト",
         })
 --
