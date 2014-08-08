@@ -79,7 +79,7 @@ function get_sets()
     local cure ={
         main="アーカIV",
         head="ＧＥカウビーン+1",
-        body="ゲンデサブリオー",
+        body="ＧＥブリオー+1",
         hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
     }
 --弱体

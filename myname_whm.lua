@@ -135,7 +135,7 @@ function get_sets()
         sub="玄武盾",
         range="オウレオール",
         head="槌の髪飾り",
-        body="ゲンデサブリオー",
+        body="ＧＥブリオー+1",
         hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
         legs="ナレストルーズ",
         feet="ヘラルドゲートル",

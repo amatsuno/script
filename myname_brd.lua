@@ -227,7 +227,7 @@ function get_sets()
         sub="ビビドストラップ",
         range="ダウルダヴラ",
         head="ＧＥカウビーン+1",
-        body="ゲンデサブリオー",
+        body="ＧＥブリオー+1",
         hands="ゲンデサゲージ",
         legs="ゲンデサスパッツ",
         feet="アートシクブーツ",
@@ -280,7 +280,7 @@ function get_sets()
 --待機装備
     local idle = {
         head="槌の髪飾り",
-        body="ゲンデサブリオー",
+        body="ＧＥブリオー+1",
         legs="ナレストルーズ",
         feet="ＡＤコテュルヌ+2",
         left_ear="胡蝶のイヤリング",
