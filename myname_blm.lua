@@ -59,7 +59,7 @@ function get_sets()
     
 --stun
     local stun = {
-        main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
+        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
         sub="ビビドストラップ",
         head="ナティラハット",
         body="ヴァニアコタルディ",
@@ -427,10 +427,13 @@ function self_command(command)
         elseif args[1] == 'elementmode' then
             if args[2] == 'ACC' then
                 sets.midcast.element.mode = 'ACC'
+                sets.midcast['神聖魔法'] = enfeebling
             elseif args[2] == 'ATTK' then
                 sets.midcast.element.mode = 'ATTK'
+                sets.midcast['神聖魔法'] = sets.midcast.element['ATTK']
             elseif args[2] == 'FULL' then
                 sets.midcast.element.mode = 'FULL'
+                sets.midcast['神聖魔法'] = sets.midcast.element['FULL']
             elseif args[2] == 'VW' then
                 sets.midcast.element.mode = 'VW'
             end
