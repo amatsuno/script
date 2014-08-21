@@ -83,6 +83,10 @@ function get_sets()
         right_ring="クチェクラリング",
         back="パートリケープ",
     }
+    local cure2 = set_combine(cure,
+        {
+            body="ＧＥブリオー+1",
+        })
     if player.sub_job == '赤' then
         cure = set_combine(cure, {left_ear="胡蝶のイヤリング",feet='パエティダックビル'})
     end
@@ -149,9 +153,9 @@ function get_sets()
     }
     local idle_def = set_combine(idle, 
         {
-        head="ＧＥカウビーン+1",legs="アートシクロップス",
+        head="ＧＥカウビーン+1",
         legs="シファヒジパンツ",
-        feet="アートシクブーツ",
+        feet="ＧＥガロッシュ+1",
         neck="黄昏の光輪",
         left_ring="守りの指輪",
         right_ring="ダークリング",
@@ -220,7 +224,11 @@ function precast(spell)
         if spell.skill == '回復魔法' then
             if string.find(spell.name, 'ケアル') then
                 --windower.add_to_chat(123,'debug: cast cure.')
-                equip(sets.precast['ケアル'])
+                if buffactive['ハートオブミゼリ'] then
+                    equip(sets.precast['ケアル'],{body="ＧＥブリオー+1",})
+                else
+                    equip(sets.precast['ケアル'])
+                end
             elseif spell.name:find('レイズ') then
                 equip(sets.precast.FC[spell.element])
             elseif spell.cast_time > 3 then
@@ -266,7 +274,11 @@ function midcast(spell)
             equip(sets.midcast['ヘイスト'])
         elseif spell.skill=='回復魔法' then
             if string.find(spell.name, 'ケアル') then
-                equip(sets.midcast['ケアル'])
+                if buffactive['ハートオブミゼリ'] then
+                    equip(sets.midcast['ケアル'],{body="ＧＥブリオー+1",})
+                else
+                    equip(sets.midcast['ケアル'])
+                end
             elseif spell.name:find('レイズ') then
                 equip(sets.midcast.RECAST[spell.element])
             elseif spell.cast_time > 3 then
