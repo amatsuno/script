@@ -87,13 +87,13 @@ function get_sets()
 --マーチ
     local march = {
         main="レガートダガー",
-        range="ランゲレイク",
+        range="ギャッラルホルン",
         head="ＡＤキャロ+2",
         body="ＡＤオングルリヌ+2",
         hands="ＡＤマンシェト+2",
         legs="ＡＤラングラヴ+2",
         feet="ブリオソスリッパー",
-        neck="ウィンドトルク",
+        neck="アエドマティネ",
         waist="アエドベルト",
         left_ear="ロケイシャスピアス",
         right_ear="アエドピアス",
@@ -104,13 +104,13 @@ function get_sets()
 --メヌ
     local  minuet = {
         main="レガートダガー",
-        range="アポロフルート",
+        range="ギャッラルホルン",
         head="ＡＤキャロ+2",
         body="ＡＤオングルリヌ+2",
         hands="ＡＤマンシェト+2",
         legs="ＡＤラングラヴ+2",
         feet="ブリオソスリッパー",
-        neck="ウィンドトルク",
+        neck="アエドマティネ",
         waist="アエドベルト",
         left_ear="ロケイシャスピアス",
         right_ear="アエドピアス",
@@ -121,13 +121,13 @@ function get_sets()
 --マド
     local Madrigal = {
         main="レガートダガー",
-        range="カンタバンクホルン",
+        range="ギャッラルホルン",
         head="ＡＤキャロ+2",
         body="ＡＤオングルリヌ+2",
         hands="ＡＤマンシェト+2",
         legs="ＡＤラングラヴ+2",
         feet="ブリオソスリッパー",
-        neck="ウィンドトルク",
+        neck="アエドマティネ",
         waist="アエドベルト",
         left_ear="ロケイシャスピアス",
         right_ear="アエドピアス",
@@ -138,11 +138,11 @@ function get_sets()
 --プレ
     local Prelude = {
         main="レガートダガー",
-        range="カンタバンクホルン",
+        range="ギャッラルホルン",
         head="ＡＤキャロ+2",
         body="ＡＤオングルリヌ+2",
         hands="ＡＤマンシェト+2",
-        legs="ＡＤラングラヴ+2",
+        legs="ＭＫシャルワ+1",
         feet="ブリオソスリッパー",
         neck="アエドマティネ",
         waist="アエドベルト",
@@ -155,7 +155,7 @@ function get_sets()
 --バラ
     local Ballad = {
         main="レガートダガー",
-        range="エミネンフルート",
+        range="ギャッラルホルン",
         head="ＡＤキャロ+2",
         body="ＡＤオングルリヌ+2",
         hands="ＡＤマンシェト+2",
@@ -169,28 +169,12 @@ function get_sets()
         right_ring="ダークリング",
         back="チェビオットケープ",
     }
-    local Ballad1 = {
-        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
-        sub="ビビドストラップ",
-        range="ダウルダヴラ",
-        head="ＡＤキャロ+2",
-        body="ＡＤオングルリヌ+2",
-        hands="ＡＤマンシェト+2",
-        legs="ＡＤラングラヴ+2",
-        feet="ブリオソスリッパー",
-        neck="アエドマティネ",
-        waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
-        left_ring="守りの指輪",
-        right_ring="ダークリング",
-        back="チェビオットケープ",
-    }
+    local Ballad1 = Ballad
+    
 --スケルツォ
     local Scherzo = {
-        main="ビシュラバII",
-        sub="ビビドストラップ",
-        range="ダウルダヴラ",
+        main="レガートダガー",
+        range="ギャッラルホルン",
         head="ＡＤキャロ+2",
         body="ＡＤオングルリヌ+2",
         hands="ＡＤマンシェト+2",
@@ -230,7 +214,7 @@ function get_sets()
         body="ＧＥブリオー+1",
         hands="ゲンデサゲージ",
         legs="ゲンデサスパッツ",
-        feet="アートシクブーツ",
+        feet="ＧＥガロッシュ+1",
         neck="黄昏の光輪",
         waist="アエドベルト",
         left_ear="アエドピアス",
@@ -280,6 +264,7 @@ function get_sets()
 --待機装備
     local idle = {
         head="槌の髪飾り",
+        range="ギャッラルホルン",
         body="ＧＥブリオー+1",
         legs="ナレストルーズ",
         feet="ＡＤコテュルヌ+2",
@@ -538,10 +523,11 @@ function update_timer(spell)
 	
 	local dur = calculate_duration(spell)
 	windower.add_to_chat(0xCE, "効果時間 "..spell.name..' '..dur)
-	if timer_reg[spell.english] then
-		send_command('timers delete "'..spell.english..'"')
-		timer_reg[spell.english] = t + dur
-		send_command('timers create "'..spell.english..'" '..dur..' down')
+	if timer_reg[spell.name] then
+	    --カスタムタイマーを操作するときはSJISに変換すると文字化けする！！
+		send_command('timers delete "'..spell.name..'"')
+		timer_reg[spell.name] = t + dur
+		send_command('timers create "'..spell.name..'" '..dur..' down')
 	else
 		local maxsongs = 2
 		if player.equipment.range == 'ダウルダヴラ' then
@@ -556,8 +542,8 @@ function update_timer(spell)
 		windower.add_to_chat( 8, 'range '..player.equipment.range..' song '..maxsongs )
 		
 		if table.length(timer_reg) < maxsongs then
-			timer_reg[spell.english] = t+dur
-			send_command('timers create "'..spell.english..'" '..dur..' down')
+			timer_reg[spell.name] = t+dur
+			send_command('timers create "'..spell.name..'" '..dur..' down')
 		else
 			local rep,repsong
 			for i,v in pairs(timer_reg) do
@@ -571,8 +557,8 @@ function update_timer(spell)
 			if repsong then
 				timer_reg[repsong] = nil
 				--send_command('timers delete "'..repsong..'"')
-				timer_reg[spell.english] = t+dur
-				send_command('timers create "'..spell.english..'" '..dur..' down')
+				timer_reg[spell.name] = t+dur
+				send_command('timers create "'..spell.name..'" '..dur..' down')
 			end
 		end
 	end
@@ -660,10 +646,10 @@ function self_command(command)
     if #args >= 1 then
         if args[1] == 'lock' then
             windower.add_to_chat(123,'lock')
-            disable('main','sub','ammo')
+            disable('main','sub','range','ammo')
         elseif args[1] == 'unlock' then
             windower.add_to_chat(123,'unlock')
-            enable('main','sub','ammo')
+            enable('main','sub','range','ammo')
         end
     end
     if #args >= 2 then
