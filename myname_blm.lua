@@ -493,6 +493,19 @@ function myGetProperties(t)
         debug_mode_chat(' type is '..type(val))
     end
 end
+function buff_change(buff, gain)
+    if buff == 'レイヴシンボル' then
+        if gain then
+            windower.add_to_chat(123,'オートリレズON')
+            equip({neck='レフジネックレス+1',})
+            disable('neck')
+        else
+            windower.add_to_chat(8,'オートリレズOFF')
+            enable('neck')
+        end
+    end
+end
+
 -----------------------------------------------------------------------------------
 --Name: debug_mode_chat(message)
 --Desc: Checks _settings.debug_mode and outputs the message if necessary
