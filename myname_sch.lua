@@ -374,6 +374,8 @@ function midcast(spell)
         elseif spell.skill=='暗黒魔法' then
             if spell.name == 'メルトン' then
                 sets_equip = sets.midcast['メルトン']
+            elseif spell.name == '虚誘掩殺の策' then
+                sets_equip = sets.midcast.RECAST[spell.element]
             elseif spell.cast_time > 3 then
                 sets_equip = sets.midcast[spell.skill]
             end
