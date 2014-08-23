@@ -190,6 +190,8 @@ function getDebuff()
     elseif buffactive['防御力ダウン'] 
         or buffactive['魔法防御力ダウン'] then
         return 'イレース回復'
+    elseif buffactive['バイオ'] then
+        return 'イレース回復'
     elseif buffactive['毒'] then
         return '毒'
     elseif buffactive['ドラウン'] or buffactive['バーン'] or buffactive['チョーク'] 
