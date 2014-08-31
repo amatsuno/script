@@ -5,7 +5,7 @@ function get_sets()
     }
 --pre_BASE
     local pre_base ={
-        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
+            main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="ビビドストラップ",
         ammo="インカントストーン",
         head="ナティラハット",
@@ -22,7 +22,7 @@ function get_sets()
         back="スイスケープ",
     }
     local pre_low = {
-        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
+            main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="メフィテスグリップ",
         ammo="インカントストーン",
         head="ナティラハット",
@@ -97,7 +97,7 @@ function get_sets()
     
 --弱体
     local enfeebling = {
-        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
+            main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="メフィテスグリップ",
         range="オウレオール",
         head="アートシクハット",
@@ -106,7 +106,7 @@ function get_sets()
         legs="アートシクロップス",
         feet="アートシクブーツ",
         neck="ワイケトルク",
-        waist="デモンリーサッシュ",
+        waist="オヴェイトロープ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
         left_ring="バルラーンリング",
@@ -117,7 +117,7 @@ function get_sets()
     local divine = enfeebling
 --STUN
     local stun = {
-        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
+            main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="ビビドストラップ",
         ammo="インカントストーン",
         head="ナティラハット",
@@ -144,7 +144,7 @@ function get_sets()
         legs="ナレストルーズ",
         feet="ヘラルドゲートル",
         neck="ワイケトルク",
-        waist="デモンリーサッシュ",
+        waist="オヴェイトロープ",
         left_ear="ロケイシャスピアス",
         right_ear="胡蝶のイヤリング",
         left_ring="バルラーンリング",

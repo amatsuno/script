@@ -56,7 +56,7 @@ function get_sets()
     local regen = enhance
 --stun
     local stun = {
-        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
+            main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="ビビドストラップ",
         ammo="インカントストーン",
         head="ＰＤボード+1",
@@ -84,7 +84,7 @@ function get_sets()
     }
 --弱体
     local enfeebling = {
-        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
+            main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="メフィテスグリップ",
         range="オウレオール",
         head="アートシクハット",
@@ -93,7 +93,7 @@ function get_sets()
         legs="アートシクロップス",
         feet="アートシクブーツ",
         neck="ワイケトルク",
-        waist="デモンリーサッシュ",
+        waist="オヴェイトロープ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
         left_ring="バルラーンリング",
@@ -126,7 +126,8 @@ function get_sets()
         , {hands="ハゴンデスカフス",legs="ハゴンデスパンツ",feet="ウンバニブーツ",})
     local element_fullattk = set_combine(
           element_attk
-        , {head="ＨＡハット+1",sub="ズーゾーウグリップ",left_ear="怯懦の耳", right_ear="フリオミシピアス",})
+        , {head="ＨＡハット+1",sub="ズーゾーウグリップ",neck="水影の首飾り",
+           left_ear="怯懦の耳", right_ear="フリオミシピアス",ammo="ドシスタスラム",})
     local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 --暗黒
     local dark_acc={

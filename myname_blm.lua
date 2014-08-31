@@ -59,7 +59,7 @@ function get_sets()
     
 --stun
     local stun = {
-        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
+            main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="ビビドストラップ",
         head="ナティラハット",
         body="ヴァニアコタルディ",
@@ -85,7 +85,7 @@ function get_sets()
     }
 --弱体
     local enfeebling = {
-        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
+            main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="メフィテスグリップ",
         range="オウレオール",
         head="アートシクハット",
@@ -124,9 +124,10 @@ function get_sets()
         , {hands="ハゴンデスカフス",feet="ウンバニブーツ",})
     local element_fullattk = set_combine(
           element_attk
-        , {head={ name="ＨＡハット+1", augments={'Phys. dmg. taken -1%','"Mag.Atk.Bns."+21',}},
-            sub="ズーゾーウグリップ",waist="オティラサッシュ",
-            range=empty,ammo="ウィッチストーン",right_ring="女王の指輪",})
+        , { head={ name="ＨＡハット+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -4%','"Mag.Atk.Bns."+25',}},
+            sub="ズーゾーウグリップ",waist="オティラサッシュ",neck="水影の首飾り",
+            range=empty,ammo="ドシスタスラム",
+            right_ring="女王の指輪",})
 
     local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 
@@ -319,6 +320,8 @@ function midcast(spell)
             elseif spell.cast_time > 3 then
                 equip(set_element(spell))
             end
+        elseif spell.skill=='神聖魔法' then
+            equip(sets.midcast['神聖魔法'])
         elseif spell.skill=='弱体魔法' then
             if spell.cast_time > 3 then
                 sets_equip = sets.midcast[spell.skill]

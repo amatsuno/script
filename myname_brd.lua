@@ -13,7 +13,7 @@ function get_sets()
     }
 --FC_BASE
     local pre_song_base ={
-        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
+            main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="ビビドストラップ",
         head="ＡＤキャロ+2",
         body="ＭＫジュバ+1",
@@ -31,11 +31,11 @@ function get_sets()
     local pre_song_low = set_combine(
         pre_song_base,
         {
-            main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
+                main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
             body="ＢＲジュスト+1",
         })
     local pre_magic_base ={
-        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
+            main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="ビビドストラップ",
         head="ナティラハット",
         body="ＭＫジュバ+1",
@@ -201,6 +201,22 @@ function get_sets()
         right_ring="ダークリング",
         back="チェビオットケープ",
     }
+    local otherSongs = {
+        main="レガートダガー",
+        range="ギャッラルホルン",
+        head="ＡＤキャロ+2",
+        body="ＡＤオングルリヌ+2",
+        hands="ＡＤマンシェト+2",
+        legs="ＭＫシャルワ+1",
+        feet="ブリオソスリッパー",
+        neck="アエドマティネ",
+        waist="アエドベルト",
+        left_ear="ロケイシャスピアス",
+        right_ear="アエドピアス",
+        left_ring="守りの指輪",
+        right_ring="ダークリング",
+        back="チェビオットケープ",
+    }
     --強化
     local enhance = {
     }
@@ -231,7 +247,7 @@ function get_sets()
     }
 --敵うた
     local bard_acc = {
-        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
+            main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="メフィテスグリップ",
         head="ＢＩラウンドリト+1",
         body="ＢＲジュスト+1",
@@ -239,13 +255,21 @@ function get_sets()
         legs="ＢＩキャニオンズ+1",
         feet="アートシクブーツ",
         neck="ウィンドトルク",
-        waist="デモンリーサッシュ",
+        waist="オヴェイトロープ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
-        left_ring="バルラーンリング",
+        left_ring="メディアトルリング",
         right_ring="サンゴマリング",
         back="ラプソドスケープ",
     }
+    local finale = set_combine(bard_acc,
+        {
+        hands="ＧＥゲージ+1",
+        legs="ＡＤラングラヴ+2",
+        right_ear="ロケイシャスピアス",
+        left_ear="胡蝶のイヤリング",
+        left_ring="プロリクスリング",
+        right_ring="サンゴマリング",})
 --属性帯
     local obi = {}
     --所持している属性帯の属性を列挙
@@ -323,6 +347,8 @@ function get_sets()
     sets.midcast['スケルツォ'] = Scherzo
     sets.midcast['バラード'] = Ballad
     sets.midcast['バラードI'] = Ballad1
+    sets.midcast['フィナーレ'] = finale
+    sets.midcast['other'] = otherSongs
     sets.midcast['ケアル'] = cure
     sets.midcast['ヘイスト'] = mid_base
     sets.midcast['ストンスキン'] = enhance
@@ -487,7 +513,11 @@ function set_song(spell)
         set_equip = sets.midcast['バラード']
     elseif spell.name == '魔道士のバラード' then
         set_equip = sets.midcast['バラードI']
-    elseif spell.target.type == 'MONSTER' then
+    elseif spell.name == '魔法のフィナーレ' then
+        set_equip = sets.midcast['フィナーレ']
+    elseif spell.target.type ~= 'MONSTER' then
+        set_equip = sets.midcast['other']
+    else
         set_equip = sets.midcast['敵歌']
     end
     return set_equip
