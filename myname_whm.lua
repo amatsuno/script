@@ -64,7 +64,7 @@ function get_sets()
     }
     local baXX = set_combine(enhance, {body="ＯＲブリオー+2"})
     local protectshell = set_combine(mid_light, 
-        {legs="パエティパンタロン", feet='パエティダックビル',right_ring="シェルターリング"})
+        {legs="パエティパンタロン", feet='ＰＩダックビル+1',right_ring="シェルターリング"})
 --CURE
     local cure ={
         main="タマシチ",
@@ -88,7 +88,7 @@ function get_sets()
             body="ＧＥブリオー+1",
         })
     if player.sub_job == '赤' then
-        cure = set_combine(cure, {left_ear="胡蝶のイヤリング",feet='パエティダックビル'})
+        cure = set_combine(cure, {left_ear="胡蝶のイヤリング",feet='ＰＩダックビル+1'})
     end
     local midcure = set_combine(cure,
         {
@@ -151,7 +151,12 @@ function get_sets()
         right_ring="サンゴマリング",
         back="リフラクトケープ",
     }
-    local idle_def = set_combine(idle, 
+    local idle_healing = set_combine(idle, 
+        {
+        main="ブンウェルスタッフ",
+        feet="ケロナブーツ",
+        });
+   local idle_def = set_combine(idle, 
         {
         head="ＧＥカウビーン+1",
         legs="シファヒジパンツ",
@@ -204,6 +209,8 @@ function get_sets()
     sets.equip['FC_LIGHT'] = pre_light
     sets.equip['IDLE'] = idle
     sets.equip['IDLE_DEF'] = idle_def
+    sets.equip['HEALING'] = idle_healing
+    
 
     send_command('input /macro book 2;wait .2;input /macro set 1')
     
@@ -322,6 +329,15 @@ function aftercast(spell)
 end
 
 function status_change(new,old)
+    if new == 'Resting' then
+        if sets.equip.HEALING ~= nil then
+            equip(sets.equip.HEALING)
+         end
+    elseif new == 'Idle' then
+        if sets.aftercast.idle ~= nil then
+            equip(sets.aftercast.idle)
+         end
+    end
 end
 --コマンド用今のところ↓の３つ
 function self_command(command)
