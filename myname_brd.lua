@@ -266,6 +266,7 @@ function get_sets()
         {
         hands="ＧＥゲージ+1",
         legs="ＡＤラングラヴ+2",
+        feet={ name="ＧＥガロッシュ+1", augments={'Phys. dmg. taken -4%','Song recast delay -2',}},
         right_ear="ロケイシャスピアス",
         left_ear="胡蝶のイヤリング",
         left_ring="プロリクスリング",
@@ -301,6 +302,7 @@ function get_sets()
         body="ＢＲジュスト+1",
         hands="ＧＥゲージ+1",
         legs="ＢＩキャニオンズ+1",
+        feet={ name="ＧＥガロッシュ+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -3%','"Cure" spellcasting time -3%',}},
         neck="黄昏の光輪",
         left_ring="守りの指輪",
         right_ring="ダークリング",
