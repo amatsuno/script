@@ -101,6 +101,25 @@ function get_sets()
         right_ring="サンゴマリング",
         back="リフラクトケープ",
     }
+--暗黒
+    local dark_acc={
+        main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
+        sub="メフィテスグリップ",
+        range="オウレオール",
+        head="アートシクハット",
+        body="アートシクジュバ",
+        hands="ＨＡカフス+1",
+        legs="アートシクロップス",
+        feet="アートシクブーツ",
+        neck="エーシルトルク",
+        waist="ニヌルタサッシュ",
+        left_ear="ライストームピアス",
+        right_ear="サイストームピアス",
+        left_ring="ストレンドゥリング",
+        right_ring="サンゴマリング",
+        back="慈悲の羽衣",
+    }
+    
 --精霊
     local element_acc={
     main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
@@ -131,6 +150,9 @@ function get_sets()
 
     local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 
+--神聖
+    local divine = enfeebling
+
 --属性帯
     local obi = {}
     --所持している属性帯の属性を列挙
@@ -144,8 +166,6 @@ function get_sets()
     obi.buffs['風'] = 180 --烈風の陣
     obi.buffs['土'] = 181 --砂塵の陣
     obi.buffs['火'] = 178 --熱波の陣
---神聖
-    local divine = enfeebling
 --待機装備
     local idle = {
         main="アーススタッフ",
@@ -156,6 +176,12 @@ function get_sets()
         feet="ヘラルドゲートル",
         left_ear="胡蝶のイヤリング",
     }
+    local idle_healing = set_combine(idle, 
+        {
+        main="ブンウェルスタッフ",
+        feet="ケロナブーツ",
+        });
+    
     local idle_def = set_combine(idle, 
         {
         head="ＨＡハット+1",
@@ -190,6 +216,7 @@ function get_sets()
     sets.midcast['強化魔法'] = enhance
     sets.midcast['バ系'] = baXX
     sets.midcast['弱体魔法'] = enfeebling
+    sets.midcast['暗黒魔法'] = dark_acc
     sets.midcast['神聖魔法'] = divine
     sets.midcast['ケアル'] = cure
     sets.midcast['ヘイスト'] = mid_wind
@@ -223,6 +250,7 @@ function get_sets()
     sets.equip['IDLE'] = idle
     sets.equip['IDLE_DEF'] = idle_def
     sets.equip.obi = obi
+    sets.equip['HEALING'] = idle_healing
     
     --enable('main','sub','ammo')
     rev_attk = { name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}}
@@ -320,8 +348,11 @@ function midcast(spell)
             elseif spell.cast_time > 3 then
                 equip(set_element(spell))
             end
-        elseif spell.skill=='神聖魔法' then
-            equip(sets.midcast['神聖魔法'])
+        elseif spell.skill=='神聖魔法' or
+               spell.skill=='暗黒魔法' then
+            if spell.cast_time > 3 then
+                sets_equip = sets.midcast[spell.skill]
+            end
         elseif spell.skill=='弱体魔法' then
             if spell.cast_time > 3 then
                 sets_equip = sets.midcast[spell.skill]
@@ -376,6 +407,16 @@ function aftercast(spell)
 end
 
 function status_change(new,old)
+    if new == 'Resting' then
+        if sets.aftercast.idle ~= nil then
+            equip(sets.equip.HEALING)
+         end
+    elseif new == 'Idle' then
+        if sets.aftercast.idle ~= nil then
+            equip(sets.aftercast.idle)
+         end
+    end
+
 end
 
 function self_command(command)
