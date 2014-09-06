@@ -100,13 +100,36 @@ function get_sets()
 --精霊
     local element_acc={
     main="アチニンスタッフ",
-    neck="クアンプネックレス",
+    head="ハゴンデスハット",
+    body="ハゴンデスコート",
+    hands="ハゴンデスカフス",
+    legs="ハゴンデスパンツ",
+    feet="ハゴンデスサボ",
+    neck="エディネクラス",
+    waist="アスワングサッシュ",
+    left_ear="ライストームピアス",
+    right_ear="サイストームピアス",
     left_ring="アクィロリング",
     right_ring="オメガリング",
+    back="ベーンケープ",
     }
-    local element_attk = element_acc
+    local element_attk = set_combine(
+        element_acc,
+        {
+            left_ear="フリオミシピアス",
+            right_ear="ヘカテーピアス",
+        })
     local element_fullattk = element_attk
     local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
+
+--暗黒
+  local dark_acc = set_combine(element_acc,
+    {neck="ダークトルク",
+     back="慈悲の羽衣",
+    })
+  
+--神聖
+    local divine = enfeebling
 
 --属性帯
     local obi = {}
@@ -121,8 +144,6 @@ function get_sets()
     obi.buffs['風'] = 180 --烈風の陣
     obi.buffs['土'] = 181 --砂塵の陣
     obi.buffs['火'] = 178 --熱波の陣
---神聖
-    local divine = enfeebling
 --待機装備
     local idle = {
         sub="ビビドストラップ",
@@ -165,6 +186,7 @@ function get_sets()
     sets.midcast['バ系'] = baXX
     sets.midcast['弱体魔法'] = enfeebling
     sets.midcast['神聖魔法'] = divine
+    sets.midcast['暗黒魔法'] = dark_acc
     sets.midcast['ケアル'] = cure
     sets.midcast['ヘイスト'] = mid_wind
     sets.midcast['ストンスキン'] = stoneskin
@@ -292,7 +314,9 @@ function midcast(spell)
             elseif spell.cast_time > 3 then
                 equip(set_element(spell))
             end
-        elseif spell.skill=='弱体魔法' then
+        elseif spell.skill=='神聖魔法' or
+               spell.skill=='暗黒魔法' or
+               spell.skill=='弱体魔法' then
             if spell.cast_time > 3 then
                 sets_equip = sets.midcast[spell.skill]
             end
@@ -389,10 +413,13 @@ function self_command(command)
         elseif args[1] == 'elementmode' then
             if args[2] == 'ACC' then
                 sets.midcast.element.mode = 'ACC'
+                sets.midcast['神聖魔法'] = enfeebling
             elseif args[2] == 'ATTK' then
                 sets.midcast.element.mode = 'ATTK'
+                sets.midcast['神聖魔法'] = sets.midcast.element['ATTK']
             elseif args[2] == 'FULL' then
                 sets.midcast.element.mode = 'FULL'
+                sets.midcast['神聖魔法'] = sets.midcast.element['FULL']
             elseif args[2] == 'VW' then
                 sets.midcast.element.mode = 'VW'
             end
