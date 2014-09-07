@@ -58,7 +58,7 @@ function get_sets()
         waist="オリンポスサッシュ",
         left_ear="アンドアーピアス",
         right_ear="ロケイシャスピアス",
-        left_ring="バルラーンリング",
+        left_ring="メディアトルリング",
         right_ring="サンゴマリング",
         back="慈悲の羽衣",
     }
@@ -109,7 +109,7 @@ function get_sets()
         waist="オヴェイトロープ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
-        left_ring="バルラーンリング",
+        left_ring="メディアトルリング",
         right_ring="サンゴマリング",
         back="リフラクトケープ",
     }
@@ -147,7 +147,7 @@ function get_sets()
         waist="オヴェイトロープ",
         left_ear="ロケイシャスピアス",
         right_ear="胡蝶のイヤリング",
-        left_ring="バルラーンリング",
+        left_ring="メディアトルリング",
         right_ring="サンゴマリング",
         back="リフラクトケープ",
     }
@@ -330,7 +330,8 @@ end
 
 function status_change(new,old)
     if new == 'Resting' then
-        if sets.equip.HEALING ~= nil then
+        if player.mpp < 70 and
+           sets.equip.HEALING ~= nil then
             equip(sets.equip.HEALING)
          end
     elseif new == 'Idle' then
