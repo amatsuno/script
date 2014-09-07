@@ -96,7 +96,7 @@ function get_sets()
         waist="オヴェイトロープ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
-        left_ring="バルラーンリング",
+        left_ring="メディアトルリング",
         right_ring="サンゴマリング",
         back="リフラクトケープ",
     }
@@ -148,9 +148,15 @@ function get_sets()
         back="ブックワームケープ",
     }
     local meltdown = set_combine(dark_acc
-        ,{hands="ハゴンデスカフス",legs="ハゴンデスパンツ",feet="ウンバニブーツ",
-          head="ＨＡハット+1",sub="ズーゾーウグリップ",left_ear="怯懦の耳", right_ear="フリオミシピアス",
-        })
+        ,{ hands="ハゴンデスカフス",
+           body="ＨＡコート+1",
+           legs="ハゴンデスパンツ",
+           feet="ウンバニブーツ",
+           head="ＨＡハット+1",
+           sub="ズーゾーウグリップ",
+           neck="水影の首飾り",
+           left_ear="怯懦の耳",
+           right_ear="フリオミシピアス",})
 
 --属性帯
     local obi = {}
@@ -179,6 +185,11 @@ function get_sets()
         feet="ヘラルドゲートル",
         left_ear="胡蝶のイヤリング",
     }
+    local idle_healing = set_combine(idle, 
+        {
+        main="ブンウェルスタッフ",
+        feet="ケロナブーツ",
+        });
     local idle_def = set_combine(idle, 
         {
         head="ＨＡハット+1",
@@ -241,6 +252,7 @@ function get_sets()
     sets.equip['強化魔法'] = enhance
     sets.equip['IDLE'] = idle
     sets.equip['IDLE_DEF'] = idle_def
+    sets.equip['HEALING'] = idle_healing
     sets.equip.obi = obi
     
     send_command('input /macro book 6;wait .2;input /macro set 1')
@@ -419,6 +431,16 @@ function aftercast(spell)
 end
 
 function status_change(new,old)
+    if new == 'Resting' then
+        if sets.equip.HEALING ~= nil then
+            equip(sets.equip.HEALING)
+         end
+    elseif new == 'Idle' then
+        if sets.aftercast.idle ~= nil then
+            equip(sets.aftercast.idle)
+         end
+    end
+
 end
 
 function self_command(command)
