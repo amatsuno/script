@@ -266,7 +266,7 @@ function get_sets()
         {
         hands="ＧＥゲージ+1",
         legs="ＡＤラングラヴ+2",
-        feet={ name="ＧＥガロッシュ+1", augments={'Phys. dmg. taken -4%','Song recast delay -2',}},
+        feet={ name="ＧＥガロッシュ+1", augments={'Phys. dmg. taken -4%','Song recast delay -3',}},
         right_ear="ロケイシャスピアス",
         left_ear="胡蝶のイヤリング",
         left_ring="プロリクスリング",
