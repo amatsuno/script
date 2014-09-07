@@ -97,7 +97,7 @@ function get_sets()
         waist="デモンリーサッシュ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
-        left_ring="バルラーンリング",
+        left_ring="メディアトルリング",
         right_ring="サンゴマリング",
         back="リフラクトケープ",
     }
@@ -194,7 +194,23 @@ function get_sets()
         right_ring="ダークリング",
         back="チェビオットケープ",
         });
-    
+--MP装備
+    local equip_mp = {
+        head="ナティラハット",
+        body="アートシクジュバ",
+        hands="オトミグローブ",
+        legs="アートシクロップス",
+        feet="アートシクブーツ",
+        neck="エディネクラス",
+        waist="ニヌルタサッシュ",
+        left_ear="胡蝶のイヤリング",
+        right_ear="ロケイシャスピアス",
+        left_ring="ビフロストリング",
+        right_ring="サンゴマリング",
+        back="ベーンケープ",
+    }
+    sets.ws = {}
+    sets.ws['ミルキル'] = equip_mp
     sets.precast = {}
     sets.precast['ケアル']= pre_light
     sets.precast['スタン'] = stun
@@ -262,6 +278,10 @@ function precast(spell)
     --myGetProperties(spell)
     if ignore_spells:contains(spell.name) then return end
     if spell.type == 'JobAbility' then
+    elseif spell.type=="WeaponSkill" then
+        if sets.ws[spell.name] then
+            equip(sets.ws[spell.name])
+        end
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
         --windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
         if spell.skill == '回復魔法' then
@@ -408,7 +428,8 @@ end
 
 function status_change(new,old)
     if new == 'Resting' then
-        if sets.aftercast.idle ~= nil then
+        if player.mpp < 70 and
+           sets.equip.HEALING ~= nil then
             equip(sets.equip.HEALING)
          end
     elseif new == 'Idle' then
