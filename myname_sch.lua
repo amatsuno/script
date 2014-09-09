@@ -432,7 +432,8 @@ end
 
 function status_change(new,old)
     if new == 'Resting' then
-        if sets.equip.HEALING ~= nil then
+        if player.mpp < 70 and
+           sets.equip.HEALING ~= nil then
             equip(sets.equip.HEALING)
          end
     elseif new == 'Idle' then
@@ -442,7 +443,18 @@ function status_change(new,old)
     end
 
 end
-
+function buff_change(buff, gain)
+    if buff == 'レイヴシンボル' then
+        if gain then
+            windower.add_to_chat(123,'オートリレズON')
+            equip({neck='レフジネックレス+1',})
+            disable('neck')
+        else
+            windower.add_to_chat(8,'オートリレズOFF')
+            enable('neck')
+        end
+    end
+end
 function self_command(command)
     local args = windower.from_shift_jis(command):split(' ')
     if #args >= 2 then
