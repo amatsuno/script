@@ -340,6 +340,20 @@ function status_change(new,old)
          end
     end
 end
+
+function buff_change(buff, gain)
+    if buff == 'レイヴシンボル' then
+        if gain then
+            windower.add_to_chat(123,'オートリレズON')
+            equip({neck='レフジネックレス+1',})
+            disable('neck')
+        else
+            windower.add_to_chat(8,'オートリレズOFF')
+            enable('neck')
+        end
+    end
+end
+
 --コマンド用今のところ↓の３つ
 function self_command(command)
     local args = windower.from_shift_jis(command):split(' ')
