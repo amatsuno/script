@@ -304,6 +304,7 @@ function get_sets()
         legs="ＢＩキャニオンズ+1",
         feet={ name="ＧＥガロッシュ+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -3%','"Cure" spellcasting time -3%',}},
         neck="黄昏の光輪",
+        right_ear="驕慢の耳",
         left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
