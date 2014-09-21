@@ -26,7 +26,7 @@ function get_sets()
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
-        back="スイスケープ",
+        back="スイスケープ+1",
     }
     local pre_song_low = set_combine(
         pre_song_base,
@@ -47,7 +47,7 @@ function get_sets()
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
-        back="スイスケープ",
+        back="スイスケープ+1",
     }
     local pre_song_fire = set_combine(pre_song_base, {main="アターI"})
     local pre_song_light = set_combine(pre_song_base, {main="アーカI"})
