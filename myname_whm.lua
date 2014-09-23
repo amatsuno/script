@@ -19,7 +19,7 @@ function get_sets()
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
-        back="スイスケープ",
+        back="スイスケープ+1",
     }
     local pre_low = {
             main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
@@ -131,7 +131,7 @@ function get_sets()
         right_ear="胡蝶のイヤリング",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
-        back="スイスケープ",
+        back="スイスケープ+1",
     }
     --待機時の装備（リフレ装備とかカット装備とか)
     local idle = {
@@ -357,6 +357,25 @@ end
 --コマンド用今のところ↓の３つ
 function self_command(command)
     local args = windower.from_shift_jis(command):split(' ')
+    if #args >= 1 then
+        if args[1] == 'lock' then
+            if #args >= 2 then
+                windower.add_to_chat(123,'lock '..args[2])
+                disable(args[2])
+            else
+                windower.add_to_chat(123,'lock')
+                disable('main','sub','ammo','range')
+            end
+        elseif args[1] == 'unlock' then
+            if #args >= 2 then
+                windower.add_to_chat(123,'unlock '..args[2])
+                enable(args[2])
+            else
+                windower.add_to_chat(123,'unlock')
+                enable('main','sub','ammo','range')
+            end
+        end
+    end
     if #args >= 2 then
         if args[1] == 'equip' then
             if sets.equip[args[2]] ~= nil then
