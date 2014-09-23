@@ -23,7 +23,7 @@ function get_sets()
         head="ウァールマスク",
         body="タウマスコート",
         hands="ユイトルリスト",
-        legs="ユイトルタイツ",
+        legs="ＩＵタイツ+1",
         feet="マニボゾブーツ",
         waist="セトルベルト",
         left_ear="素破の耳",
