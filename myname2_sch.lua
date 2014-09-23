@@ -88,7 +88,7 @@ function get_sets()
         sub="メフィテスグリップ",
         range="オウレオール",
         head="ナティラハット",
-        body="ハゴンデスコート",
+        body="ＨＡコート+1",
         hands="ハゴンデスカフス",
         legs="ボクワススロップス",
         feet="ボクワスブーツ",
@@ -109,7 +109,7 @@ function get_sets()
         sub="メフィテスグリップ",
         range="オウレオール",
         head="ナティラハット",
-        body="ハゴンデスコート",
+        body="ＨＡコート+1",
         hands="ハゴンデスカフス",
         legs="ボクワススロップス",
         feet="ハゴンデスサボ",
@@ -148,7 +148,7 @@ function get_sets()
         main="アーススタッフ",
         sub="ビビドストラップ",
         ammo="インカントストーン",
-        body="ハゴンデスコート",
+        body="ＨＡコート+1",
         legs="ナレストルーズ",
         feet="ヘラルドゲートル",
         left_ear="胡蝶のイヤリング",
@@ -372,15 +372,26 @@ end
 
 function self_command(command)
     local args = windower.from_shift_jis(command):split(' ')
-    if #args == 1 then    
+    if #args >= 1 then
         if args[1] == 'lock' then
-            windower.add_to_chat(123,'lock')
-            disable('main','sub','ammo','range')
+            if #args >= 2 then
+                windower.add_to_chat(123,'lock '..args[2])
+                disable(args[2])
+            else
+                windower.add_to_chat(123,'lock')
+                disable('main','sub','ammo','range')
+            end
         elseif args[1] == 'unlock' then
-            windower.add_to_chat(123,'unlock')
-            enable('main','sub','ammo','range')
+            if #args >= 2 then
+                windower.add_to_chat(123,'unlock '..args[2])
+                enable(args[2])
+            else
+                windower.add_to_chat(123,'unlock')
+                enable('main','sub','ammo','range')
+            end
         end
-    elseif #args >= 2 then
+    end
+    if #args >= 2 then
         if args[1] == 'equip' then
             if sets.equip[args[2]] ~= nil then
                 equip(sets.equip[args[2]])
