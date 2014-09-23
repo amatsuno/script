@@ -17,7 +17,7 @@ function get_sets()
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
-        back="スイスケープ",
+        back="スイスケープ+1",
     }
     local pre_low = {
         ammo="インカントストーン",
@@ -61,7 +61,7 @@ function get_sets()
         ammo="インカントストーン",
         head="ＰＤボード+1",
         body="ヴァニアコタルディ",
-        hands="アカデミブレーサー",
+        hands="ＨＡカフス+1",
         legs="アートシクロップス",
         feet="ＰＤローファー+1",
         neck="エーシルトルク",
@@ -70,7 +70,7 @@ function get_sets()
         right_ear="胡蝶のイヤリング",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
-        back="スイスケープ",
+        back="スイスケープ+1",
     }
     local stun_fc = set_combine(stun, {main="アパマジャII", body="アンフルローブ",})
     local stun_recast = set_combine(stun,{main="アパマジャII",})
@@ -194,7 +194,7 @@ function get_sets()
         {
         head="ＨＡハット+1",
         legs="ＨＡパンツ+1",
-        feet="アートシクブーツ",
+        feet="ＨＡサボ+1",
         neck="黄昏の光輪",
         left_ring="守りの指輪",
         right_ring="ダークリング",

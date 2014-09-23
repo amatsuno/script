@@ -20,7 +20,7 @@ function get_sets()
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
-        back="スイスケープ",
+        back="スイスケープ+1",
     }
     local pre_low = {
         head="ナティラハット",
@@ -72,7 +72,7 @@ function get_sets()
         right_ear="胡蝶のイヤリング",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
-        back="スイスケープ",
+        back="スイスケープ+1",
     }
     local stun_fc = set_combine(stun, {main="アパマジャII", body="アンフルローブ",})
     local stun_recast = set_combine(stun,{main="アパマジャII",})
@@ -190,6 +190,8 @@ function get_sets()
         legs="ＨＡパンツ+1",
         feet="ＨＡサボ+1",
         neck="黄昏の光輪",
+        left_ear="驕慢の耳",
+        right_ear="胡蝶のイヤリング",
         left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",

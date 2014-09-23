@@ -309,6 +309,12 @@ function get_sets()
         right_ring="ダークリング",
         back="チェビオットケープ",
         });
+    local idle_def2 = set_combine(idle_def, 
+        {
+        head="ＧＥカウビーン+1",
+        body="ＧＥブリオー+1",
+        legs="ＧＥスパッツ+1",
+        });
     
     sets.precast = {}
     sets.precast.JA={}
@@ -372,6 +378,7 @@ function get_sets()
     sets.equip = {}
     sets.equip['IDLE'] = idle
     sets.equip['IDLE_DEF'] = idle_def
+    sets.equip['IDLE_DEFMG'] = idle_def2
     sets.equip.obi = obi
     
     send_command('input /macro book 5;wait .2;input /macro set 1')
@@ -700,6 +707,9 @@ function self_command(command)
             elseif param == 'idle_def' then
                windower.add_to_chat(123,'set to idle_def')
                 sets.aftercast.idle = sets.equip.IDLE_DEF
+            elseif param == 'idle_mg' then
+               windower.add_to_chat(123,'set to idle_def_mg')
+                sets.aftercast.idle = sets.equip.IDLE_DEFMG
             elseif param == 'cure' then
                windower.add_to_chat(123,'set to idle_cure')
                 sets.aftercast.idle = sets.precast['ケアル']
