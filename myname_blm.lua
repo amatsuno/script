@@ -277,7 +277,7 @@ function get_sets()
 end
 
 function precast(spell)
-    --myGetProperties(spell)
+    --myGetProperties(spell,'spell',0)
     if ignore_spells:contains(spell.name) then return end
     if spell.type == 'JobAbility' then
     elseif spell.type=="WeaponSkill" then
@@ -524,40 +524,31 @@ function self_command(command)
     end
 end
 
-function myGetProperties(t)
-    if not _settings.debug_mode then
-        return
-    end
+function myGetProperties(t,comment,level)
     if type(t) == 'table' then
+        local spaces=string.sub(indent,1,level)
+        local spaces2=string.sub(indent,1,level+1)
         local key,val
+        add_to_chat(123, spaces..comment..'={')
         for key,val in pairs(t)
         do
             if type(val) == 'string' or type(val) == 'number' then
-                debug_mode_chat(' '..key..'="'..val..'"')
+                add_to_chat(123,spaces2..key..'="'..val..'"')
             elseif type(val) == 'boolean' then
-                if val then
-                    debug_mode_chat(' '..key..'=true')
-                else
-                    debug_mode_chat(' '..key..'=false')
-                end
+                add_to_chat(123,spaces2..key..tostring(val))
             elseif type(val) == 'table' then
-                debug_mode_chat(' '..key..'={')
-                myGetProperties(val)
-                debug_mode_chat(' }')
+                myGetProperties(val, key,level+1)
             else 
-                debug_mode_chat(' '..key..' is '..type(val))
+                add_to_chat(123,space2..key..' is '..type(val))
             end
         end
+        add_to_chat(123,spaces..'}--end of'..comment)
     elseif type(t) == 'number' or type(t) == 'string' then
-        debug_mode_chat(' ="'..val..'"')
+        add_to_chat(123,spaces..comment..' ="'..val..'"')
     elseif type(val) == 'boolean' then
-        if val then
-            debug_mode_chat(' =true')
-        else
-            debug_mode_chat(' =false')
-        end
+        add_to_chat(123,spaces..comment..' ='..tostring(val))
     else
-        debug_mode_chat(' type is '..type(val))
+        add_to_chat(123,spaces..comment..' type is '..type(val))
     end
 end
 function buff_change(buff, gain)
