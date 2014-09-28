@@ -9,7 +9,7 @@ function get_sets()
         head="ナティラハット",
         body="アンフルローブ",
         hands="ゲンデサゲージ",
-        legs="オーヴェイルパンツ",
+        legs="ＯＶパンツ+1",
         feet="ペダゴギローファー",
         waist="セトルベルト",
         left_ear="胡蝶のイヤリング",
@@ -18,6 +18,7 @@ function get_sets()
         right_ring="サンゴマリング",
         back="スイスケープ",
     }
+    
     local pre_low = {
         ammo="インカントストーン",
         head="ナティラハット",
@@ -26,7 +27,7 @@ function get_sets()
     local mid_base = pre_base
     
     --光属性
-    local pre_light = pre_base
+    local pre_light = set_combine(pre_base, {main="アーカI",})
     local mid_light = mid_base
     local pre_healing = pre_light
     
@@ -38,6 +39,8 @@ function get_sets()
     local pre_earth = pre_base 
     local mid_earth = mid_base
 
+    local pre_thunder = set_combine(pre_base, {main="アパマジャI",})
+    local mid_thunder = mid_base
     --強化
     local enhance = {
         main="麒麟棍",
@@ -56,7 +59,7 @@ function get_sets()
     local baXX = enhance
 --stun
     local stun = {
-        main="アチニンスタッフ",
+        main="レブレイルグ+2",
         sub="ビビドストラップ",
         ammo="インカントストーン",
         head="ナティラハット",
@@ -84,7 +87,7 @@ function get_sets()
     }
 --弱体
     local enfeebling = {
-        main="アチニンスタッフ",
+        main="レブレイルグ+2",
         sub="メフィテスグリップ",
         range="オウレオール",
         head="ナティラハット",
@@ -105,7 +108,7 @@ function get_sets()
     }
 --精霊
     local element_acc={
-        main="アチニンスタッフ",
+        main="レブレイルグ+2",
         sub="メフィテスグリップ",
         range="オウレオール",
         head="ナティラハット",
@@ -175,7 +178,7 @@ function get_sets()
     sets.precast.FC['闇'] = pre_base
     sets.precast.FC['風'] = pre_wind
     sets.precast.FC['土'] = pre_earth
-    sets.precast.FC['雷'] = pre_base
+    sets.precast.FC['雷'] = pre_thunder
     sets.precast.FC['水'] = pre_base
     sets.precast.FC['火'] = pre_base
     sets.precast.FC['氷'] = pre_base
@@ -197,7 +200,7 @@ function get_sets()
     sets.midcast.RECAST['闇'] =mid_base
     sets.midcast.RECAST['風'] = mid_wind
     sets.midcast.RECAST['土'] = mid_earth
-    sets.midcast.RECAST['雷'] = mid_base
+    sets.midcast.RECAST['雷'] = mid_thunder
     sets.midcast.RECAST['水'] = mid_base
     sets.midcast.RECAST['火'] = mid_base
     sets.midcast.RECAST['氷'] = mid_base

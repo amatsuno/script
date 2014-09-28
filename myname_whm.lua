@@ -60,7 +60,7 @@ function get_sets()
         right_ear="ロケイシャスピアス",
         left_ring="メディアトルリング",
         right_ring="サンゴマリング",
-        back="慈悲の羽衣",
+        back="メンディングケープ",
     }
     local baXX = set_combine(enhance, {body="ＯＲブリオー+2"})
     local protectshell = set_combine(mid_light, 
@@ -164,6 +164,7 @@ function get_sets()
         neck="黄昏の光輪",
         left_ring="守りの指輪",
         right_ring="ダークリング",
+        right_ear="驕慢の耳",
         back="チェビオットケープ",
         });
     
