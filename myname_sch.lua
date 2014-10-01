@@ -114,7 +114,7 @@ function get_sets()
         legs="アートシクロップス",
         feet="アートシクブーツ",
         neck="エディネクラス",
-        waist="オティラサッシュ",
+        waist="山吹の帯",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
         left_ring="ストレンドゥリング",

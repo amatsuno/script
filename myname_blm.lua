@@ -94,7 +94,7 @@ function get_sets()
         legs="アートシクロップス",
         feet="アートシクブーツ",
         neck="ワイケトルク",
-        waist="デモンリーサッシュ",
+        waist="オヴェイトロープ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
         left_ring="メディアトルリング",
@@ -112,7 +112,7 @@ function get_sets()
         legs="アートシクロップス",
         feet="アートシクブーツ",
         neck="エーシルトルク",
-        waist="ニヌルタサッシュ",
+        waist="オヴェイトロープ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
         left_ring="ストレンドゥリング",
@@ -131,7 +131,7 @@ function get_sets()
     legs="ハゴンデスパンツ",
     feet="ＡＲサボ+1",
     neck="エディネクラス",
-    waist="ワニオンベルト",
+    waist="山吹の帯",
     left_ear="怯懦の耳",
     right_ear="フリオミシピアス",
     left_ring="ストレンドゥリング",
@@ -144,7 +144,7 @@ function get_sets()
     local element_fullattk = set_combine(
           element_attk
         , { head={ name="ＨＡハット+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -4%','"Mag.Atk.Bns."+25',}},
-            sub="ズーゾーウグリップ",waist="オティラサッシュ",neck="水影の首飾り",
+            sub="ズーゾーウグリップ",neck="水影の首飾り",
             range=empty,ammo="ドシスタスラム",
             right_ring="女王の指輪",})
 
