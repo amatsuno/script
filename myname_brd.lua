@@ -20,9 +20,9 @@ function get_sets()
         hands="ＧＥゲージ+1",
         legs="ゲンデサスパッツ",
         feet="ＢＩスリッパー+1",
-        neck="アエドマティネ",
+        neck="オルンミラトルク",
         waist="アエドベルト",
-        left_ear="アエドピアス",
+        left_ear="エンチャンピアス+1",
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
@@ -43,7 +43,8 @@ function get_sets()
         legs="アートシクロップス",
         feet="ケロナブーツ",
         waist="ニヌルタサッシュ",
-        left_ear="アエドピアス",
+        neck="オルンミラトルク",
+        left_ear="エンチャンピアス+1",
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
@@ -84,110 +85,40 @@ function get_sets()
         right_ring="ダークリング",
         back="チェビオットケープ",
 }
+--味方うたの基本パターン
+    local buffsong_base = {
+        main="レガートダガー",
+        range="ギャッラルホルン",
+        head="ＡＤキャロ+2",
+        body="ＡＤオングルリヌ+2",
+        hands="ＡＤマンシェト+2",
+        legs="ＡＤラングラヴ+2",
+        feet="ブリオソスリッパー",
+        neck="アエドマティネ",
+        waist="アエドベルト",
+        left_ear="ロケイシャスピアス",
+        right_ear="アエドピアス",
+        left_ring="守りの指輪",
+        right_ring="ダークリング",
+        back="チェビオットケープ",
+    }
 --マーチ
-    local march = {
-        main="レガートダガー",
-        range="ギャッラルホルン",
-        head="ＡＤキャロ+2",
-        body="ＡＤオングルリヌ+2",
-        hands="ＡＤマンシェト+2",
-        legs="ＡＤラングラヴ+2",
-        feet="ブリオソスリッパー",
-        neck="アエドマティネ",
-        waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
-        left_ring="守りの指輪",
-        right_ring="ダークリング",
-        back="チェビオットケープ",
-    }
+    local march = buffsong_base
 --メヌ
-    local  minuet = {
-        main="レガートダガー",
-        range="ギャッラルホルン",
-        head="ＡＤキャロ+2",
-        body="ＡＤオングルリヌ+2",
-        hands="ＡＤマンシェト+2",
-        legs="ＡＤラングラヴ+2",
-        feet="ブリオソスリッパー",
-        neck="アエドマティネ",
-        waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
-        left_ring="守りの指輪",
-        right_ring="ダークリング",
-        back="チェビオットケープ",
-    }
+    local  minuet = buffsong_base
+
 --マド
-    local Madrigal = {
-        main="レガートダガー",
-        range="ギャッラルホルン",
-        head="ＡＤキャロ+2",
-        body="ＡＤオングルリヌ+2",
-        hands="ＡＤマンシェト+2",
-        legs="ＡＤラングラヴ+2",
-        feet="ブリオソスリッパー",
-        neck="アエドマティネ",
-        waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
-        left_ring="守りの指輪",
-        right_ring="ダークリング",
-        back="チェビオットケープ",
-    }
+    local Madrigal = buffsong_base
 --プレ
-    local Prelude = {
-        main="レガートダガー",
-        range="ギャッラルホルン",
-        head="ＡＤキャロ+2",
-        body="ＡＤオングルリヌ+2",
-        hands="ＡＤマンシェト+2",
-        legs="ＭＫシャルワ+1",
-        feet="ブリオソスリッパー",
-        neck="アエドマティネ",
-        waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
-        left_ring="守りの指輪",
-        right_ring="ダークリング",
-        back="チェビオットケープ",
-    }
+    local Prelude = set_combine(buffsong_base,
+        {legs="ＭＫシャルワ+1",})
 --バラ
-    local Ballad = {
-        main="レガートダガー",
-        range="ギャッラルホルン",
-        head="ＡＤキャロ+2",
-        body="ＡＤオングルリヌ+2",
-        hands="ＡＤマンシェト+2",
-        legs="ＡＤラングラヴ+2",
-        feet="ブリオソスリッパー",
-        neck="アエドマティネ",
-        waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
-        left_ring="守りの指輪",
-        right_ring="ダークリング",
-        back="チェビオットケープ",
-    }
+    local Ballad = buffsong_base
     local Ballad1 = Ballad
     
 --スケルツォ
-    local Scherzo = {
-        main="レガートダガー",
-        range="ギャッラルホルン",
-        head="ＡＤキャロ+2",
-        body="ＡＤオングルリヌ+2",
-        hands="ＡＤマンシェト+2",
-        legs="ＭＫシャルワ+1",
-        feet="ＡＤコテュルヌ+2",
-        neck="アエドマティネ",
-        waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
-        left_ring="守りの指輪",
-        right_ring="ダークリング",
-        back="チェビオットケープ",
-    }
+    local Scherzo = set_combine(buffsong_base,
+        {legs="ＭＫシャルワ+1",})
 --マズルカ
     local mazurka = {
         main="バユバタII",
@@ -201,22 +132,8 @@ function get_sets()
         right_ring="ダークリング",
         back="チェビオットケープ",
     }
-    local otherSongs = {
-        main="レガートダガー",
-        range="ギャッラルホルン",
-        head="ＡＤキャロ+2",
-        body="ＡＤオングルリヌ+2",
-        hands="ＡＤマンシェト+2",
-        legs="ＭＫシャルワ+1",
-        feet="ブリオソスリッパー",
-        neck="アエドマティネ",
-        waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
-        left_ring="守りの指輪",
-        right_ring="ダークリング",
-        back="チェビオットケープ",
-    }
+    local otherSongs = set_combine(buffsong_base,
+        {legs="ＭＫシャルワ+1",})
     --強化
     local enhance = {
     }
@@ -256,8 +173,8 @@ function get_sets()
         feet="アートシクブーツ",
         neck="ウィンドトルク",
         waist="オヴェイトロープ",
-        left_ear="ライストームピアス",
-        right_ear="サイストームピアス",
+        left_ear="エンチャンピアス+1",
+        right_ear="グアチピアス",
         left_ring="メディアトルリング",
         right_ring="サンゴマリング",
         back="ラプソドスケープ",
