@@ -68,6 +68,7 @@ function get_sets()
         })
 --
     local idle = {
+        back="リパルスマント",
         feet="ファジンブーツ",
     }
     local idle_def=set_combine(evation,
