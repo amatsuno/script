@@ -13,8 +13,9 @@ function get_sets()
         legs="アートシクロップス",
         feet="ＰＤローファー+1",
         waist="ニヌルタサッシュ",
-        left_ear="胡蝶のイヤリング",
-        right_ear="ロケイシャスピアス",
+        neck="オルンミラトルク",
+        right_ear="エンチャンピアス+1",
+        left_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
         back="スイスケープ+1",
@@ -64,10 +65,10 @@ function get_sets()
         hands="ＨＡカフス+1",
         legs="アートシクロップス",
         feet="ＰＤローファー+1",
-        neck="エーシルトルク",
+        neck="オルンミラトルク",
         waist="ニヌルタサッシュ",
         left_ear="ロケイシャスピアス",
-        right_ear="胡蝶のイヤリング",
+        right_ear="エンチャンピアス+1",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
         back="スイスケープ+1",
@@ -183,7 +184,11 @@ function get_sets()
         hands="ＨＡカフス+1",
         legs="ナレストルーズ",
         feet="ヘラルドゲートル",
-        left_ear="胡蝶のイヤリング",
+        neck="黄昏の光輪",
+        left_ring="守りの指輪",
+        right_ring="ダークリング",
+        right_ear="胡蝶のイヤリング",
+        back="チェビオットケープ",
     }
     local idle_healing = set_combine(idle, 
         {
@@ -195,10 +200,6 @@ function get_sets()
         head="ＨＡハット+1",
         legs="ＨＡパンツ+1",
         feet="ＨＡサボ+1",
-        neck="黄昏の光輪",
-        left_ring="守りの指輪",
-        right_ring="ダークリング",
-        back="チェビオットケープ",
         });
     
     sets.precast = {}
@@ -246,6 +247,8 @@ function get_sets()
     sets.aftercast.idle = nil    
     --コマンド着替え用 //gs c equip スタン とか
     sets.equip = {}
+    sets.equip.treasure = false
+    sets.equip.treasure_spells = T{'ストーン'}
     sets.equip['スタン'] = stun
     sets.equip['スタンリキャ'] = stun_recast
     sets.equip['スタンFC'] = stun_fc
@@ -318,7 +321,7 @@ function precast(spell)
             elseif spell.cast_time > 3 then
                 equip(sets.precast.FC.FC_LOW)
             else
-                equip(set_element(spell.element))
+                equip(set_element(spell))
             end
         elseif spell.skill=='弱体魔法' or
                spell.skill=='神聖魔法' or 
@@ -402,24 +405,29 @@ function midcast(spell)
     end
 end
 
-function set_element(spell_element)
+function set_element(spell)
     local sets_equip = nil
     if buffactive['一心精進の章'] then
         sets_equip = sets.midcast.element['魔攻']
     else
         sets_equip = sets.midcast.element[sets.midcast.element.mode]
     end
-    if sets.equip.obi.weathers:contains(spell_element) then
+    if sets.equip.obi.weathers:contains(spell.element) then
         --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
-        if world.weather_element == spell_element 
-            or world.day_element == spell_element
-            or buffactive[sets.equip.obi.buffs[spell_element]] then
+        if world.weather_element == spell.element 
+            or world.day_element == spell.element
+            or buffactive[sets.equip.obi.buffs[spell.element]] then
             if sets.equip.obi[spell_element] ~= nil then
                 sets_equip = set_combine(sets_equip, 
-                    sets.equip.obi[spell_element])
+                    sets.equip.obi[spell.element])
             end
          end
     end
+    if sets.equip.treasure 
+        and sets.equip.treasure_spells:contains(spell.name) then
+        sets_equip = set_combine(sets_equip, {waist="チャークベルト"})
+    end
+    
     return sets_equip
 end
 
@@ -457,7 +465,17 @@ function buff_change(buff, gain)
 end
 function self_command(command)
     local args = windower.from_shift_jis(command):split(' ')
-    if #args >= 2 then
+    if #args >= 1 then
+        if args[1] == 'treasure' then
+            if sets.equip.treasure then
+                sets.equip.treasure = false
+                windower.add_to_chat(8,tostring('トレハンOFF'))
+            else
+                sets.equip.treasure = true
+                windower.add_to_chat(8,tostring('トレハンON'))
+            end
+        end
+    elseif #args >= 2 then
         if args[1] == 'equip' then
             if sets.equip[args[2]] ~= nil then
                 equip(sets.equip[args[2]])
