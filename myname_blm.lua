@@ -525,7 +525,7 @@ function self_command(command)
         end
     end
 end
-
+indent='                                                                         '
 function myGetProperties(t,comment,level)
     if type(t) == 'table' then
         local spaces=string.sub(indent,1,level)
@@ -537,7 +537,7 @@ function myGetProperties(t,comment,level)
             if type(val) == 'string' or type(val) == 'number' then
                 add_to_chat(123,spaces2..key..'="'..val..'"')
             elseif type(val) == 'boolean' then
-                add_to_chat(123,spaces2..key..tostring(val))
+                add_to_chat(123,spaces2..key..'='..tostring(val))
             elseif type(val) == 'table' then
                 myGetProperties(val, key,level+1)
             else 
