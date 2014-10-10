@@ -3,13 +3,41 @@ function get_sets()
     ignore_spells = T{
         'ディア','ディアII','ディアガ'
     }
+--待機装備
+    local idle = {
+        main="アーススタッフ",
+        sub="ビビドストラップ",
+        ammo="インカントストーン",
+        head="槌の髪飾り",
+        body="ＨＡコート+1",
+        hands="ＨＡカフス+1",
+        legs="ナレストルーズ",
+        feet="ヘラルドゲートル",
+        neck="黄昏の光輪",
+        left_ring="守りの指輪",
+        right_ring="ダークリング",
+        right_ear="胡蝶のイヤリング",
+        back="チェビオットケープ",
+    }
+    local idle_healing = set_combine(idle, 
+        {
+        main="ブンウェルスタッフ",
+        feet="ケロナブーツ",
+        });
+    local idle_def = set_combine(idle, 
+        {
+        head="ＨＡハット+1",
+        legs="ＨＡパンツ+1",
+        feet="ＨＡサボ+1",
+        });
+
 --FC_BASE
     local pre_base ={
         sub="ビビドストラップ",
         ammo="インカントストーン",
         head="ナティラハット",
         body="アンフルローブ",
-        hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
+        hands="ＧＥゲージ+1",
         legs="アートシクロップス",
         feet="ＰＤローファー+1",
         waist="ニヌルタサッシュ",
@@ -39,22 +67,22 @@ function get_sets()
     --土属性
     local pre_earth = set_combine(pre_base, {main="ビシュラバI",})
     local mid_earth = set_combine(mid_base, {main="ビシュラバII",})
-
+    local pre_stoneskin = set_combine(pre_earth, {head="ウムシクハット",aist="ジーゲルサッシュ",})
     --強化
-    local enhance = {
+    local enhance = set_combine(idle_def, {
         main="麒麟棍",
         sub="ビビドストラップ",
-        head="ＳＶボネット+2",
-        body="アンフルローブ",
-        hands="ＳＶブレーサー+2",
+        head="ウムシクハット",
+        body="ＰＤガウン+1",
         legs="ＡＣパンツ+1",
         feet="ルベウスブーツ",
         neck="コロッサストルク",
         waist="オリンポスサッシュ",
         back="慈悲の羽衣",
-    }
+    })
     local baXX = enhance
-    local regen = enhance
+    local regen = set_combine(enhance, {head="ＳＶボネット+2",})
+    local stoneskin = set_combine(enhance, {waist="ジーゲルサッシュ",})
 --stun
     local stun = {
             main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
@@ -73,8 +101,8 @@ function get_sets()
         right_ring="サンゴマリング",
         back="スイスケープ+1",
     }
-    local stun_fc = set_combine(stun, {main="アパマジャII", body="アンフルローブ",})
-    local stun_recast = set_combine(stun,{main="アパマジャII",})
+    local stun_fc = set_combine(stun, {body="アンフルローブ",hands="ＧＥゲージ+1",})
+    local stun_recast = set_combine(stun,{hands="ＧＥゲージ+1",})
     
 --CURE
     local cure ={
@@ -174,33 +202,6 @@ function get_sets()
     obi.buffs['火'] = 178 --熱波の陣
 --神聖
     local divine = enfeebling
---待機装備
-    local idle = {
-        main="アーススタッフ",
-        sub="ビビドストラップ",
-        ammo="インカントストーン",
-        head="槌の髪飾り",
-        body="ＨＡコート+1",
-        hands="ＨＡカフス+1",
-        legs="ナレストルーズ",
-        feet="ヘラルドゲートル",
-        neck="黄昏の光輪",
-        left_ring="守りの指輪",
-        right_ring="ダークリング",
-        right_ear="胡蝶のイヤリング",
-        back="チェビオットケープ",
-    }
-    local idle_healing = set_combine(idle, 
-        {
-        main="ブンウェルスタッフ",
-        feet="ケロナブーツ",
-        });
-    local idle_def = set_combine(idle, 
-        {
-        head="ＨＡハット+1",
-        legs="ＨＡパンツ+1",
-        feet="ＨＡサボ+1",
-        });
     
     sets.precast = {}
     sets.precast['ケアル']= pre_light
@@ -213,6 +214,7 @@ function get_sets()
     sets.precast.FC['闇'] = pre_base
     sets.precast.FC['風'] = pre_wind
     sets.precast.FC['土'] = pre_earth
+    sets.precast.FC['ストンスキン'] = pre_stoneskin
     sets.precast.FC['雷'] = pre_base
     sets.precast.FC['水'] = pre_base
     sets.precast.FC['火'] = pre_base
@@ -225,6 +227,7 @@ function get_sets()
     sets.midcast['バ系'] = baXX
     sets.midcast['弱体魔法'] = enfeebling
     sets.midcast['神聖魔法'] = divine
+    sets.midcast['ストンスキン']=stoneskin
     sets.midcast['ケアル'] = cure
     sets.midcast['ヘイスト'] = mid_wind
     sets.midcast['メルトン'] = meltdown
@@ -300,6 +303,8 @@ function precast(spell)
                 else
                     equip(sets.midcast['強化魔法'])
                 end
+            elseif spell.name == 'ストンスキン' then
+                equip(sets.precast.FC['ストンスキン'])
             elseif spell.cast_time > 3 then
                 equip(sets.precast.FC[spell.element],{waist="ジーゲルサッシュ",})
             else
@@ -363,7 +368,7 @@ function midcast(spell)
             end
         elseif spell.skill== '強化魔法' then
             if spell.name == 'ストンスキン' then
-                sets_equip = sets.midcast['強化魔法']
+                sets_equip = sets.midcast['ストンスキン']
                 send_command('@wait 1.2;cancel 37')
             elseif spell.name:startswith('バ')
                or spell.name:startswith('エン')
@@ -413,11 +418,13 @@ function set_element(spell)
         sets_equip = sets.midcast.element[sets.midcast.element.mode]
     end
     if sets.equip.obi.weathers:contains(spell.element) then
+        windower.add_to_chat(123,'属性OK')
         --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
         if world.weather_element == spell.element 
             or world.day_element == spell.element
             or buffactive[sets.equip.obi.buffs[spell.element]] then
-            if sets.equip.obi[spell_element] ~= nil then
+            if sets.equip.obi[spell.element] ~= nil then
+                windower.add_to_chat(123,'帯使用'..spell.element)
                 sets_equip = set_combine(sets_equip, 
                     sets.equip.obi[spell.element])
             end
@@ -474,13 +481,37 @@ function self_command(command)
                 sets.equip.treasure = true
                 windower.add_to_chat(8,tostring('トレハンON'))
             end
+        elseif args[1] == 'lock' then
+            if #args >= 2 then
+                windower.add_to_chat(123,'lock '..args[2])
+                disable(args[2])
+            else
+                windower.add_to_chat(123,'lock')
+                disable('main','sub','ammo','range')
+            end
+        elseif args[1] == 'unlock' then
+            if #args >= 2 then
+                windower.add_to_chat(123,'unlock '..args[2])
+                enable(args[2])
+            else
+                windower.add_to_chat(123,'unlock')
+                enable('main','sub','ammo','range')
+            end
         end
-    elseif #args >= 2 then
+    end
+    if #args >= 2 then
         if args[1] == 'equip' then
             if sets.equip[args[2]] ~= nil then
                 equip(sets.equip[args[2]])
             end
         elseif args[1] == 'stunmode' then
+            if args[2] == 'スタン' then
+                windower.add_to_chat(8,'スタン魔命')
+            elseif args[2] == 'スタンリキャ' then
+                windower.add_to_chat(8,'スタンリキャスト')
+            elseif args[2] == 'スタンFC'then
+                windower.add_to_chat(8,'スタンFC')
+            end
             if sets.equip[args[2]] ~= nil then
                 sets.precast['スタン'] = sets.equip[args[2]]
             end
