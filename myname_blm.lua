@@ -428,6 +428,9 @@ function aftercast(spell)
     if sets.aftercast.idle ~= nil then
         equip(sets.aftercast.idle)
     end
+    if spell.name == 'スリプガII' then
+        my_send_command('@wait 35;input /echo -----35秒経過------------------;wait 40;input /echo -----75秒経過----------------')
+    end
 end
 
 function status_change(new,old)
@@ -580,4 +583,7 @@ function debug_mode_chat(message)
         windower.add_to_chat(8,"GearSwap (Debug Mode): "..
             tostring(message))
     end
+end
+function my_send_command(cmd)
+    send_command(windower.to_shift_jis(cmd))
 end
