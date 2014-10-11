@@ -4,12 +4,12 @@ function get_sets()
         'ディア','ディアII','ディアガ'
     }
     --timersで監視する歌を列挙
-    watchtime_songs = T{
+    watchtime_spells = T{
          '猛者のメヌエットV','猛者のメヌエットIV','猛者のメヌエットIII','猛者のメヌエットII','猛者のメヌエット'
         ,'栄光の凱旋マーチ','無敵の進撃マーチ','弓師のプレリュード','狩人のプレリュード'
         ,'剣豪のマドリガル','剣闘士のマドリガル'
         ,'魔道士のバラードIII','魔道士のバラードII','魔道士のバラード'
-        ,'警戒のスケルツォ'
+        ,'警戒のスケルツォ','ヘイスト'
     }
 --FC_BASE
     local pre_song_base ={
@@ -455,8 +455,8 @@ end
 
 function aftercast(spell)
     --監視対象の歌の監視状態を更新
-    if spell.type == 'BardSong' and not spell.interrupted then
-        if watchtime_songs:contains(spell.name) then
+    if not spell.interrupted then
+        if watchtime_spells:contains(spell.name) then
             update_timer(spell)
         end
     end
@@ -468,7 +468,10 @@ function aftercast(spell)
 end
 function update_timer(spell)
 	local t = os.time()
-
+    local timer_name = spell.name
+    if spell.type ~= 'BardSong' then
+        timer_name = timer_name..'['..spell.target.name..']'
+    end
 	-- 効果時間切れの歌を削除
 	local tempreg = {}
 	for i,v in pairs(timer_reg) do
@@ -479,15 +482,15 @@ function update_timer(spell)
 	end
 	
 	local dur = calculate_duration(spell)
-	windower.add_to_chat(0xCE, "効果時間 "..spell.name..' '..dur)
-	if timer_reg[spell.name] then
+	windower.add_to_chat(0xCE, "効果時間 "..timer_name..' '..dur)
+	if timer_reg[timer_name] then
 	    --カスタムタイマーを操作するときはSJISに変換すると文字化けする！！
-		send_command('timers delete "'..spell.name..'"')
-		timer_reg[spell.name] = t + dur
-		send_command('timers create "'..spell.name..'" '..dur..' down')
+		send_command('timers delete "'..timer_name..'"')
+		timer_reg[timer_name] = t + dur
+		send_command('timers create "'..timer_name..'" '..dur..' down')
 	else
 		local maxsongs = 2
-		if player.equipment.range == 'ダウルダヴラ' then
+		if player.equipment.range == 'テルパンダー' then
 			maxsongs = maxsongs+1
 		end
 		if buffactive['クラリオンコール'] then
@@ -499,8 +502,8 @@ function update_timer(spell)
 		windower.add_to_chat( 8, 'range '..player.equipment.range..' song '..maxsongs )
 		
 		if table.length(timer_reg) < maxsongs then
-			timer_reg[spell.name] = t+dur
-			send_command('timers create "'..spell.name..'" '..dur..' down')
+			timer_reg[timer_name] = t+dur
+			send_command('timers create "'..timer_name..'" '..dur..' down')
 		else
 			local rep,repsong
 			for i,v in pairs(timer_reg) do
@@ -514,78 +517,82 @@ function update_timer(spell)
 			if repsong then
 				timer_reg[repsong] = nil
 				--send_command('timers delete "'..repsong..'"')
-				timer_reg[spell.name] = t+dur
-				send_command('timers create "'..spell.name..'" '..dur..' down')
+				timer_reg[timer_name] = t+dur
+				send_command('timers create "'..timer_name..'" '..dur..' down')
 			end
 		end
 	end
 end
 function calculate_duration(spell)
-	local mult = 1.0
-	if player.equipment.range == "ダウルダヴラ" then mult = mult + 0.25 end
-	if player.equipment.range == "ギャッラルホルン" then mult = mult + 0.4 end
-	if player.equipment.range == "エミネンフルート" then mult = mult + 0.2 end
-	if player.equipment.neck == "アエドマティネ" then mult = mult + 0.1 end
-	if player.equipment.feet == "ブリオソスリッパー" then mult = mult + 0.1 end
-	if player.equipment.feet == "ＢＲスリッパー+1" then mult = mult + 0.11 end
-	if player.equipment.body == "ＡＤオングルリヌ+2" then mult = mult + 0.1 end
-	if player.equipment.legs == "ＭＫシャルワ+1" then mult = mult + 0.1 end
-	if player.equipment.main == "レガートダガー" then mult = mult + 0.05 end
-	--if player.equipment.main == "カルンウェナン" then mult = mult + 0.5 end
-	
-	if string.find(spell.name,'マーチ') then
-	    if player.equipment.hands == 'ＡＤマンシェト+2' then 
-	        mult = mult + 0.1
-	    end
-	    if player.equipment.range == 'ランゲレイク' then
-	        mult = mult + 0.3
-	    end
-	end
-	if string.find(spell.name,'メヌエット') then
-	    if player.equipment.body == "ＡＤオングルリヌ+2" then 
-	        mult = mult + 0.1 
-	    end
-	    if player.equipment.range == 'アポロフルート' then
-	        mult = mult + 0.3
-	    end
-	end
-	if string.find(spell.name,'マドリガル') then
-	    if player.equipment.head == "ＡＤキャロ+2" then 
-	        mult = mult + 0.1 
-	    end
-	    if player.equipment.range == 'カンタバンクホルン' then
-	        mult = mult + 0.3
-	    end
-	end
-	if string.find(spell.name,'プレリュード') then
-	    if player.equipment.range == 'カンタバンクホルン' then
-	        mult = mult + 0.3
-	    end
-	end
-	if string.find(spell.name,'バラード') then
-	    if player.equipment.legs == "ＡＤラングラヴ+2" then 
-	        mult = mult + 0.1 
-	    end
-	end
-	if string.find(spell.name,'スケルツォ') then
-	    if player.equipment.feet == "ＡＤコテュルヌ+2" then 
-	        mult = mult + 0.1 
-	    end
+    if spell.type == 'BardSong' then
+        local mult = 1.0
+        if player.equipment.range == "ダウルダヴラ" then mult = mult + 0.25 end
+        if player.equipment.range == "ギャッラルホルン" then mult = mult + 0.4 end
+        if player.equipment.range == "エミネンフルート" then mult = mult + 0.2 end
+        if player.equipment.neck == "アエドマティネ" then mult = mult + 0.1 end
+        if player.equipment.feet == "ブリオソスリッパー" then mult = mult + 0.1 end
+        if player.equipment.feet == "ＢＲスリッパー+1" then mult = mult + 0.11 end
+        if player.equipment.body == "ＡＤオングルリヌ+2" then mult = mult + 0.1 end
+        if player.equipment.legs == "ＭＫシャルワ+1" then mult = mult + 0.1 end
+        if player.equipment.main == "レガートダガー" then mult = mult + 0.05 end
+        --if player.equipment.main == "カルンウェナン" then mult = mult + 0.5 end
+        
+        if string.find(spell.name,'マーチ') then
+            if player.equipment.hands == 'ＡＤマンシェト+2' then 
+                mult = mult + 0.1
+            end
+            if player.equipment.range == 'ランゲレイク' then
+                mult = mult + 0.3
+            end
+        end
+        if string.find(spell.name,'メヌエット') then
+            if player.equipment.body == "ＡＤオングルリヌ+2" then 
+                mult = mult + 0.1 
+            end
+            if player.equipment.range == 'アポロフルート' then
+                mult = mult + 0.3
+            end
+        end
+        if string.find(spell.name,'マドリガル') then
+            if player.equipment.head == "ＡＤキャロ+2" then 
+                mult = mult + 0.1 
+            end
+            if player.equipment.range == 'カンタバンクホルン' then
+                mult = mult + 0.3
+            end
+        end
+        if string.find(spell.name,'プレリュード') then
+            if player.equipment.range == 'カンタバンクホルン' then
+                mult = mult + 0.3
+            end
+        end
+        if string.find(spell.name,'バラード') then
+            if player.equipment.legs == "ＡＤラングラヴ+2" then 
+                mult = mult + 0.1 
+            end
+        end
+        if string.find(spell.name,'スケルツォ') then
+            if player.equipment.feet == "ＡＤコテュルヌ+2" then 
+                mult = mult + 0.1 
+            end
+        end
+        if buffactive['トルバドゥール'] then
+            mult = mult*2
+            windower.add_to_chat( 8, 'mult '..mult..' '..buffactive['トルバドゥール'] )
+        end
+        
+        if string.find(spell.name,'スケルツォ') and buffactive['ソウルボイス'] then
+            mult = mult*2
+            windower.add_to_chat( 8, 'mult '..mult..' '..buffactive['ソウルボイス'] )
+        elseif string.find(spell.name,'スケルツォ') and buffactive['マルカート'] then
+            mult = mult*1.5
+            windower.add_to_chat( 8, 'mult '..mult..' '..buffactive['マルカート'] )
+        end
+        
+        return mult*120
+    else
+        return spell.duration
     end
-    if buffactive['トルバドゥール'] then
-		mult = mult*2
-		windower.add_to_chat( 8, 'mult '..mult..' '..buffactive['トルバドゥール'] )
-	end
-	
-	if string.find(spell.name,'スケルツォ') and buffactive['ソウルボイス'] then
-		mult = mult*2
-		windower.add_to_chat( 8, 'mult '..mult..' '..buffactive['ソウルボイス'] )
-	elseif string.find(spell.name,'スケルツォ') and buffactive['マルカート'] then
-		mult = mult*1.5
-		windower.add_to_chat( 8, 'mult '..mult..' '..buffactive['マルカート'] )
-	end
-	
-	return mult*120
 end
 
 function status_change(new,old)
@@ -635,41 +642,32 @@ function self_command(command)
         end
     end
 end
-
-function myGetProperties(t)
-    if not _settings.debug_mode then
-        return
-    end
+indent='                                                                         '
+function myGetProperties(t,comment,level)
     if type(t) == 'table' then
+        local spaces=string.sub(indent,1,level)
+        local spaces2=string.sub(indent,1,level+1)
         local key,val
+        add_to_chat(123, spaces..comment..'={')
         for key,val in pairs(t)
         do
             if type(val) == 'string' or type(val) == 'number' then
-                debug_mode_chat(' '..key..'="'..val..'"')
+                add_to_chat(123,spaces2..key..'="'..val..'"')
             elseif type(val) == 'boolean' then
-                if val then
-                    debug_mode_chat(' '..key..'=true')
-                else
-                    debug_mode_chat(' '..key..'=false')
-                end
+                add_to_chat(123,spaces2..key..'='..tostring(val))
             elseif type(val) == 'table' then
-                debug_mode_chat(' '..key..'={')
-                myGetProperties(val)
-                debug_mode_chat(' }')
+                myGetProperties(val, key,level+1)
             else 
-                debug_mode_chat(' '..key..' is '..type(val))
+                add_to_chat(123,space2..key..' is '..type(val))
             end
         end
+        add_to_chat(123,spaces..'}--end of'..comment)
     elseif type(t) == 'number' or type(t) == 'string' then
-        debug_mode_chat(' ="'..val..'"')
+        add_to_chat(123,spaces..comment..' ="'..val..'"')
     elseif type(val) == 'boolean' then
-        if val then
-            debug_mode_chat(' =true')
-        else
-            debug_mode_chat(' =false')
-        end
+        add_to_chat(123,spaces..comment..' ='..tostring(val))
     else
-        debug_mode_chat(' type is '..type(val))
+        add_to_chat(123,spaces..comment..' type is '..type(val))
     end
 end
 
