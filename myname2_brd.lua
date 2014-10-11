@@ -59,7 +59,7 @@ function get_sets()
     
     local mid_base = set_combine(pre_base,
         {
-            body="ブリオソジュスト",
+            body="ＢＲジュスト+1",
             left_ring="ダークリング",
             right_ring="ダークリング",
             back="リパルスマント",
@@ -252,7 +252,7 @@ function get_sets()
         main="レブレイルグ+2",
         sub="メフィテスグリップ",
         head="ビフラウンドリト",
-        body="ブリオソジュスト",
+        body="ＢＲジュスト+1",
         hands="ＡＤマンシェト+2",
         legs="ビフキャニオンズ",
         feet="ボクワスブーツ",
