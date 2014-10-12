@@ -217,6 +217,27 @@ function get_sets()
     sets.equip.obi = obi
     send_command('input /macro book 7;wait .2;input /macro set 1')
     
+    bindKeys(true)    
+end
+function bindKeys(f)
+    if f then
+        windower.add_to_chat(8,'bind key')
+        send_command('bind ^, gs c idle')
+        send_command('bind ^. gs c stunmode')
+        send_command('bind ^/ gs c elementmode')
+        send_command('bind ^[ gs c lock')
+        send_command('bind ^] gs c unlock')
+    else
+        windower.add_to_chat(123,'unbind key')
+        send_command('unbind ^, gs c idle')
+        send_command('unbind ^. gs c stunmode')
+        send_command('unbind ^/ gs c elementmode')
+        send_command('unbind ^[ gs c lock')
+        send_command('unbind ^] gs c unlock')
+    end
+end
+function file_unload()
+    bindKeys(false)
 end
 
 function precast(spell)
@@ -392,6 +413,78 @@ function self_command(command)
                 windower.add_to_chat(123,'unlock')
                 enable('main','sub','ammo','range')
             end
+        elseif args[1] == 'idle' then
+            if #args == 1 then
+                if sets.aftercast.idle == nil then
+                    windower.add_to_chat(123,'リフレ装備待機')
+                    sets.aftercast.idle = sets.equip.IDLE
+                elseif sets.aftercast.idle == sets.equip.IDLE then
+                    windower.add_to_chat(123,'カット装備待機')
+                    sets.aftercast.idle = sets.equip.IDLE_DEF
+                elseif sets.aftercast.idle == sets.equip.IDLE_DEF then
+                    windower.add_to_chat(123,'スタン装備待機')
+                    sets.aftercast.idle = sets.equip['スタン']
+                else
+                    windower.add_to_chat(123,'着替え待機なし')
+                    sets.aftercast.idle = nil
+                end
+            else
+                local param = args[2]:lower()
+                if param == 'none' then
+                    windower.add_to_chat(123,'着替え待機なし')
+                    sets.aftercast.idle = nil
+                elseif param == 'idle' then
+                    windower.add_to_chat(123,'リフレ装備待機')
+                    sets.aftercast.idle = sets.equip.IDLE
+                elseif param == 'idle_def' then
+                    windower.add_to_chat(123,'カット装備待機')
+                    sets.aftercast.idle = sets.equip.IDLE_DEF
+                elseif param == 'cure' then
+                   windower.add_to_chat(123,'set to idle_cure')
+                    sets.aftercast.idle = sets.precast['ケアル']
+                end
+                equip(sets.aftercast.idle)
+            end
+        elseif args[1] == 'stunmode' then
+            if #args == 1 then
+                if sets.precast['スタン'] == sets.equip['スタン'] then
+                    windower.add_to_chat(123,'スタン：リキャスト')
+                    sets.precast['スタン'] = sets.equip['スタンリキャ']
+                elseif sets.precast['スタン'] == sets.equip['スタンリキャ'] then
+                    windower.add_to_chat(123,'スタン：FC')
+                    sets.precast['スタン'] = sets.equip['スタンFC']
+                else
+                    windower.add_to_chat(123,'スタン：魔命')
+                    sets.precast['スタン'] = sets.equip['スタン'] 
+                end
+            else
+                if sets.equip[args[2]] ~= nil then
+                    windower.add_to_chat(123,'スタン：'..args[2])
+                    sets.precast['スタン'] = sets.equip[args[2]]
+                end
+            end
+        elseif args[1] == 'elementmode' then
+            if #args == 1 then
+                if sets.midcast.element.mode == '魔命' then
+                    windower.add_to_chat(123,'精霊：魔攻')
+                    sets.midcast.element.mode = '魔攻'
+                elseif sets.midcast.element.mode == '魔攻' then
+                    windower.add_to_chat(123,'精霊：FULL魔攻')
+                    sets.midcast.element.mode = 'FULL魔攻'
+                else
+                    windower.add_to_chat(123,'精霊：魔命')
+                    sets.midcast.element.mode = '魔命'
+                end
+            else
+                if args[2] == 'ACC' then
+                    sets.midcast.element.mode = '魔命'
+                elseif args[2] == 'ATTK' then
+                    sets.midcast.element.mode = '魔攻'
+                elseif args[2] == 'FULL' then
+                    sets.midcast.element.mode = 'FULL魔攻'
+                end
+                equip(sets.midcast.element[sets.midcast.element.mode])
+            end
         end
     end
     if #args >= 2 then
@@ -399,34 +492,6 @@ function self_command(command)
             if sets.equip[args[2]] ~= nil then
                 equip(sets.equip[args[2]])
             end
-        elseif args[1] == 'stunmode' then
-            if sets.equip[args[2]] ~= nil then
-                sets.precast['スタン'] = sets.equip[args[2]]
-            end
-        elseif args[1] == 'elementmode' then
-            if args[2] == 'ACC' then
-                sets.midcast.element.mode = '魔命'
-            elseif args[2] == 'ATTK' then
-                sets.midcast.element.mode = '魔攻'
-            elseif args[2] == 'FULL' then
-                sets.midcast.element.mode = 'FULL魔攻'
-            end
-            equip(sets.midcast.element[sets.midcast.element.mode])
-        elseif args[1] == 'idle' then
-            local param = args[2]:lower()
-            if param == 'none' then
-                sets.aftercast.idle = nil
-            elseif param == 'idle' then
-               windower.add_to_chat(123,'set to idle')
-             sets.aftercast.idle = sets.equip.IDLE
-            elseif param == 'idle_def' then
-               windower.add_to_chat(123,'set to idle_def')
-                sets.aftercast.idle = sets.equip.IDLE_DEF
-            elseif param == 'cure' then
-               windower.add_to_chat(123,'set to idle_cure')
-                sets.aftercast.idle = sets.precast['ケアル']
-            end
-            equip(sets.aftercast.idle)
         end
     end
 end

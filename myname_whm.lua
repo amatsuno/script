@@ -214,8 +214,26 @@ function get_sets()
     
 
     send_command('input /macro book 2;wait .2;input /macro set 1')
+    bindKeys(true)    
     
 end
+function bindKeys(f)
+    if f then
+        windower.add_to_chat(8,'bind key')
+        send_command('bind ^, gs c idle')
+        send_command('bind ^[ gs c lock')
+        send_command('bind ^] gs c unlock')
+    else
+        windower.add_to_chat(123,'unbind key')
+        send_command('unbind ^,')
+        send_command('unbind ^[')
+        send_command('unbind ^]')
+    end
+end
+function file_unload()
+    bindKeys(false)
+end
+
 function pretarget(spell)
 end
 function precast(spell)
@@ -355,25 +373,54 @@ function buff_change(buff, gain)
     end
 end
 
---コマンド用今のところ↓の３つ
+
 function self_command(command)
     local args = windower.from_shift_jis(command):split(' ')
     if #args >= 1 then
         if args[1] == 'lock' then
-            if #args >= 2 then
-                windower.add_to_chat(123,'lock '..args[2])
-                disable(args[2])
-            else
+            if #args == 1 then
                 windower.add_to_chat(123,'lock')
                 disable('main','sub','ammo','range')
+            else
+                windower.add_to_chat(123,'lock '..args[2])
+                disable(args[2])
             end
         elseif args[1] == 'unlock' then
-            if #args >= 2 then
-                windower.add_to_chat(123,'unlock '..args[2])
-                enable(args[2])
-            else
+            if #args == 1 then
                 windower.add_to_chat(123,'unlock')
                 enable('main','sub','ammo','range')
+            else
+                windower.add_to_chat(123,'unlock '..args[2])
+                enable(args[2])
+            end
+        elseif args[1] == 'idle' then
+            if #args == 1 then
+                if sets.aftercast.idle == nil then
+                    windower.add_to_chat(123,'リフレ装備待機')
+                    sets.aftercast.idle = sets.equip.IDLE
+                elseif sets.aftercast.idle == sets.equip.IDLE then
+                    windower.add_to_chat(123,'カット装備待機')
+                    sets.aftercast.idle = sets.equip.IDLE_DEF
+                else
+                    windower.add_to_chat(123,'着替え待機なし')
+                    sets.aftercast.idle = nil
+                end
+            else
+                local param = args[2]:lower()
+                if param == 'none' then
+                    windower.add_to_chat(123,'着替え待機なし')
+                    sets.aftercast.idle = nil
+                elseif param == 'idle' then
+                    windower.add_to_chat(123,'リフレ装備待機')
+                    sets.aftercast.idle = sets.equip.IDLE
+                elseif param == 'idle_def' then
+                    windower.add_to_chat(123,'カット装備待機')
+                    sets.aftercast.idle = sets.equip.IDLE_DEF
+                elseif param == 'cure' then
+                   windower.add_to_chat(123,'set to idle_cure')
+                    sets.aftercast.idle = sets.precast['ケアル']
+                end
+                equip(sets.aftercast.idle)
             end
         end
     end
@@ -382,21 +429,6 @@ function self_command(command)
             if sets.equip[args[2]] ~= nil then
                 equip(sets.equip[args[2]])
             end
-        elseif args[1] == 'idle' then
-            local param = args[2]:lower()
-            if param == 'none' then
-                sets.aftercast.idle = nil
-            elseif param == 'idle' then
-               windower.add_to_chat(123,'set to idle')
-             sets.aftercast.idle = sets.equip.IDLE
-            elseif param == 'idle_def' then
-               windower.add_to_chat(123,'set to idle_def')
-                sets.aftercast.idle = sets.equip.IDLE_DEF
-            elseif param == 'cure' then
-               windower.add_to_chat(123,'set to idle_cure')
-                sets.aftercast.idle = sets.precast['ケアル']
-            end
-            equip(sets.aftercast.idle)
         end
         
     end

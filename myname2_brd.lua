@@ -265,6 +265,8 @@ function get_sets()
         back="ラプソドスケープ",
     }
     local finale = bard_acc
+    --下地歌用楽器
+    local basesong={range="テルパンダー",}
     
 --属性帯
     local obi = {}
@@ -329,6 +331,7 @@ function get_sets()
     sets.precast.FC.magic['火'] = pre_magic_fire
     sets.precast.FC.magic['氷'] = pre_magic_base
     sets.midcast = {}
+    sets.midcast.basesong=false
     sets.midcast['強化魔法'] = enhance
     sets.midcast['弱体魔法'] = enfeebling
     sets.midcast['神聖魔法'] = divine
@@ -363,14 +366,35 @@ function get_sets()
     sets.equip = {}
     sets.equip['IDLE'] = idle
     sets.equip['IDLE_DEF'] = idle_def
+    sets.equip['BASESONG'] = basesong
     sets.equip.obi = obi
     
     send_command('input /macro book 6;wait .2;input /macro set 1')
+    
+    bindKeys(true)    
     --歌残り時間監視タイマー
 	timer_reg = {}
     
 end
-
+function bindKeys(f)
+    if f then
+        windower.add_to_chat(8,'bind key')
+        send_command('bind ^, gs c idle')
+        send_command('bind ^[ gs c lock')
+        send_command('bind ^] gs c unlock')
+        send_command('bind ^u gs c basesong')
+    else
+        windower.add_to_chat(123,'unbind key')
+        send_command('unbind ^, gs c idle')
+        send_command('unbind ^[ gs c lock')
+        send_command('unbind ^] gs c unlock')
+        send_command('unbind ^u')
+        
+    end
+end
+function file_unload()
+    bindKeys(false)
+end
 function pretarget(spell)
     if spell.type == 'BardSong' 
         and spell.target.type 
@@ -513,6 +537,12 @@ function set_song(spell)
         set_equip = sets.midcast['other']
     else
         set_equip = sets.midcast['敵歌']
+    end
+    if sets.midcast.basesong then
+        if spell.target.type ~= 'MONSTER' and not spell.name:find('マーチ') then
+            set_equip = set_combine(set_equip, sets.equip.BASESONG)
+        end
+        sets.midcast.basesong = false
     end
     return set_equip
 end
@@ -676,11 +706,58 @@ function self_command(command)
     local args = windower.from_shift_jis(command):split(' ')
     if #args >= 1 then
         if args[1] == 'lock' then
-            windower.add_to_chat(123,'lock')
-            disable('main','sub','range','ammo')
+            if #args >= 2 then
+                windower.add_to_chat(123,'lock '..args[2])
+                disable(args[2])
+            else
+                windower.add_to_chat(123,'lock')
+                disable('main','sub','ammo','range')
+            end
         elseif args[1] == 'unlock' then
-            windower.add_to_chat(123,'unlock')
-            enable('main','sub','range','ammo')
+            if #args >= 2 then
+                windower.add_to_chat(123,'unlock '..args[2])
+                enable(args[2])
+            else
+                windower.add_to_chat(123,'unlock')
+                enable('main','sub','ammo','range')
+            end
+        elseif args[1] == 'idle' then
+            if #args == 1 then
+                if sets.aftercast.idle == nil then
+                    windower.add_to_chat(123,'リフレ装備待機')
+                    sets.aftercast.idle = sets.equip.IDLE
+                elseif sets.aftercast.idle == sets.equip.IDLE then
+                    windower.add_to_chat(123,'カット装備待機')
+                    sets.aftercast.idle = sets.equip.IDLE_DEF
+                else
+                    windower.add_to_chat(123,'着替え待機なし')
+                    sets.aftercast.idle = nil
+                end
+            else
+                local param = args[2]:lower()
+                if param == 'none' then
+                    windower.add_to_chat(123,'着替え待機なし')
+                    sets.aftercast.idle = nil
+                elseif param == 'idle' then
+                    windower.add_to_chat(123,'リフレ装備待機')
+                    sets.aftercast.idle = sets.equip.IDLE
+                elseif param == 'idle_def' then
+                    windower.add_to_chat(123,'カット装備待機')
+                    sets.aftercast.idle = sets.equip.IDLE_DEF
+                elseif param == 'cure' then
+                   windower.add_to_chat(123,'set to idle_cure')
+                    sets.aftercast.idle = sets.precast['ケアル']
+                end
+                equip(sets.aftercast.idle)
+            end
+        elseif args[1] == 'basesong' then
+            if sets.midcast.basesong then
+                windower.add_to_chat(123,'通常歌に戻します')
+                sets.midcast.basesong=false
+            else
+                windower.add_to_chat(123,'次の歌を下地歌にします')
+                sets.midcast.basesong=true
+            end
         end
     end
     if #args >= 2 then
@@ -688,21 +765,6 @@ function self_command(command)
             if sets.equip[args[2]] ~= nil then
                 equip(sets.equip[args[2]])
             end
-        elseif args[1] == 'idle' then
-            local param = args[2]:lower()
-            if param == 'none' then
-                sets.aftercast.idle = nil
-            elseif param == 'idle' then
-               windower.add_to_chat(123,'set to idle')
-             sets.aftercast.idle = sets.equip.IDLE
-            elseif param == 'idle_def' then
-               windower.add_to_chat(123,'set to idle_def')
-                sets.aftercast.idle = sets.equip.IDLE_DEF
-            elseif param == 'cure' then
-               windower.add_to_chat(123,'set to idle_cure')
-                sets.aftercast.idle = sets.precast['ケアル']
-            end
-            equip(sets.aftercast.idle)
         end
     end
 end
