@@ -79,8 +79,8 @@ function get_sets()
         feet="ＢＩスリッパー+1",
         neck="ウィンドトルク",
         waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
+        left_ear="エンチャンピアス+1",
+        right_ear="ロケイシャスピアス",
         left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
@@ -96,8 +96,8 @@ function get_sets()
         feet="ブリオソスリッパー",
         neck="アエドマティネ",
         waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
+        left_ear="エンチャンピアス+1",
+        right_ear="ロケイシャスピアス",
         left_ring="守りの指輪",
         right_ring="ダークリング",
         back="チェビオットケープ",
@@ -135,7 +135,16 @@ function get_sets()
     local otherSongs = set_combine(buffsong_base,
         {legs="ＭＫシャルワ+1",})
     --下地歌用楽器
-    local basesong={range="ダウルダヴラ",}
+    local basesong={
+        range="ダウルダヴラ",
+        neck="オルンミラトルク",
+        head="ナティラハット",
+        hands="ＧＥゲージ+1",
+        legs="ＡＤラングラヴ+2",
+        feet={ name="ＧＥガロッシュ+1", augments={'Phys. dmg. taken -4%','Song recast delay -3',}},
+        back="スイスケープ+1",
+        waist="ニヌルタサッシュ",
+    }
         
     --強化
     local enhance = {
@@ -153,7 +162,7 @@ function get_sets()
         feet="ＧＥガロッシュ+1",
         neck="黄昏の光輪",
         waist="アエドベルト",
-        left_ear="アエドピアス",
+        left_ear="エンチャンピアス+1",
         right_ear="ロケイシャスピアス",
         left_ring="守りの指輪",
         right_ring="ダークリング",
@@ -317,12 +326,14 @@ function bindKeys(f)
         send_command('bind ^[ gs c lock')
         send_command('bind ^] gs c unlock')
         send_command('bind ^u gs c basesong')
+        send_command('bind ^o gs c pp')
     else
         windower.add_to_chat(123,'unbind key')
         send_command('unbind ^,')
         send_command('unbind ^[')
         send_command('unbind ^]')
         send_command('unbind ^u')
+        send_command('unbind ^o')
     end
 end
 function file_unload()
@@ -698,6 +709,10 @@ function self_command(command)
                 windower.add_to_chat(123,'次の歌を下地歌にします')
                 sets.midcast.basesong=true
             end
+        elseif args[1] == 'pp' then
+            if not buffactive['ピアニッシモ'] then
+                my_send_command('input /ja ピアニッシモ <me>')
+            end
         end
     end
     if #args >= 2 then
@@ -757,4 +772,7 @@ function debug_mode_chat(message)
     if _settings.debug_mode then
         windower.add_to_chat(8,"GearSwap (Debug Mode): "..tostring(message))
     end
+end
+function my_send_command(cmd)
+    send_command(windower.to_shift_jis(cmd))
 end

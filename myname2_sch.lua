@@ -227,6 +227,7 @@ function bindKeys(f)
         send_command('bind ^/ gs c elementmode')
         send_command('bind ^[ gs c lock')
         send_command('bind ^] gs c unlock')
+        send_command('bind ^q gs c addendum')
     else
         windower.add_to_chat(123,'unbind key')
         send_command('unbind ^, gs c idle')
@@ -234,6 +235,7 @@ function bindKeys(f)
         send_command('unbind ^/ gs c elementmode')
         send_command('unbind ^[ gs c lock')
         send_command('unbind ^] gs c unlock')
+        send_command('unbind ^q')
     end
 end
 function file_unload()
@@ -484,6 +486,26 @@ function self_command(command)
                     sets.midcast.element.mode = 'FULL魔攻'
                 end
                 equip(sets.midcast.element[sets.midcast.element.mode])
+            end
+        elseif args[1] == 'arts' then
+            if #args == 1 then
+                if buffactive['白のグリモア'] then
+                    my_send_command('input /ja 黒のグリモア <me>')
+                else
+                    my_send_command('input /ja 白のグリモア <me>')
+                end
+            else
+                if args[2] == '白' or args[2] == '黒' then
+                    my_send_command('input /ja '..args[2]..'のグリモア <me>')
+                end
+            end
+        elseif args[1] == 'addendum' then
+            if buffactive['白のグリモア'] then
+                my_send_command('input /ja 白の補遺 <me>')
+            elseif buffactive['黒のグリモア'] then
+                my_send_command('input /ja 黒の補遺 <me>')
+            else
+                windower.add_to_chat(8, '------グリモアがかかってない！！---------')
             end
         end
     end

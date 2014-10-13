@@ -284,7 +284,6 @@ function bindKeys(f)
         windower.add_to_chat(8,'bind key')
         send_command('bind ^y gs c treasure')
         send_command('bind ^, gs c idle')
-        send_command('bind ^. gs c stunmode')
         send_command('bind ^/ gs c elementmode')
         send_command('bind ^[ gs c lock')
         send_command('bind ^] gs c unlock')
@@ -292,7 +291,6 @@ function bindKeys(f)
         windower.add_to_chat(123,'unbind key')
         send_command('unbind ^y')
         send_command('unbind ^,')
-        send_command('unbind ^.')
         send_command('unbind ^/')
         send_command('unbind ^[')
         send_command('unbind ^]')
@@ -483,7 +481,7 @@ function self_command(command)
                 disable(args[2])
             end
         elseif args[1] == 'unlock' then
-            if #args == 2 then
+            if #args == 1 then
                 windower.add_to_chat(123,'unlock')
                 enable('main','sub','ammo','range')
             else
@@ -492,11 +490,11 @@ function self_command(command)
             end
         elseif args[1] == 'elementmode' then
             if #args == 1 then
-                if sets.midcast.element.mode == '魔命' then
+                if sets.midcast.element.mode == 'ACC' then
                     windower.add_to_chat(123,'精霊：魔攻')
                     sets.midcast.element.mode = 'ATTK'
                     sets.midcast['神聖魔法'] = sets.midcast.element['ATTK']
-                elseif sets.midcast.element.mode == '魔攻' then
+                elseif sets.midcast.element.mode == 'ATTK' then
                     windower.add_to_chat(123,'精霊：FULL魔攻')
                     sets.midcast.element.mode = 'FULL'
                     sets.midcast['神聖魔法'] = sets.midcast.element['FULL']
@@ -526,9 +524,6 @@ function self_command(command)
                 elseif sets.aftercast.idle == sets.equip.IDLE then
                     windower.add_to_chat(123,'カット装備待機')
                     sets.aftercast.idle = sets.equip.IDLE_DEF
-                elseif sets.aftercast.idle == sets.equip.IDLE_DEF then
-                    windower.add_to_chat(123,'スタン装備待機')
-                    sets.aftercast.idle = sets.equip['スタン']
                 else
                     windower.add_to_chat(123,'着替え待機なし')
                     sets.aftercast.idle = nil

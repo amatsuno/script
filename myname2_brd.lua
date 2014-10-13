@@ -251,6 +251,7 @@ function get_sets()
     local bard_acc = {
         main="レブレイルグ+2",
         sub="メフィテスグリップ",
+        range="エミネンフルート",
         head="ビフラウンドリト",
         body="ＢＲジュスト+1",
         hands="ＡＤマンシェト+2",
@@ -266,7 +267,10 @@ function get_sets()
     }
     local finale = bard_acc
     --下地歌用楽器
-    local basesong={range="テルパンダー",}
+    local basesong={
+        range="テルパンダー",
+        legs="ＡＤラングラヴ+2",
+    }
     
 --属性帯
     local obi = {}

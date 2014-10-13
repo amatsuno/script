@@ -54,7 +54,9 @@ function get_sets()
         body="アンフルローブ",
     }
     local mid_base = pre_base
-    
+    --闇属性
+    local pre_dark = pre_base
+    local mid_dark = mid_base
     --光属性
     local pre_light = set_combine(pre_base, {main="アーカI",})
     local mid_light = set_combine(mid_base, {main="アーカII",})
@@ -157,7 +159,9 @@ function get_sets()
           element_attk
         , {head="ＨＡハット+1",sub="ズーゾーウグリップ",neck="水影の首飾り",
            left_ear="怯懦の耳", right_ear="フリオミシピアス",ammo="ドシスタスラム",})
-    local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
+    --インパクト
+    local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
+    local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 --暗黒
     local dark_acc={
         main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
@@ -202,13 +206,29 @@ function get_sets()
     obi.buffs['火'] = 178 --熱波の陣
 --神聖
     local divine = enfeebling
-    
+    local equip_mp = {
+        head="ナティラハット",
+        body="アートシクジュバ",
+        hands="オトミグローブ",
+        legs="アートシクロップス",
+        feet="アートシクブーツ",
+        neck="エディネクラス",
+        waist="ニヌルタサッシュ",
+        left_ear="胡蝶のイヤリング",
+        right_ear="ロケイシャスピアス",
+        left_ring="ビフロストリング",
+        right_ring="サンゴマリング",
+        back="ベーンケープ",
+    }
+
+    sets.ws = {}
+    sets.ws['ミルキル'] = equip_mp
     sets.precast = {}
     sets.precast['ケアル']= pre_light
     sets.precast['スタン'] = stun
     sets.precast['連環計'] = renkan
     sets.precast['ヘイスト'] = pre_wind
-    sets.precast['インパクト'] = impact
+    sets.precast['インパクト'] = pre_impact
     sets.precast.FC = {}
     sets.precast.FC['光'] = pre_light
     sets.precast.FC['闇'] = pre_base
@@ -222,7 +242,7 @@ function get_sets()
     sets.precast.FC['FC_LOW'] = pre_low
     sets.midcast = {}
     sets.midcast['暗黒魔法'] = dark_acc
-    sets.midcast['インパクト'] = impact
+    sets.midcast['インパクト'] = mid_impact
     sets.midcast['強化魔法'] = enhance
     sets.midcast['バ系'] = baXX
     sets.midcast['弱体魔法'] = enfeebling
@@ -274,6 +294,7 @@ function bindKeys(f)
         send_command('bind ^/ gs c elementmode')
         send_command('bind ^[ gs c lock')
         send_command('bind ^] gs c unlock')
+        send_command('bind ^q gs c addendum')
     else
         windower.add_to_chat(123,'unbind key')
         send_command('unbind ^y')
@@ -282,6 +303,7 @@ function bindKeys(f)
         send_command('unbind ^/')
         send_command('unbind ^[')
         send_command('unbind ^]')
+        send_command('unbind ^q')
     end
 end
 function file_unload()
@@ -300,6 +322,10 @@ function precast(spell)
     elseif spell.type == 'JobAbility' then
         if spell.name == '連環計' then
             equip(sets.precast['連環計'])
+        end
+    elseif spell.type=="WeaponSkill" then
+        if sets.ws[spell.name] then
+            equip(sets.ws[spell.name])
         end
     elseif spell.type == 'Ninjutsu' then
         if spell.cast_time > 3 then
@@ -482,6 +508,10 @@ function status_change(new,old)
 
 end
 function buff_change(buff, gain)
+    windower.add_to_chat(123, buff..'->'..tostring(gain))
+end
+
+function buff_change(buff, gain)
     if buff == 'レイヴシンボル' then
         if gain then
             windower.add_to_chat(123,'オートリレズON')
@@ -591,6 +621,28 @@ function self_command(command)
                     sets.aftercast.idle = sets.precast['ケアル']
                 end
                 equip(sets.aftercast.idle)
+            end
+        elseif args[1] == 'arts' then
+            if #args == 1 then
+                if buffactive['白のグリモア'] or buffactive['白の補遺'] then
+                    windower.add_to_chat(123,'白のグリモア中→黒のグリモアへ')
+                    my_send_command('input /ja 黒のグリモア <me>')
+                else
+                    windower.add_to_chat(123,'黒のグリモア中→白のグリモアへ')
+                    my_send_command('input /ja 白のグリモア <me>')
+                end
+            else
+                if args[2] == '白' or args[2] == '黒' then
+                    my_send_command('input /ja '..args[2]..'のグリモア <me>')
+                end
+            end
+        elseif args[1] == 'addendum' then
+            if buffactive['白のグリモア'] then
+                my_send_command('input /ja 白の補遺 <me>')
+            elseif buffactive['黒のグリモア'] then
+                my_send_command('input /ja 黒の補遺 <me>')
+            else
+                windower.add_to_chat(8, '------グリモアがかかってない！！---------')
             end
         end
     end
