@@ -2,6 +2,7 @@ function get_sets()
     set_language('japanese')
 --着替えしたくないアビ・魔法のリスト
     ignore_spells = T{
+        'ディア','ディアII','ディアガ'
     }  
 --リキャストを監視したいアビ・魔法のリスト
     watch_recast = T{
@@ -10,23 +11,40 @@ function get_sets()
     
 --FC_BASE
     local pre_base ={
+        sub="ビビドストラップ",
+        ammo="インカントストーン",
+        head="ナティラハット",
+        body="アンフルローブ",
+        hands="ＧＥゲージ+1",
+        legs="アートシクロップス",
+        feet="ＰＤローファー+1",
+        waist="ニヌルタサッシュ",
+        neck="オルンミラトルク",
+        right_ear="エンチャンピアス+1",
+        left_ear="ロケイシャスピアス",
+        left_ring="プロリクスリング",
+        right_ring="サンゴマリング",
+        back="スイスケープ+1",
     }
     local pre_low = {
+        ammo="インカントストーン",
+        head="ナティラハット",
+        body="アンフルローブ",
     }
     
-    local pre_light = set_combine(pre_base, {})
+    local pre_light = set_combine(pre_base, {main="アーカI",})
     local pre_dark  = set_combine(pre_base, {})
     local pre_earth = set_combine(pre_base, {})
     local pre_water = set_combine(pre_base, {})
-    local pre_wind  = set_combine(pre_base, {})
+    local pre_wind  = set_combine(pre_base, {main="バユバタI",})
     local pre_fire  = set_combine(pre_base, {})
     local pre_ice   = set_combine(pre_base, {})
     local pre_thunder = set_combine(pre_base, {})
     local mid_base = pre_base
-    local mid_light = set_combine(mid_base, {})
+    local mid_light = set_combine(mid_base, {main="アーカII",})
     local mid_dark  = set_combine(mid_base, {})
     local mid_earth = set_combine(mid_base, {})
-    local mid_water = set_combine(mid_base, {})
+    local mid_water = set_combine(mid_base, {main="バユバタII",})
     local mid_wind  = set_combine(mid_base, {})
     local mid_fire  = set_combine(mid_base, {})
     local mid_ice   = set_combine(mid_base, {})
@@ -35,12 +53,21 @@ function get_sets()
 
 --強化
     local enhance = {
+        main="麒麟棍",
+        sub="ビビドストラップ",
+        head="ウムシクハット",
+        body="ＰＤガウン+1",
+        legs="ＡＣパンツ+1",
+        feet="ルベウスブーツ",
+        neck="コロッサストルク",
+        waist="オリンポスサッシュ",
+        back="慈悲の羽衣",
     }
     --強化魔法詠唱時間－装備
-    local pre_enhance = {}
+    local pre_enhance = {waist="ジーゲルサッシュ",}
     
-    local pre_stoneskin = set_combine(pre_earth, {})
-    local mid_stoneskin = set_combine(enhance, {})
+    local pre_stoneskin = set_combine(pre_earth, {head="ウムシクハット",waist="ジーゲルサッシュ",})
+    local mid_stoneskin = set_combine(enhance, {waist="ジーゲルサッシュ",})
 --CURE
     local cure ={
     }
@@ -227,7 +254,7 @@ function midcast(spell)
         if buffactive['ナイチンゲール'] then
             --何もしない
         else
-            set_equip = set_song(spell)
+            set_equip =set_song(spell)
         end
     elseif spell.type == 'Ninjutsu' then
         if spell.cast_time > 3 then
@@ -299,7 +326,7 @@ function aftercast(spell)
       equip(sets.aftercast.idle)
     end
     sets.aftercast.skip = false
-    --myGetProperties(spell,'splell', 0)
+    myGetProperties(spell,'splell', 0)
     if watch_recast:contains(spell.name) and not spell.interrupted then
         my_send_command('@wait 0.1;gs c recast '..spell.id..' '..spell.name)
     end
