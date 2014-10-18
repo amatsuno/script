@@ -3,6 +3,10 @@ function get_sets()
     ignore_spells = T{
         'ディア','ディアII','ディアガ'
     }
+    watch_recast = T{
+        'スタン','ドレイン','アスピル'
+    }
+    
 --待機装備
     local idle = {
         main="アーススタッフ",
@@ -89,7 +93,7 @@ function get_sets()
     local stun = {
             main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="ビビドストラップ",
-        ammo="インカントストーン",
+        range="オウレオール",
         head="ＰＤボード+1",
         body="ヴァニアコタルディ",
         hands="ＨＡカフス+1",
@@ -97,11 +101,12 @@ function get_sets()
         feet="ＰＤローファー+1",
         neck="オルンミラトルク",
         waist="ニヌルタサッシュ",
-        left_ear="ロケイシャスピアス",
-        right_ear="エンチャンピアス+1",
+        left_ear="ライストームピアス",
+        right_ear="サイストームピアス",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
         back="スイスケープ+1",
+        
     }
     local stun_fc = set_combine(stun, {body="アンフルローブ",hands="ＧＥゲージ+1",})
     local stun_recast = set_combine(stun,{hands="ＧＥゲージ+1",})
@@ -158,7 +163,8 @@ function get_sets()
     local element_fullattk = set_combine(
           element_attk
         , {head="ＨＡハット+1",sub="ズーゾーウグリップ",neck="水影の首飾り",
-           left_ear="怯懦の耳", right_ear="フリオミシピアス",ammo="ドシスタスラム",})
+           left_ear="怯懦の耳", right_ear="フリオミシピアス",right_ring="女王の指輪",
+           ammo="ドシスタスラム",})
     --インパクト
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
@@ -284,6 +290,11 @@ function get_sets()
     send_command('input /macro book 6;wait .2;input /macro set 1')
 
     bindKeys(true)    
+
+    debugf = file.new('data/logs/debug.log',true)
+    if not debugf:exists() then
+        debugf:create()
+    end
 end
 function bindKeys(f)
     if f then
@@ -492,6 +503,10 @@ function aftercast(spell)
         equip(sets.aftercast.idle)
     end
     --windower.add_to_chat(123,'after cast name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
+    myGetProperties(spell,'splell', 0)
+    if watch_recast:contains(spell.name) and not spell.interrupted then
+        my_send_command('@wait 0.1;gs c recast '..spell.id..' '..spell.name)
+    end
 end
 
 function status_change(new,old)
@@ -651,41 +666,67 @@ function self_command(command)
             if sets.equip[args[2]] ~= nil then
                 equip(sets.equip[args[2]])
             end
+        elseif args[1] == 'recast' then
+            local spellid = tonumber(args[2])
+            local spellname = " "
+            if #args[1] >= 3 then
+                spellname = args[3]
+            end
+            showrecast(spellid, spellname)
         end
+        
     end
 end
-indent='                                                                         '
+function showrecast(spellid, spellname)
+    local recast = windower.ffxi.get_spell_recasts()
+    windower.add_to_chat(123,'recast::'..spellname..'('..spellid..')='..recast[spellid] / 60)
+    my_send_command('@wait '..tostring(recast[spellid] / 60)..';input /echo '..spellname..'詠唱可能')
+end
+
+--indent='                                                                         '
+indent='\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t'
 function myGetProperties(t,comment,level)
+    if not _settings.debug_mode then return end
     if type(t) == 'table' then
         local spaces=string.sub(indent,1,level)
         local spaces2=string.sub(indent,1,level+1)
         local key,val
-        add_to_chat(123, spaces..comment..'={')
+        local f,err
+        f, err = debugf:append(spaces..comment..'={\n')
+        if not f then
+            add_to_chat(123, 'file.append error '..err)
+        end
         for key,val in pairs(t)
         do
             if type(val) == 'string' or type(val) == 'number' then
-                add_to_chat(123,spaces2..key..'="'..val..'"')
+               debugf:append(spaces2..key..'="'..val..'"\n')
             elseif type(val) == 'boolean' then
-                add_to_chat(123,spaces2..key..'='..tostring(val))
+                debugf:append(spaces2..key..'='..tostring(val)..'\n')
             elseif type(val) == 'table' then
                 myGetProperties(val, key,level+1)
             else 
-                add_to_chat(123,space2..key..' is '..type(val))
+                debugf:append(space2..key..' is '..type(val)..'\n')
             end
         end
-        add_to_chat(123,spaces..'}--end of'..comment)
+        debugf:append(spaces..'}--end of'..comment..'\n')
     elseif type(t) == 'number' or type(t) == 'string' then
-        add_to_chat(123,spaces..comment..' ="'..val..'"')
+        debugf:append(spaces..comment..' ="'..val..'"\n')
     elseif type(val) == 'boolean' then
-        add_to_chat(123,spaces..comment..' ='..tostring(val))
+        debugf:append(spaces..comment..' ='..tostring(val)..'\n')
     else
-        add_to_chat(123,spaces..comment..' type is '..type(val))
+        debugf:append(spaces..comment..' type is '..type(val)..'\n')
     end
 end
 function my_send_command(cmd)
     send_command(windower.to_shift_jis(cmd))
 end
 
+windower.register_event('zone change',function (...)
+    local l ={...}
+    for i,v in pairs(l) do
+        windower.add_to_chat(8, 'key='..tostring(i)..'::v='..tostring(v))
+    end
+end)
 -----------------------------------------------------------------------------------
 --Name: debug_mode_chat(message)
 --Desc: Checks _settings.debug_mode and outputs the message if necessary

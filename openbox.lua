@@ -29,6 +29,17 @@ function get_sets()
         'グラムクの箱','グラムクの大箱',
     }
 end
+function precast(spell)
+    myGetProperties(spell,'precast::player',0)
+end
+
+function midcast(spell)
+    myGetProperties(spell,'midcast::player',0)
+end
+function aftercast(spell)
+    myGetProperties(spell,'aftercast::player',0)
+end
+
 _co_flag = false
 function countItems()
 --[[

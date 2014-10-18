@@ -553,6 +553,8 @@ function self_command(command)
                 sets.equip.treasure = true
                 windower.add_to_chat(8,tostring('トレハンON'))
             end
+        elseif args[1] == 'refresh' then
+            refresh_equip()
         end
     end
     if #args >= 2 then
@@ -563,6 +565,14 @@ function self_command(command)
         end
     end
 end
+function refresh_equip()
+    if player.equipment.back == 'メシストピンマント' then
+        disable('back')
+    else
+        enable('back')
+    end
+end
+
 indent='                                                                         '
 function myGetProperties(t,comment,level)
     if type(t) == 'table' then
@@ -604,6 +614,9 @@ function buff_change(buff, gain)
     end
 end
 
+windower.register_event('zone change',function (...)
+    my_send_command('@wait 10;gs c refresh')
+end)
 -----------------------------------------------------------------------------------
 --Name: debug_mode_chat(message)
 --Desc: Checks _settings.debug_mode and outputs the message if necessary

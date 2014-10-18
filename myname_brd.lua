@@ -318,6 +318,7 @@ function get_sets()
     --歌残り時間監視タイマー
 	timer_reg = {}
     
+    refresh_equip()
 end
 function bindKeys(f)
     if f then
@@ -713,6 +714,8 @@ function self_command(command)
             if not buffactive['ピアニッシモ'] then
                 my_send_command('input /ja ピアニッシモ <me>')
             end
+        elseif args[1] == 'refresh' then
+            refresh_equip()
         end
     end
     if #args >= 2 then
@@ -723,6 +726,20 @@ function self_command(command)
         end
     end
 end
+function refresh_equip()
+    if player.equipment.back == 'メシストピンマント' then
+        disable('back')
+    else
+        enable('back')
+    end
+    if player.inventory['フルームベルト'] or player.wardrobe['フルームベルト'] then
+        sets.equip['IDLE'].waist = "フルームベルト"
+        sets.equip['IDLE_DEF'].waist = "フルームベルト"
+        sets.equip['IDLE_DEFMG'].waist = "フルームベルト"
+        windower.add_to_chat(123,'待機装備：フルームベルト')
+    end
+end
+
 indent='                                                                         '
 function myGetProperties(t,comment,level)
     if type(t) == 'table' then
