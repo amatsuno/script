@@ -64,6 +64,7 @@ function get_sets()
         back="慈悲の羽衣",
     }
     --強化魔法詠唱時間－装備
+    --強化魔法専用の詠唱短縮装備（属性ごとの短縮装備とset_combineされる)
     local pre_enhance = {waist="ジーゲルサッシュ",}
     
     local pre_stoneskin = set_combine(pre_earth, {head="ウムシクハット",waist="ジーゲルサッシュ",})
@@ -81,9 +82,39 @@ function get_sets()
     local pre_cure = set_combine(pre_light, {})
 --弱体
     local enfeebling = {
+        main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
+        sub="メフィテスグリップ",
+        range="オウレオール",
+        head="アートシクハット",
+        body="ハゴンデスコート",
+        hands="ＨＡカフス+1",
+        legs="アートシクロップス",
+        feet="アートシクブーツ",
+        neck="ワイケトルク",
+        waist="オヴェイトロープ",
+        left_ear="ライストームピアス",
+        right_ear="サイストームピアス",
+        left_ring="メディアトルリング",
+        right_ring="サンゴマリング",
+        back="リフラクトケープ",
     }
 --精霊
     local element_acc={
+        main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
+        sub="メフィテスグリップ",
+        range="オウレオール",
+        head="アートシクハット",
+        body="アートシクジュバ",
+        hands="ＨＡカフス+1",
+        legs="アートシクロップス",
+        feet="アートシクブーツ",
+        neck="エディネクラス",
+        waist="山吹の帯",
+        left_ear="ライストームピアス",
+        right_ear="サイストームピアス",
+        left_ring="ストレンドゥリング",
+        right_ring="サンゴマリング",
+        back="ブックワームケープ",
     }
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
@@ -104,9 +135,25 @@ function get_sets()
     local divine = enfeebling
 --待機装備
     local idle = {
+        main="アーススタッフ",
+        sub="ビビドストラップ",
+        ammo="インカントストーン",
+        head="槌の髪飾り",
+        body="ＨＡコート+1",
+        hands="ＨＡカフス+1",
+        legs="ナレストルーズ",
+        feet="ヘラルドゲートル",
+        neck="黄昏の光輪",
+        left_ring="守りの指輪",
+        right_ring="ダークリング",
+        right_ear="胡蝶のイヤリング",
+        back="チェビオットケープ",
     }
     local idle_def = set_combine(idle, 
         {
+        head="ＨＡハット+1",
+        legs="ＨＡパンツ+1",
+        feet="ＨＡサボ+1",
         })
     local idle_defmg = set_combine(idel_def,
         {
@@ -129,6 +176,7 @@ function get_sets()
     sets.precast.FC.enhance = pre_enhance
     sets.midcast = {}
     sets.midcast['強化魔法'] = enhance
+    sets.midcast['精霊魔法'] = element_acc
     sets.midcast['弱体魔法'] = enfeebling
     sets.midcast['神聖魔法'] = divine
     sets.midcast['リジェネ'] = regen
@@ -155,7 +203,7 @@ function get_sets()
     sets.equip['IDLE_DEFMG'] = idle_defmg
     sets.equip.obi = obi
     --マクロブック、セット変更
-    send_command('input /macro book 1;wait .2;input /macro set 1')
+    send_command('input /macro book 6;wait .2;input /macro set 1')
     --キーバインド設定
     bindKeys(true)
 
@@ -258,7 +306,7 @@ function midcast(spell)
     if ignore_spells:contains(spell.name) then return end
     local set_equip = nil
     if spell.type == 'JobAbility' then
-    elseif spell.type == 'BardSong' or spell.target.type == 'MONSTER' then
+    elseif spell.type == 'BardSong' then
         if buffactive['ナイチンゲール'] then
             --何もしない
         else
@@ -295,7 +343,7 @@ function midcast(spell)
             if spell.name == 'インパクト' then
                 set_equip = sets.midcast['インパクト']
             elseif spell.cast_time > 3 then
-                equip(set_element(spell))
+                set_equip = set_element(spell)
             end
         elseif spell.skill=='弱体魔法' or
                spell.skill=='神聖魔法' then
@@ -322,7 +370,19 @@ end
 
 function set_element(spell)
     local set_equip = nil
-    set_equip = sets.midcast.RECAST[spell.element]
+    set_equip = sets.midcast['精霊魔法']
+    
+    if sets.equip.obi.weathers:contains(spell.element) then
+        --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
+        if world.weather_element == spell.element 
+            or world.day_element == spell.element
+            or buffactive[sets.equip.obi.buffs[spell.element]] then
+            if sets.equip.obi[spell.element] ~= nil then
+                set_equip = set_combine(set_equip, 
+                    sets.equip.obi[spell.element])
+            end
+         end
+    end
     return set_equip
 end
 function set_song(spell)
@@ -404,6 +464,29 @@ function self_command(command)
                 end
                 equip(sets.aftercast.idle)
             end
+        elseif args[1] == 'arts' then
+            if #args == 1 then
+                if buffactive['白のグリモア'] or buffactive['白の補遺'] then
+                    windower.add_to_chat(123,'白のグリモア中→黒のグリモアへ')
+                    my_send_command('input /ja 黒のグリモア <me>')
+                else
+                    windower.add_to_chat(123,'黒のグリモア中→白のグリモアへ')
+                    my_send_command('input /ja 白のグリモア <me>')
+                end
+            else
+                if args[2] == '白' or args[2] == '黒' then
+                    my_send_command('input /ja '..args[2]..'のグリモア <me>')
+                end
+            end
+        elseif args[1] == 'addendum' then
+            if buffactive['白のグリモア'] then
+                my_send_command('input /ja 白の補遺 <me>')
+            elseif buffactive['黒のグリモア'] then
+                my_send_command('input /ja 黒の補遺 <me>')
+            else
+                windower.add_to_chat(8, '------グリモアがかかってない！！---------')
+            end
+            
         end
     end
     if #args >= 2 then
@@ -454,4 +537,7 @@ function myGetProperties(t,comment,level)
     else
         debugf:append(spaces..comment..' type is '..type(val)..'\n')
     end
+end
+function my_send_command(cmd)
+    send_command(windower.to_shift_jis(cmd))
 end

@@ -36,7 +36,7 @@ function get_sets()
 --強化
     local enhance = {
     }
-    --強化魔法詠唱時間－装備
+    --強化魔法専用の詠唱短縮装備（属性ごとの短縮装備とset_combineされる)
     local pre_enhance = {}
     
     local pre_stoneskin = set_combine(pre_earth, {})
@@ -100,6 +100,7 @@ function get_sets()
     sets.midcast['強化魔法'] = enhance
     sets.midcast['弱体魔法'] = enfeebling
     sets.midcast['神聖魔法'] = divine
+    sets.midcast['精霊魔法'] = element_acc
     sets.midcast['リジェネ'] = regen
     sets.midcast['ケアル'] = cure
     sets.midcast['ヘイスト'] = mid_wind
@@ -227,7 +228,7 @@ function midcast(spell)
     if ignore_spells:contains(spell.name) then return end
     local set_equip = nil
     if spell.type == 'JobAbility' then
-    elseif spell.type == 'BardSong' or spell.target.type == 'MONSTER' then
+    elseif spell.type == 'BardSong' then
         if buffactive['ナイチンゲール'] then
             --何もしない
         else
@@ -264,7 +265,7 @@ function midcast(spell)
             if spell.name == 'インパクト' then
                 set_equip = sets.midcast['インパクト']
             elseif spell.cast_time > 3 then
-                equip(set_element(spell))
+                set_equip = set_element(spell)
             end
         elseif spell.skill=='弱体魔法' or
                spell.skill=='神聖魔法' then
@@ -291,7 +292,19 @@ end
 
 function set_element(spell)
     local set_equip = nil
-    set_equip = sets.midcast.RECAST[spell.element]
+    set_equip = sets.midcast['精霊魔法']
+    
+    if sets.equip.obi.weathers:contains(spell.element) then
+        --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
+        if world.weather_element == spell.element 
+            or world.day_element == spell.element
+            or buffactive[sets.equip.obi.buffs[spell.element]] then
+            if sets.equip.obi[spell.element] ~= nil then
+                set_equip = set_combine(set_equip, 
+                    sets.equip.obi[spell.element])
+            end
+         end
+    end
     return set_equip
 end
 function set_song(spell)
@@ -423,4 +436,7 @@ function myGetProperties(t,comment,level)
     else
         debugf:append(spaces..comment..' type is '..type(val)..'\n')
     end
+end
+function my_send_command(cmd)
+    send_command(windower.to_shift_jis(cmd))
 end
