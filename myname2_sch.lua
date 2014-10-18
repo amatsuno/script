@@ -158,9 +158,9 @@ function get_sets()
     }
     local idle_def = set_combine(idle, 
         {
-        head="ハゴンデスハット",
-        hands="ハゴンデスカフス",
-        legs="ハゴンデスパンツ",
+        head="ＨＡハット+1",
+        hands="ＨＡカフス+1",
+        legs="ＨＡパンツ+1",
         feet="ハゴンデスサボ",
         neck="黄昏の光輪",
         left_ring="ダークリング",
@@ -567,4 +567,7 @@ function debug_mode_chat(message)
     if _settings.debug_mode then
         windower.add_to_chat(8,"GearSwap (Debug Mode): "..tostring(message))
     end
+end
+function my_send_command(cmd)
+    send_command(windower.to_shift_jis(cmd))
 end

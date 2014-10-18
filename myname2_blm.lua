@@ -55,13 +55,14 @@ function get_sets()
     
 --stun
     local stun = {
-        main="アチニンスタッフ",
+        main="レブレイルグ+2",
         sub="ビビドストラップ",
+        ammo="インカントストーン",
         head="ナティラハット",
-        body="ヴァニアコタルディ",
-        hands="ハゴンデスカフス",
-        legs="アートシクロップス",
-        feet="アートシクブーツ",
+        body="ヘデラコタルディ",
+        hands="ＨＡカフス+1",
+        legs="ＯＶパンツ+1",
+        feet="ハゴンデスサボ",
         neck="エーシルトルク",
         waist="ニヌルタサッシュ",
         left_ear="ロケイシャスピアス",
@@ -81,13 +82,13 @@ function get_sets()
     }
 --弱体
     local enfeebling = {
-        main="アチニンスタッフ",
+        main="レブレイルグ+2",
         sub="メフィテスグリップ",
         range="オウレオール",
-        head="アートシクハット",
-        body="ハゴンデスコート",
-        hands="ハゴンデスカフス",
-        legs="アートシクロップス",
+        head="ＨＡハット+1",
+        body="ＨＡコート+1",
+        hands="ＨＡカフス+1",
+        legs="ＨＡパンツ+1",
         feet="アートシクブーツ",
         neck="ワイケトルク",
         waist="デモンリーサッシュ",
@@ -99,14 +100,14 @@ function get_sets()
     }
 --精霊
     local element_acc={
-    main="アチニンスタッフ",
-    head="ハゴンデスハット",
-    body="ハゴンデスコート",
+        main="レブレイルグ+2",
+    head="ＨＡハット+1",
+    body="ＨＡコート+1",
     hands="ハゴンデスカフス",
     legs="ハゴンデスパンツ",
     feet="ハゴンデスサボ",
     neck="エディネクラス",
-    waist="アスワングサッシュ",
+    waist="オティラサッシュ",
     left_ear="ライストームピアス",
     right_ear="サイストームピアス",
     left_ring="アクィロリング",
@@ -147,8 +148,8 @@ function get_sets()
 --待機装備
     local idle = {
         sub="ビビドストラップ",
-        head="ハゴンデスハット",
-        body="ハゴンデスコート",
+        head="ＨＡハット+1",
+        body="ＨＡコート+1",
         legs="ナレストルーズ",
         feet="ヘラルドゲートル",
         left_ear="胡蝶のイヤリング",
@@ -157,7 +158,8 @@ function get_sets()
         {
         main="アーススタッフ",
         neck="黄昏の光輪",
-        legs="ハゴンデスパンツ",
+        legs="ＨＡパンツ+1",
+        hands="ＨＡカフス+1",
         feet="ハゴンデスサボ",
         left_ring="ダークリング",
         right_ring="ダークリング",

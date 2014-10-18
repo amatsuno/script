@@ -109,7 +109,10 @@ function get_sets()
         
     }
     local stun_fc = set_combine(stun, {body="アンフルローブ",hands="ＧＥゲージ+1",})
-    local stun_recast = set_combine(stun,{hands="ＧＥゲージ+1",})
+    local stun_recast = set_combine(stun,
+        {hands="ＧＥゲージ+1",
+         left_ear="ロケイシャスピアス",
+         right_ear="エンチャンピアス+1",})
     
 --CURE
     local cure ={
@@ -280,7 +283,7 @@ function get_sets()
     sets.equip.treasure_spells = T{'ストーン'}
     sets.equip['スタン'] = stun
     sets.equip['スタンリキャ'] = stun_recast
-    sets.equip['スタンFC'] = stun_fc
+    --sets.equip['スタンFC'] = stun_fc
     sets.equip['強化魔法'] = enhance
     sets.equip['IDLE'] = idle
     sets.equip['IDLE_DEF'] = idle_def
@@ -571,9 +574,6 @@ function self_command(command)
                     windower.add_to_chat(123,'スタン：リキャスト')
                     sets.precast['スタン'] = sets.equip['スタンリキャ']
                 elseif sets.precast['スタン'] == sets.equip['スタンリキャ'] then
-                    windower.add_to_chat(123,'スタン：FC')
-                    sets.precast['スタン'] = sets.equip['スタンFC']
-                else
                     windower.add_to_chat(123,'スタン：魔命')
                     sets.precast['スタン'] = sets.equip['スタン'] 
                 end
