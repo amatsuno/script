@@ -68,8 +68,15 @@ function get_sets()
     
     local pre_stoneskin = set_combine(pre_earth, {head="ウムシクハット",waist="ジーゲルサッシュ",})
     local mid_stoneskin = set_combine(enhance, {waist="ジーゲルサッシュ",})
+
+    local regen = set_combine(enhance, {head="ＳＶボネット+2",})
+    
 --CURE
     local cure ={
+        main="アーカIV",
+        head="ＧＥカウビーン+1",
+        body="ＧＥブリオー+1",
+        hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
     }
     local pre_cure = set_combine(pre_light, {})
 --弱体
@@ -124,6 +131,7 @@ function get_sets()
     sets.midcast['強化魔法'] = enhance
     sets.midcast['弱体魔法'] = enfeebling
     sets.midcast['神聖魔法'] = divine
+    sets.midcast['リジェネ'] = regen
     sets.midcast['ケアル'] = cure
     sets.midcast['ヘイスト'] = mid_wind
     sets.midcast['ストンスキン'] = mid_stoneskin
@@ -276,6 +284,8 @@ function midcast(spell)
             if string.startswith(spell.name, 'バ')
                or spell.name == 'ファランクス' then
                 set_equip = sets.midcast['強化魔法']
+            elseif spell.name:startswith('リジェネ') then
+                set_equip = sets.midcast['リジェネ']
             elseif spell.name == 'ストンスキン' then
                 set_equip = sets.midcast['ストンスキン']
             elseif  spell.cast_time > 3 then
