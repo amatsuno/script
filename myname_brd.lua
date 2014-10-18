@@ -414,11 +414,9 @@ function midcast(spell)
     if ignore_spells:contains(spell.name) then return end
     local sets_equip = nil
     if spell.type == 'JobAbility' then
-    elseif spell.type == 'BardSong' or spell.target.type == 'MONSTER' then
+    elseif spell.type == 'BardSong' then
         if buffactive['ナイチンゲール'] then
             --何もしない
-        elseif spell.target.type == 'MONSTER' then
-            equip(set_song(spell))
         else
             equip(set_song(spell))
         end
