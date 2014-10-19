@@ -72,7 +72,7 @@ function get_sets()
 --ピーアン
     local Paeon = {
         range="ダウルダヴラ",
-        head="ＡＤキャロ+2",
+        head="ＢＩラウンドリト+1",
         body="ＭＫジュバ+1",
         hands="ＧＥゲージ+1",
         legs="ゲンデサスパッツ",
@@ -83,16 +83,17 @@ function get_sets()
         right_ear="ロケイシャスピアス",
         left_ring="守りの指輪",
         right_ring="ダークリング",
-        back="チェビオットケープ",
+        back="ラプソドスケープ",
 }
 --味方うたの基本パターン
     local buffsong_base = {
         main="レガートダガー",
+        sub="玄武盾",
         range="ギャッラルホルン",
-        head="ＡＤキャロ+2",
+        head="ＢＩラウンドリト+1",
         body="ＡＤオングルリヌ+2",
-        hands="ＡＤマンシェト+2",
-        legs="ＡＤラングラヴ+2",
+        hands="ＧＥゲージ+1",
+        legs="ＢＩキャニオンズ+1",
         feet="ブリオソスリッパー",
         neck="アエドマティネ",
         waist="アエドベルト",
@@ -100,25 +101,25 @@ function get_sets()
         right_ear="ロケイシャスピアス",
         left_ring="守りの指輪",
         right_ring="ダークリング",
-        back="チェビオットケープ",
+        back="ラプソドスケープ",
     }
 --マーチ
-    local march = buffsong_base
+    local march = set_combine(buffsong_base, {hands="ＡＤマンシェト+2",})
 --メヌ
-    local  minuet = buffsong_base
+    local  minuet = set_combine(buffsong_base, {body="ＡＤオングルリヌ+2",})
 
 --マド
-    local Madrigal = buffsong_base
+    local Madrigal = set_combine(buffsong_base, {head="ＡＤキャロ+2",})
 --プレ
     local Prelude = set_combine(buffsong_base,
         {legs="ＭＫシャルワ+1",})
 --バラ
-    local Ballad = buffsong_base
+    local Ballad = set_combine(buffsong_base, {legs="ＡＤラングラヴ+2",})
     local Ballad1 = Ballad
     
 --スケルツォ
     local Scherzo = set_combine(buffsong_base,
-        {legs="ＭＫシャルワ+1",})
+        {legs="ＭＫシャルワ+1",feet="ＡＤコテュルヌ+2",})
 --マズルカ
     local mazurka = {
         main="バユバタII",
@@ -130,7 +131,7 @@ function get_sets()
         neck="アエドマティネ",
         left_ring="守りの指輪",
         right_ring="ダークリング",
-        back="チェビオットケープ",
+        back="ラプソドスケープ",
     }
     local otherSongs = set_combine(buffsong_base,
         {legs="ＭＫシャルワ+1",})
@@ -166,7 +167,7 @@ function get_sets()
         right_ear="ロケイシャスピアス",
         left_ring="守りの指輪",
         right_ring="ダークリング",
-        back="チェビオットケープ",
+        back="ラプソドスケープ",
     }
 --弱体
     local enfeebling = {
@@ -236,7 +237,7 @@ function get_sets()
         right_ear="驕慢の耳",
         left_ring="守りの指輪",
         right_ring="ダークリング",
-        back="チェビオットケープ",
+        back="ラプソドスケープ",
         });
     local idle_def2 = set_combine(idle_def, 
         {
