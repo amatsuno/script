@@ -56,6 +56,10 @@ function get_sets()
     }
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
+--stun
+    local stun = {
+    }
+    
 --属性帯
     local obi = {}
     --所持している属性帯の属性を列挙
@@ -82,6 +86,7 @@ function get_sets()
         })
     sets.precast = {}
     sets.precast['ケアル']= pre_cure
+    sets.precast['スタン'] = stun
     sets.precast['ヘイスト'] = pre_wind
     sets.precast['ストンスキン'] = pre_stoneskin
     sets.precast.FC = {}
@@ -103,6 +108,7 @@ function get_sets()
     sets.midcast['精霊魔法'] = element_acc
     sets.midcast['リジェネ'] = regen
     sets.midcast['ケアル'] = cure
+    sets.midcast['スタン'] = stun
     sets.midcast['ヘイスト'] = mid_wind
     sets.midcast['ストンスキン'] = mid_stoneskin
     sets.midcast['インパクト'] = mid_impact
