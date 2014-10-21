@@ -91,7 +91,7 @@ function get_sets()
         sub="メフィテスグリップ",
         range="オウレオール",
         head="アートシクハット",
-        body="ハゴンデスコート",
+        body="イスキミアジャブル",
         hands="ＨＡカフス+1",
         legs="アートシクロップス",
         feet="アートシクブーツ",
@@ -146,8 +146,8 @@ function get_sets()
     local element_fullattk = set_combine(
           element_attk
         , { head={ name="ＨＡハット+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -4%','"Mag.Atk.Bns."+25',}},
-            sub="ズーゾーウグリップ",neck="水影の首飾り",
-            range=empty,ammo="ドシスタスラム",
+            sub="エルダーグリップ+1",neck="水影の首飾り",
+            range=empty,ammo="オンブルタスラム+1",
             right_ring="女王の指輪",})
 
     local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
