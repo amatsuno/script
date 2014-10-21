@@ -56,6 +56,10 @@ function get_sets()
     }
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
+--stun
+    local stun = {
+    }
+    
 --属性帯
     local obi = {}
     --所持している属性帯の属性を列挙
@@ -82,6 +86,7 @@ function get_sets()
         })
     sets.precast = {}
     sets.precast['ケアル']= pre_cure
+    sets.precast['スタン'] = stun
     sets.precast['ヘイスト'] = pre_wind
     sets.precast['ストンスキン'] = pre_stoneskin
     sets.precast.FC = {}
@@ -90,7 +95,7 @@ function get_sets()
     sets.precast.FC['闇'] = pre_dark
     sets.precast.FC['風'] = pre_wind
     sets.precast.FC['土'] = pre_earth
-    sets.precast.FC['雷'] = pre_thuner
+    sets.precast.FC['雷'] = pre_thunder
     sets.precast.FC['水'] = pre_water
     sets.precast.FC['火'] = pre_fire
     sets.precast.FC['氷'] = pre_ice
@@ -103,6 +108,7 @@ function get_sets()
     sets.midcast['精霊魔法'] = element_acc
     sets.midcast['リジェネ'] = regen
     sets.midcast['ケアル'] = cure
+    sets.midcast['スタン'] = stun
     sets.midcast['ヘイスト'] = mid_wind
     sets.midcast['ストンスキン'] = mid_stoneskin
     sets.midcast['インパクト'] = mid_impact
@@ -125,7 +131,7 @@ function get_sets()
     sets.equip['IDLE_DEFMG'] = idle_defmg
     sets.equip.obi = obi
     --マクロブック、セット変更
-    send_command('input /macro book 1;wait .2;input /macro set 1')
+    send_command('input /macro book 5;wait .2;input /macro set 1')
     --キーバインド設定
     bindKeys(true)
 
