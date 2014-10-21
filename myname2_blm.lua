@@ -23,6 +23,7 @@ function get_sets()
         legs="ＯＶパンツ+1",
         waist="セトルベルト",
         left_ear="胡蝶のイヤリング",
+        right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
         back="スイスケープ",
@@ -102,7 +103,7 @@ function get_sets()
         head="ナティラハット",
         body="ＨＡコート+1",
         hands="ＨＡカフス+1",
-        legs="ボクワススロップス",
+        legs="ハゴンデスパンツ",
         feet="ハゴンデスサボ",
         neck="エディネクラス",
         waist="デモンリーサッシュ",
@@ -110,8 +111,10 @@ function get_sets()
         right_ear="サイストームピアス",
         left_ring="バルラーンリング",
         right_ring="サンゴマリング",
-        back="ブックワームケープ",
+        back="ベーンケープ",
     }
+    local element_attk=set_combine(element_acc,
+        {hands="ハゴンデスカフス",range=empty, waist="オティラサッシュ",ammo="ウィッチストーン",})
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 --stun
@@ -165,8 +168,6 @@ function get_sets()
         left_ring="ダークリング",
         right_ring="ダークリング",
         back="リパルスマント",
-        });
-        
         })
     local idle_defmg = set_combine(idel_def,
         {
@@ -182,7 +183,7 @@ function get_sets()
     sets.precast.FC['闇'] = pre_dark
     sets.precast.FC['風'] = pre_wind
     sets.precast.FC['土'] = pre_earth
-    sets.precast.FC['雷'] = pre_thuner
+    sets.precast.FC['雷'] = pre_thunder
     sets.precast.FC['水'] = pre_water
     sets.precast.FC['火'] = pre_fire
     sets.precast.FC['氷'] = pre_ice
@@ -216,9 +217,11 @@ function get_sets()
     sets.equip['IDLE'] = idle
     sets.equip['IDLE_DEF'] = idle_def
     sets.equip['IDLE_DEFMG'] = idle_defmg
+    sets.equip['魔命'] = element_acc
+    sets.equip['魔攻'] = element_attk
     sets.equip.obi = obi
     --マクロブック、セット変更
-    send_command('input /macro book 1;wait .2;input /macro set 1')
+    send_command('input /macro book 5;wait .2;input /macro set 1')
     --キーバインド設定
     bindKeys(true)
 
@@ -231,11 +234,13 @@ function bindKeys(f)
     if f then
         windower.add_to_chat(8,'bind key')
         send_command('bind ^, gs c idle')
+        send_command('bind ^/ gs c elementmode')
         send_command('bind ^[ gs c lock')
         send_command('bind ^] gs c unlock')
     else
         windower.add_to_chat(123,'unbind key')
         send_command('unbind ^, gs c idle')
+        send_command('unbind ^/ gs c elementmode')
         send_command('unbind ^[ gs c lock')
         send_command('unbind ^] gs c unlock')
         
@@ -460,9 +465,6 @@ function self_command(command)
                     windower.add_to_chat(123,'カット装備待機')
                     sets.aftercast.idle = sets.equip.IDLE_DEF
                 elseif sets.aftercast.idle == sets.equip.IDLE_DEF then
-                    windower.add_to_chat(123,'魔法カット装備待機')
-                    sets.aftercast.idle = sets.equip.IDLE_DEFMG
-                else
                     windower.add_to_chat(123,'着替え待機なし')
                     sets.aftercast.idle = nil
                 end
@@ -485,6 +487,25 @@ function self_command(command)
                     sets.aftercast.idle = sets.precast['ケアル']
                 end
                 equip(sets.aftercast.idle)
+            end
+        elseif args[1] == 'elementmode' then
+            if #args == 1 then
+                if sets.midcast['精霊魔法'] == sets.equip['魔命'] then
+                    windower.add_to_chat(123,'精霊：魔攻')
+                    sets.midcast['精霊魔法']  = sets.equip['魔攻']
+                else
+                    windower.add_to_chat(123,'精霊：魔命')
+                    sets.midcast['精霊魔法']  = sets.equip['魔命']
+                end
+            else
+                if args[2] == '魔命' then
+                    windower.add_to_chat(123,'精霊：魔命')
+                    sets.midcast['精霊魔法']  = sets.equip['魔命']
+                elseif args[2] == '魔攻' then
+                    windower.add_to_chat(123,'精霊：魔攻')
+                    sets.midcast['精霊魔法']  = sets.equip['魔攻']
+                end
+                equip(sets.midcast.element[sets.midcast.element.mode])
             end
         end
     end

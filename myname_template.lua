@@ -95,7 +95,7 @@ function get_sets()
     sets.precast.FC['闇'] = pre_dark
     sets.precast.FC['風'] = pre_wind
     sets.precast.FC['土'] = pre_earth
-    sets.precast.FC['雷'] = pre_thuner
+    sets.precast.FC['雷'] = pre_thunder
     sets.precast.FC['水'] = pre_water
     sets.precast.FC['火'] = pre_fire
     sets.precast.FC['氷'] = pre_ice
@@ -131,7 +131,7 @@ function get_sets()
     sets.equip['IDLE_DEFMG'] = idle_defmg
     sets.equip.obi = obi
     --マクロブック、セット変更
-    send_command('input /macro book 1;wait .2;input /macro set 1')
+    send_command('input /macro book 5;wait .2;input /macro set 1')
     --キーバインド設定
     bindKeys(true)
 
