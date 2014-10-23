@@ -378,6 +378,11 @@ function get_sets()
     bindKeys(true)    
     --歌残り時間監視タイマー
 	timer_reg = {}
+
+    debugf = file.new('data/logs/debug.log',true)
+    if not debugf:exists() then
+        debugf:create()
+    end
     
 end
 function bindKeys(f)
@@ -387,13 +392,14 @@ function bindKeys(f)
         send_command('bind ^[ gs c lock')
         send_command('bind ^] gs c unlock')
         send_command('bind ^u gs c basesong')
+        send_command('bind ^o gs c pp')
     else
         windower.add_to_chat(123,'unbind key')
         send_command('unbind ^, gs c idle')
         send_command('unbind ^[ gs c lock')
         send_command('unbind ^] gs c unlock')
         send_command('unbind ^u')
-        
+        send_command('unbind ^o')
     end
 end
 function file_unload()
@@ -412,7 +418,7 @@ function pretarget(spell)
 end
 
 function precast(spell)
-    --myGetProperties(spell,'spell',0)
+    myGetProperties(spell,'spell',0)
     if ignore_spells:contains(spell.name) then return end
     if spell.type == 'JobAbility' then
         if spell.name == 'ナイチンゲール'
@@ -762,6 +768,10 @@ function self_command(command)
                 windower.add_to_chat(123,'次の歌を下地歌にします')
                 sets.midcast.basesong=true
             end
+        elseif args[1] == 'pp' then
+            if not buffactive['ピアニッシモ'] then
+                my_send_command('input /ja ピアニッシモ <me>')
+            end
         end
     end
     if #args >= 2 then
@@ -772,32 +782,37 @@ function self_command(command)
         end
     end
 end
-indent='                                                                         '
+indent='\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t'
 function myGetProperties(t,comment,level)
+    if not _settings.debug_mode then return end
     if type(t) == 'table' then
         local spaces=string.sub(indent,1,level)
         local spaces2=string.sub(indent,1,level+1)
         local key,val
-        add_to_chat(123, spaces..comment..'={')
+        local f,err
+        f, err = debugf:append(spaces..comment..'={\n')
+        if not f then
+            add_to_chat(123, 'file.append error '..err)
+        end
         for key,val in pairs(t)
         do
             if type(val) == 'string' or type(val) == 'number' then
-                add_to_chat(123,spaces2..key..'="'..val..'"')
+               debugf:append(spaces2..key..'="'..val..'"\n')
             elseif type(val) == 'boolean' then
-                add_to_chat(123,spaces2..key..'='..tostring(val))
+                debugf:append(spaces2..key..'='..tostring(val)..'\n')
             elseif type(val) == 'table' then
                 myGetProperties(val, key,level+1)
             else 
-                add_to_chat(123,space2..key..' is '..type(val))
+                debugf:append(space2..key..' is '..type(val)..'\n')
             end
         end
-        add_to_chat(123,spaces..'}--end of'..comment)
+        debugf:append(spaces..'}--end of'..comment..'\n')
     elseif type(t) == 'number' or type(t) == 'string' then
-        add_to_chat(123,spaces..comment..' ="'..val..'"')
+        debugf:append(spaces..comment..' ="'..val..'"\n')
     elseif type(val) == 'boolean' then
-        add_to_chat(123,spaces..comment..' ='..tostring(val))
+        debugf:append(spaces..comment..' ='..tostring(val)..'\n')
     else
-        add_to_chat(123,spaces..comment..' type is '..type(val))
+        debugf:append(spaces..comment..' type is '..type(val)..'\n')
     end
 end
 
@@ -807,6 +822,10 @@ windower.register_event('zone change',function (...)
 	end
 	timer_reg = {}
 end)
+function my_send_command(cmd)
+    send_command(windower.to_shift_jis(cmd))
+end
+
 -----------------------------------------------------------------------------------
 --Name: debug_mode_chat(message)
 --Desc: Checks _settings.debug_mode and outputs the message if necessary
