@@ -91,7 +91,7 @@ function get_sets()
         sub="メフィテスグリップ",
         range="オウレオール",
         head="アートシクハット",
-        body="イスキミアジャブル",
+        body="イスキミアシャブル",
         hands="ＨＡカフス+1",
         legs="アートシクロップス",
         feet="アートシクブーツ",
@@ -513,6 +513,9 @@ function self_command(command)
                 elseif args[2] == 'FULL' then
                     sets.midcast.element.mode = 'FULL'
                     sets.midcast['神聖魔法'] = sets.midcast.element['FULL']
+                elseif args[2] == 'VW' then
+                    windower.add_to_chat(123,'精霊：VW')
+                    sets.midcast.element.mode = 'VW'
                 end
                 equip(sets.midcast.element[sets.midcast.element.mode])
             end

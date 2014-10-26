@@ -22,10 +22,10 @@ function get_sets()
     local base = {
         head="ウァールマスク",
         body="タウマスコート",
-        hands="ユイトルリスト",
+        hands="ＰＤアムレット+1",
         legs="ＩＵタイツ+1",
-        feet="マニボゾブーツ",
-        waist="セトルベルト",
+        feet="ＩＵゲートル+1",
+        waist="ウィンドバフベルト",
         left_ear="素破の耳",
         right_ear="ブルタルピアス",
         left_ring="エポナリング",
@@ -40,7 +40,7 @@ function get_sets()
            body="カークソハーネス",
         })
     local treasure = {
-            hands="プランダアムレット",
+            hands="ＰＤアムレット+1",
             feet="ＲＤプーレーヌ+2",
         }
     local evation = set_combine(base,
@@ -61,10 +61,12 @@ function get_sets()
     local we_exenterator = set_combine(base,
         {
             neck="ブリーズゴルゲット",
-           body="カークソハーネス",
-            feet="マニボゾブーツ",
+            hands="ユイトルリスト",
+            body="カークソハーネス",
+            feet="ＩＵゲートル+1",
             left_ring="突風の指輪",
-            waist="ブリーズベルト",
+            waist="チュカバベルト",
+            back="ケッニケープ",
         })
 --
     local idle = {
@@ -152,7 +154,7 @@ function buff_change(buff, gain)
     end
 end
 function set_fight()
-    if sets.equip.treasure then
+    if sets.engaged.treasure then
         return set_combine(sets.engaged.fight, sets.equip.treasure)
     else
         return sets.engaged.fight

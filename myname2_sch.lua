@@ -67,7 +67,7 @@ function get_sets()
         hands="ハゴンデスカフス",
         legs="ボクワススロップス",
         feet="ペダゴギローファー",
-        neck="ダークトルク",
+        neck="オルンミラトルク",
         waist="セトルベルト",
         left_ear="ロケイシャスピアス",
         right_ear="胡蝶のイヤリング",

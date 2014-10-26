@@ -114,7 +114,9 @@ function get_sets()
         back="ベーンケープ",
     }
     local element_attk=set_combine(element_acc,
-        {hands="ハゴンデスカフス",range=empty, waist="オティラサッシュ",ammo="ウィッチストーン",})
+        {head="ＨＡハット+1",hands="ハゴンデスカフス",range=empty, 
+        left_ear="フリオミシピアス",right_ear="ヘカテーピアス",
+        waist="オティラサッシュ",ammo="ウィッチストーン",})
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 --stun
@@ -138,7 +140,8 @@ function get_sets()
 --属性帯
     local obi = {}
     --所持している属性帯の属性を列挙
-    obi.weathers = T{'風','土','火',}
+    --obi.weathers = T{'風','土','火',}
+    obi.weathers = T{}
     --所持している属性帯の装備コマンド
     obi['風']={waist="風輪の帯",}
     obi['土']={waist="土輪の帯",}
@@ -172,6 +175,12 @@ function get_sets()
     local idle_defmg = set_combine(idel_def,
         {
         })
+    local idle_healing = set_combine(idle, 
+        {
+        main="ブンウェルスタッフ",
+        feet="ケロナブーツ",
+        });
+            
     sets.precast = {}
     sets.precast['ケアル']= pre_cure
     sets.precast['スタン'] = stun
@@ -193,7 +202,10 @@ function get_sets()
     sets.midcast['強化魔法'] = enhance
     sets.midcast['弱体魔法'] = enfeebling
     sets.midcast['神聖魔法'] = divine
-    sets.midcast['精霊魔法'] = element_acc
+    sets.midcast['精霊魔法'] = {}
+    sets.midcast['精霊魔法'].mode = 'ACC'
+    sets.midcast['精霊魔法']['ACC']  = element_acc
+    sets.midcast['精霊魔法']['ATTK'] = element_attk
     sets.midcast['リジェネ'] = regen
     sets.midcast['ケアル'] = cure
     sets.midcast['スタン'] = stun
@@ -217,6 +229,7 @@ function get_sets()
     sets.equip['IDLE'] = idle
     sets.equip['IDLE_DEF'] = idle_def
     sets.equip['IDLE_DEFMG'] = idle_defmg
+    sets.equip['HEALING'] = idle_healing
     sets.equip['魔命'] = element_acc
     sets.equip['魔攻'] = element_attk
     sets.equip.obi = obi
@@ -292,6 +305,7 @@ function precast(spell)
                 end
             elseif spell.name == 'ストンスキン' then
                 set_equip = set_combine(sets.precast['ストンスキン'], sets.precast.FC.enhance)
+                send_command('@wait 1.8;cancel 37')
             elseif spell.cast_time > 3 then
                 set_equip = sets.precast.FC[spell.element]
             else
@@ -397,8 +411,8 @@ end
 
 function set_element(spell)
     local set_equip = nil
-    set_equip = sets.midcast['精霊魔法']
-    
+    set_equip = sets.midcast['精霊魔法'][sets.midcast['精霊魔法'].mode]
+    add_to_chat(123,'mode='..sets.midcast['精霊魔法'].mode)
     if sets.equip.obi.weathers:contains(spell.element) then
         --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
         if world.weather_element == spell.element 
@@ -430,6 +444,16 @@ function aftercast(spell)
 end
 
 function status_change(new,old)
+    if new == 'Resting' then
+        if player.mpp < 70 and
+           sets.equip.HEALING ~= nil then
+            equip(sets.equip.HEALING)
+         end
+    elseif new == 'Idle' then
+        if sets.aftercast.idle ~= nil then
+            equip(sets.aftercast.idle)
+         end
+    end
 end
 function showrecast(spellid, spellname)
     local recast = windower.ffxi.get_spell_recasts()
@@ -490,20 +514,22 @@ function self_command(command)
             end
         elseif args[1] == 'elementmode' then
             if #args == 1 then
-                if sets.midcast['精霊魔法'] == sets.equip['魔命'] then
+                if sets.midcast['精霊魔法'].mode == 'ACC' then
                     windower.add_to_chat(123,'精霊：魔攻')
-                    sets.midcast['精霊魔法']  = sets.equip['魔攻']
-                else
+                    sets.midcast['精霊魔法'].mode = 'ATTK'
+                    sets.midcast['神聖魔法'] = sets.midcast['精霊魔法']['ATTK']
+                elseif sets.midcast['精霊魔法'].mode == 'ATTK' then
                     windower.add_to_chat(123,'精霊：魔命')
-                    sets.midcast['精霊魔法']  = sets.equip['魔命']
+                    sets.midcast['精霊魔法'].mode = 'ACC'
+                    sets.midcast['神聖魔法'] = sets.midcast['精霊魔法']['ACC']
                 end
             else
-                if args[2] == '魔命' then
-                    windower.add_to_chat(123,'精霊：魔命')
-                    sets.midcast['精霊魔法']  = sets.equip['魔命']
-                elseif args[2] == '魔攻' then
-                    windower.add_to_chat(123,'精霊：魔攻')
-                    sets.midcast['精霊魔法']  = sets.equip['魔攻']
+                if args[2] == 'ACC' then
+                    sets.midcast['精霊魔法'].mode = 'ACC'
+                    sets.midcast['神聖魔法'] = enfeebling
+                elseif args[2] == 'ATTK' then
+                    sets.midcast['精霊魔法'].mode = 'ATTK'
+                    sets.midcast['神聖魔法'] = sets.midcast.element['ATTK']
                 end
                 equip(sets.midcast.element[sets.midcast.element.mode])
             end

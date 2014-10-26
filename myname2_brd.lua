@@ -19,8 +19,8 @@ function get_sets()
         body="シャイルマンティル",
         hands="ＧＥゲージ+1",
         legs="ゲンデサスパッツ",
-        feet="ボクワスブーツ",
-        neck="アエドマティネ",
+        feet="ビフスリッパー",
+        neck="オルンミラトルク",
         waist="アエドベルト",
         right_ring="ダークリング",
         left_ear="アエドピアス",
@@ -66,7 +66,9 @@ function get_sets()
         })
 --ナイトル
     local night_trou = {
+        body="ビフジュストコル",
         legs="ビフキャニオンズ",
+        feet="ビフスリッパー",
     }
 --ピーアン
     local Paeon = {
@@ -85,110 +87,62 @@ function get_sets()
         right_ring="ダークリング",
         back="リパルスマント",
 }
+--味方うた基本
+    local buff_song_base = {
+        main="レガートダガー",
+        sub="玄武盾",
+        head="ＢＩラウンドリト+1",
+        body="ＡＤオングルリヌ+2",
+        hands="ＧＥゲージ+1",
+        legs="ゲンデサスパッツ",
+        feet="ビフスリッパー",
+        neck="ウィンドトルク",
+        waist="アエドベルト",
+        left_ear="ロケイシャスピアス",
+        right_ear="アエドピアス",
+        left_ring="ダークリング",
+        right_ring="ダークリング",
+        back="リパルスマント",
+    }
 --マーチ
-    local march = {
-        main="レガートダガー",
+    local march = set_combine(buff_song_base, 
+        {
         range="ランゲレイク",
-        head="ＡＤキャロ+2",
-        body="ＡＤオングルリヌ+2",
-        hands="ＡＤマンシェト+2",
-        legs="ＡＤラングラヴ+2",
-        feet="ＡＤコテュルヌ+2",
-        neck="ウィンドトルク",
-        waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
-        left_ring="ダークリング",
-        right_ring="ダークリング",
-        back="リパルスマント",
-    }
+        hands="ＡＤマンシェト+2",})
 --メヌ
-    local  minuet = {
-        main="レガートダガー",
-        range="アポロフルート",
-        head="ＡＤキャロ+2",
-        body="ＡＤオングルリヌ+2",
-        hands="ＡＤマンシェト+2",
-        legs="ＡＤラングラヴ+2",
-        feet="ＡＤコテュルヌ+2",
-        neck="ウィンドトルク",
-        waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
-        left_ring="ダークリング",
-        right_ring="ダークリング",
-        back="リパルスマント",
-    }
+    local  minuet = set_combine(buff_song_base, 
+        {
+            range="アポロフルート",
+            body="ＡＤオングルリヌ+2",
+        })
 --マド
-    local Madrigal = {
-        main="レガートダガー",
+    local Madrigal = set_combine(buff_song_base, 
+        {
         range="カンタバンクホルン",
         head="ＡＤキャロ+2",
-        body="ＡＤオングルリヌ+2",
-        hands="ＡＤマンシェト+2",
-        legs="ＡＤラングラヴ+2",
-        feet="ＡＤコテュルヌ+2",
-        neck="ウィンドトルク",
-        waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
-        left_ring="ダークリング",
-        right_ring="ダークリング",
-        back="リパルスマント",
-    }
+    })
 --プレ
-    local Prelude = {
-        main="レガートダガー",
+    local Prelude = set_combine(buff_song_base, 
+        {
         range="カンタバンクホルン",
-        head="ＡＤキャロ+2",
-        body="ＡＤオングルリヌ+2",
-        hands="ＡＤマンシェト+2",
-        legs="ＡＤラングラヴ+2",
-        feet="ＡＤコテュルヌ+2",
         neck="アエドマティネ",
-        waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
-        left_ring="ダークリング",
-        right_ring="ダークリング",
-        back="リパルスマント",
-    }
+        })
 --バラ
-    local Ballad = {
-        main="レガートダガー",
+    local Ballad = set_combine(buff_song_base,
+        {
         range="エミネンフルート",
-        head="ＡＤキャロ+2",
-        body="ＡＤオングルリヌ+2",
-        hands="ＡＤマンシェト+2",
         legs="ＡＤラングラヴ+2",
-        feet="ＡＤコテュルヌ+2",
         neck="アエドマティネ",
-        waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
-        left_ring="ダークリング",
-        right_ring="ダークリング",
-        back="リパルスマント",
-    }
+        })
     local Ballad1 = Ballad
     
 --スケルツォ
-    local Scherzo = {
+    local Scherzo = set_combine(buff_song_base, {
         main="レガートダガー",
         range="エミネンフルート",
-        head="ＡＤキャロ+2",
-        body="ＡＤオングルリヌ+2",
-        hands="ＡＤマンシェト+2",
-        legs="ＡＤラングラヴ+2",
         feet="ＡＤコテュルヌ+2",
         neck="アエドマティネ",
-        waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
-        left_ring="ダークリング",
-        right_ring="ダークリング",
-        back="リパルスマント",
-    }
+    })
 --マズルカ
     local mazurka = {
         main="レガートダガー",
@@ -201,22 +155,11 @@ function get_sets()
         right_ring="ダークリング",
         back="リパルスマント",
     }
-    local otherSongs = {
-        main="レガートダガー",
+    local otherSongs = set_combine(buff_song_base, 
+        {
         range="エミネンフルート",
-        head="ＡＤキャロ+2",
-        body="ＡＤオングルリヌ+2",
-        hands="ＡＤマンシェト+2",
-        legs="ＡＤラングラヴ+2",
-        feet="ＡＤコテュルヌ+2",
         neck="アエドマティネ",
-        waist="アエドベルト",
-        left_ear="ロケイシャスピアス",
-        right_ear="アエドピアス",
-        left_ring="ダークリング",
-        right_ring="ダークリング",
-        back="リパルスマント",
-    }
+        })
     --強化
     local enhance = {
     }
@@ -269,7 +212,13 @@ function get_sets()
     --下地歌用楽器
     local basesong={
         range="テルパンダー",
+        head="ナティラハット",
+        neck="オルンミラトルク",
+        body="アンフルローブ",
         legs="ＡＤラングラヴ+2",
+        feet="ブリオソスリッパー",
+        waist="セトルベルト",
+        
     }
     
 --属性帯
@@ -300,7 +249,7 @@ function get_sets()
         main="アーススタッフ",
         hands="ＧＥゲージ+1",
         legs="ゲンデサスパッツ",
-        feet="ボクワスブーツ",
+        feet="ビフスリッパー",
         neck="黄昏の光輪",
         left_ring="ダークリング",
         right_ring="ダークリング",
