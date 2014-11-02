@@ -659,6 +659,16 @@ function self_command(command)
             else
                 windower.add_to_chat(8, '------グリモアがかかってない！！---------')
             end
+        elseif args[1] == 'refresh' then
+            refresh_equip()
+        elseif args[1] == 'jb' then
+            if sets.equip.IDLE_DEF.back == 'メシストピンマント' then
+                windower.add_to_chat(123, '待機:背中＝チェビオットケープ')
+                sets.equip.IDLE_DEF.back = 'チェビオットケープ'
+            else
+                windower.add_to_chat(123, '待機:背中＝メシストピンマント')
+                sets.equip.IDLE_DEF.back = 'メシストピンマント'
+            end
         end
     end
     if #args >= 2 then
@@ -677,6 +687,14 @@ function self_command(command)
         
     end
 end
+function refresh_equip()
+    if player.equipment.back == 'メシストピンマント' then
+        disable('back')
+    else
+        enable('back')
+    end
+end
+
 function showrecast(spellid, spellname)
     local recast = windower.ffxi.get_spell_recasts()
     windower.add_to_chat(123,'recast::'..spellname..'('..spellid..')='..recast[spellid] / 60)
@@ -722,6 +740,7 @@ function my_send_command(cmd)
 end
 
 windower.register_event('zone change',function (...)
+    my_send_command('@wait 10;gs c refresh')
     local l ={...}
     for i,v in pairs(l) do
         windower.add_to_chat(8, 'key='..tostring(i)..'::v='..tostring(v))
