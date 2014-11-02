@@ -93,7 +93,7 @@ function get_sets()
         head="アートシクハット",
         body="イスキミアシャブル",
         hands="ＨＡカフス+1",
-        legs="アートシクロップス",
+        legs="メスヨヒズボン",
         feet="アートシクブーツ",
         neck="ワイケトルク",
         waist="オヴェイトロープ",
@@ -103,6 +103,24 @@ function get_sets()
         right_ring="サンゴマリング",
         back="ベーンケープ",
     }
+    local pre_sleep ={
+        main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
+        sub="メフィテスグリップ",
+        range="オウレオール",
+        head="ナティラハット",
+        hands="ＨＡカフス+1",
+        body="ヴァニアコタルディ",
+        legs="アートシクロップス",
+        feet="アートシクブーツ",
+        waist="オヴェイトロープ",
+        left_ear="エンチャンピアス+1",
+        right_ear="ロケイシャスピアス",
+        neck="オルンミラトルク",
+        left_ring="プロリクスリング",
+        right_ring="サンゴマリング",
+        back="スイスケープ+1",
+    }
+
 --暗黒
     local dark_acc={
         main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
@@ -221,6 +239,7 @@ function get_sets()
     sets.precast['ヘイスト'] = pre_wind
     sets.precast['ストンスキン'] = pre_stoneskin
     sets.precast['インパクト'] = impact
+    sets.precast['スリプル'] = pre_sleep
     sets.precast.FC = {}
     sets.precast.FC['光'] = pre_light
     sets.precast.FC['闇'] = pre_base
@@ -236,6 +255,7 @@ function get_sets()
     sets.midcast['強化魔法'] = enhance
     sets.midcast['バ系'] = baXX
     sets.midcast['弱体魔法'] = enfeebling
+    sets.midcast['スリプル'] = enfeebling
     sets.midcast['暗黒魔法'] = dark_acc
     sets.midcast['神聖魔法'] = divine
     sets.midcast['ケアル'] = cure
@@ -271,7 +291,8 @@ function get_sets()
     sets.equip['IDLE_DEF'] = idle_def
     sets.equip.obi = obi
     sets.equip['HEALING'] = idle_healing
-    
+    sets.equip['スリプル'] = {}
+    sets.equip['スリプル'].precast = pre_sleep
     --enable('main','sub','ammo')
     rev_attk = { name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}}
 
@@ -350,7 +371,9 @@ function precast(spell)
         elseif spell.skill=='弱体魔法' or
                spell.skill=='神聖魔法' or 
                spell.skill=='暗黒魔法' then
-            if spell.cast_time > 3 then
+            if spell.name:startswith('スリプ') or spell.name == 'ブレクガ' then
+                equip(sets.precast['スリプル'])
+            elseif spell.cast_time > 3 then
                 equip(sets.precast.FC[spell.element])
             else
                 equip(sets.midcast[spell.skill])
@@ -400,7 +423,9 @@ function midcast(spell)
                 sets_equip = sets.midcast[spell.skill]
             end
         elseif spell.skill=='弱体魔法' then
-            if spell.cast_time > 3 then
+            if spell.name:startswith('スリプ') or spell.name == 'ブレクガ' then
+                sets_equip = sets.midcast['スリプル']
+            elseif spell.cast_time > 3 then
                 sets_equip = sets.midcast[spell.skill]
             end
         else
@@ -450,7 +475,7 @@ function aftercast(spell)
     if sets.aftercast.idle ~= nil then
         equip(sets.aftercast.idle)
     end
-    if spell.name == 'スリプガII' then
+    if spell.name == 'スリプガII' and not spell.interrupted then
         my_send_command('@wait 35;input /echo -----35秒経過------------------;wait 40;input /echo -----75秒経過----------------')
     end
 end
@@ -494,25 +519,31 @@ function self_command(command)
                     windower.add_to_chat(123,'精霊：魔攻')
                     sets.midcast.element.mode = 'ATTK'
                     sets.midcast['神聖魔法'] = sets.midcast.element['ATTK']
+                    sets.precast['スリプル'] = sets.equip['スリプル'].precast
                 elseif sets.midcast.element.mode == 'ATTK' then
                     windower.add_to_chat(123,'精霊：FULL魔攻')
                     sets.midcast.element.mode = 'FULL'
                     sets.midcast['神聖魔法'] = sets.midcast.element['FULL']
+                    sets.precast['スリプル'] = sets.equip['スリプル'].precast
                 else
                     windower.add_to_chat(123,'精霊：魔命')
                     sets.midcast.element.mode = 'ACC'
                     sets.midcast['神聖魔法'] = enfeebling
+                    sets.precast['スリプル'] = sets.midcast['スリプル']
                 end
             else
                 if args[2] == 'ACC' then
                     sets.midcast.element.mode = 'ACC'
                     sets.midcast['神聖魔法'] = enfeebling
+                    sets.precast['スリプル'] = sets.midcast['スリプル']
                 elseif args[2] == 'ATTK' then
                     sets.midcast.element.mode = 'ATTK'
                     sets.midcast['神聖魔法'] = sets.midcast.element['ATTK']
+                    sets.precast['スリプル'] = sets.equip['スリプル'].precast
                 elseif args[2] == 'FULL' then
                     sets.midcast.element.mode = 'FULL'
                     sets.midcast['神聖魔法'] = sets.midcast.element['FULL']
+                    sets.precast['スリプル'] = sets.equip['スリプル'].precast
                 elseif args[2] == 'VW' then
                     windower.add_to_chat(123,'精霊：VW')
                     sets.midcast.element.mode = 'VW'
@@ -558,6 +589,14 @@ function self_command(command)
             end
         elseif args[1] == 'refresh' then
             refresh_equip()
+        elseif args[1] == 'jb' then
+            if sets.equip.IDLE_DEF.back == 'メシストピンマント' then
+                windower.add_to_chat(123, '待機:背中＝チェビオットケープ')
+                sets.equip.IDLE_DEF.back = 'チェビオットケープ'
+            else
+                windower.add_to_chat(123, '待機:背中＝メシストピンマント')
+                sets.equip.IDLE_DEF.back = 'メシストピンマント'
+            end
         end
     end
     if #args >= 2 then
@@ -569,11 +608,6 @@ function self_command(command)
     end
 end
 function refresh_equip()
-    if player.equipment.back == 'メシストピンマント' then
-        disable('back')
-    else
-        enable('back')
-    end
 end
 
 indent='                                                                         '
