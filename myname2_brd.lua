@@ -253,7 +253,7 @@ function get_sets()
         neck="黄昏の光輪",
         left_ring="ダークリング",
         right_ring="ダークリング",
-        back="リパルスマント",
+        back="メシストピンマント",
         });
     
     sets.precast = {}

@@ -529,9 +529,9 @@ function self_command(command)
                     sets.midcast['神聖魔法'] = enfeebling
                 elseif args[2] == 'ATTK' then
                     sets.midcast['精霊魔法'].mode = 'ATTK'
-                    sets.midcast['神聖魔法'] = sets.midcast.element['ATTK']
+                    sets.midcast['神聖魔法'] = sets.midcast['精霊魔法']['ATTK']
                 end
-                equip(sets.midcast.element[sets.midcast.element.mode])
+                equip(sets.midcast['精霊魔法'][sets.midcast['精霊魔法'].mode])
             end
         end
     end
