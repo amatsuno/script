@@ -24,7 +24,7 @@ function get_sets()
         body="タウマスコート",
         hands="ＰＤアムレット+1",
         legs="ＩＵタイツ+1",
-        feet="ＩＵゲートル+1",
+        feet="プランダプーレーヌ",
         waist="ウィンドバフベルト",
         left_ear="素破の耳",
         right_ear="ブルタルピアス",
@@ -37,16 +37,16 @@ function get_sets()
     local normal = set_combine(base,
         {
             neck='アスパーネックレス',
-           body="カークソハーネス",
+           --body="カークソハーネス",
         })
     local treasure = {
             hands="ＰＤアムレット+1",
-            feet="ＲＤプーレーヌ+2",
+            --feet="ＲＤプーレーヌ+2",
         }
     local evation = set_combine(base,
         {
-            body="マニボゾジャーキン",
             body="カークソハーネス",
+            feet="ＩＵゲートル+1",
             waist="カシリベルト",
             left_ring="ダークリング",
             right_ring="ダークリング",
@@ -90,6 +90,7 @@ function get_sets()
     sets.engaged.normal = normal
     sets.engaged.evation = evation
     sets.engaged.def = def
+    sets.engaged.def_eva = evation
     sets.equip = {}
     sets.equip.treasure = treasure;
     send_command('input /macro book 3;wait .2;input /macro set 1')
@@ -158,6 +159,13 @@ function set_fight()
         return set_combine(sets.engaged.fight, sets.equip.treasure)
     else
         return sets.engaged.fight
+    end
+end
+function set_eva()
+    if sets.engaged.treasure then
+        return set_combine(sets.engaged.evation, sets.equip.treasure)
+    else
+        return sets.engaged.evation
     end
 end
 
@@ -265,12 +273,10 @@ function self_command(command)
             equip(set_fight())
         end
     elseif command == 'evation' then
-        windower.add_to_chat(0xCE, '回避')
-        sets.engaged.fight = sets.engaged.evation
-        equip(set_fight())
+        windower.add_to_chat(0xCE, '回避防御')
+        equip(set_eva())
     elseif command == 'fight' then
-        windower.add_to_chat(0xCE, '通常')
-        sets.engaged.fight = sets.engaged.normal
+        windower.add_to_chat(0xCE, '殴り')
         equip(set_fight())
     elseif command == 'treasure' then
         if sets.engaged.treasure then
@@ -280,6 +286,8 @@ function self_command(command)
             windower.add_to_chat(0xCE, 'トレハンON')
             sets.engaged.treasure = true
         end
+    elseif command == 'move' then
+        equip(sets.idle.idle)
     elseif command:startswith('use sub') then
         local args = windower.from_shift_jis(command):split(' ')
         if use_sub.pc ~= nil then
