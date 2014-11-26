@@ -160,7 +160,7 @@ function get_sets()
         {
         head="ＨＡハット+1",
         hands="ＨＡカフス+1",
-        legs="ＨＡパンツ+1",
+        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','"Mag.Atk.Bns."+21',}},
         feet="ハゴンデスサボ",
         neck="黄昏の光輪",
         left_ring="ダークリング",

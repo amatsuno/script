@@ -20,7 +20,7 @@ function get_sets()
         right_ear="ロケイシャスピアス",
         neck="オルンミラトルク",
         left_ring="プロリクスリング",
-        right_ring="サンゴマリング",
+        right_ring="ダークリング",
         back="スイスケープ+1",
     }
     local pre_low = {
@@ -73,7 +73,7 @@ function get_sets()
         right_ear="ロケイシャスピアス",
         left_ear="エンチャンピアス+1",
         left_ring="プロリクスリング",
-        right_ring="サンゴマリング",
+        right_ring="ウェーザーリング",
         back="スイスケープ+1",
     }
     local stun_fc = set_combine(stun, {main="アパマジャII", body="アンフルローブ",})
@@ -93,14 +93,14 @@ function get_sets()
         head="アートシクハット",
         body="イスキミアシャブル",
         hands="ＨＡカフス+1",
-        legs="メスヨヒズボン",
+        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
         feet="アートシクブーツ",
         neck="ワイケトルク",
         waist="オヴェイトロープ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
-        left_ring="メディアトルリング",
-        right_ring="サンゴマリング",
+        left_ring="サンゴマリング",
+        right_ring="ウェーザーリング",
         back="ベーンケープ",
     }
     local pre_sleep ={
@@ -116,8 +116,8 @@ function get_sets()
         left_ear="エンチャンピアス+1",
         right_ear="ロケイシャスピアス",
         neck="オルンミラトルク",
-        left_ring="プロリクスリング",
-        right_ring="サンゴマリング",
+        left_ring="サンゴマリング",
+        right_ring="ダークリング",
         back="スイスケープ+1",
     }
 
@@ -135,8 +135,8 @@ function get_sets()
         waist="オヴェイトロープ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
-        left_ring="ストレンドゥリング",
-        right_ring="サンゴマリング",
+        left_ring="サンゴマリング",
+        right_ring="ストレンドゥリング",
         back="慈悲の羽衣",
     }
     
@@ -148,14 +148,14 @@ function get_sets()
     head="ＡＲペタソス+1",
     body="ＳＰコート+1",
     hands="ＨＡカフス+1",
-    legs="ハゴンデスパンツ",
+    legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
     feet="ＡＲサボ+1",
     neck="エディネクラス",
     waist="山吹の帯",
     left_ear="怯懦の耳",
     right_ear="フリオミシピアス",
-    left_ring="ストレンドゥリング",
-    right_ring="サンゴマリング",
+    left_ring="サンゴマリング",
+    right_ring="ストレンドゥリング",
     back="トーロケープ",
     }
     local element_attk = set_combine(
@@ -164,9 +164,10 @@ function get_sets()
     local element_fullattk = set_combine(
           element_attk
         , { head={ name="ＨＡハット+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -4%','"Mag.Atk.Bns."+25',}},
+            legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','"Mag.Atk.Bns."+21',}},
             sub="エルダーグリップ+1",neck="水影の首飾り",
             range=empty,ammo="オンブルタスラム+1",
-            right_ring="女王の指輪",})
+            left_ring="女王の指輪",})
 
     local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 
@@ -207,7 +208,7 @@ function get_sets()
         head="ＨＡハット+1",
         hands="ＨＡカフス+1",
         body="ＨＡコート+1",
-        legs="ＨＡパンツ+1",
+        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','"Mag.Atk.Bns."+21',}},
         feet="ＨＡサボ+1",
         neck="黄昏の光輪",
         right_ear="驕慢の耳",
@@ -227,8 +228,8 @@ function get_sets()
         waist="ニヌルタサッシュ",
         left_ear="胡蝶のイヤリング",
         right_ear="ロケイシャスピアス",
-        left_ring="ビフロストリング",
-        right_ring="サンゴマリング",
+        left_ring="サンゴマリング",
+        right_ring="ビフロストリング",
         back="ベーンケープ",
     }
     sets.ws = {}
@@ -298,6 +299,11 @@ function get_sets()
 
     send_command('input /macro book 4;wait .2;input /macro set 10')
     bindKeys(true)    
+
+    debugf = file.new('data/logs/debug.log',true)
+    if not debugf:exists() then
+        debugf:create()
+    end
     
 end
 function bindKeys(f)
@@ -322,19 +328,19 @@ function file_unload()
 end
 
 function precast(spell)
-    --myGetProperties(spell,'spell',0)
-    if ignore_spells:contains(spell.name) then return end
+    myGetProperties(spell,'spell',0)
+    if ignore_spells:contains(spell.ja) then return end
     if spell.type == 'JobAbility' then
     elseif spell.type=="WeaponSkill" then
-        if sets.ws[spell.name] then
-            equip(sets.ws[spell.name])
+        if sets.ws[spell.ja] then
+            equip(sets.ws[spell.ja])
         end
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
-        --windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
+        add_to_chat(123,'name='..spell.ja..' skill='..spell.skill..' casttime='..spell.cast_time)
         if spell.skill == '回復魔法' then
-            if string.find(spell.name, 'ケアル') then
+            if string.find(spell.ja, 'ケアル') then
                 equip(sets.precast['ケアル'])
-            elseif spell.name:find('レイズ') then
+            elseif spell.ja:find('レイズ') then
                 equip(sets.precast.FC[spell.element])
             elseif spell.cast_time > 3 then
                 equip(sets.precast[spell.skill])
@@ -342,24 +348,25 @@ function precast(spell)
                 equip(sets.midcast[spell.skill])
             end
         elseif spell.skill=='強化魔法' then
-            if spell.name:startswith('バ') then
+            if spell.ja:startswith('バ') then
                 if spell.cast_time > 3 then
                     equip(sets.precast.FC[spell.element], {waist="ジーゲルサッシュ",})
                 else
                     equip(sets.midcast['強化魔法'])
                 end
-            elseif spell.name == 'ストンスキン' then
+            elseif spell.ja == 'ストンスキン' then
                 equip(sets.precast['ストンスキン'])
+                add_to_chat(123, 'cancel stoneskin')
                 send_command('@wait 1.2;cancel 37')
             elseif spell.cast_time > 3 then
                 equip(sets.precast.FC[spell.element], {waist="ジーゲルサッシュ",})
             else
                 equip(sets.midcast.RECAST[spell.element])
             end
-        elseif spell.name == 'スタン' then
+        elseif spell.ja == 'スタン' then
             equip(sets.precast['スタン'])
         elseif spell.skill=='精霊魔法' then
-            if spell.name == 'インパクト' then
+            if spell.ja == 'インパクト' then
                 equip(sets.precast['インパクト'])
             elseif spell.cast_time > 8 then
                 equip(sets.precast.FC[spell.element])
@@ -371,7 +378,7 @@ function precast(spell)
         elseif spell.skill=='弱体魔法' or
                spell.skill=='神聖魔法' or 
                spell.skill=='暗黒魔法' then
-            if spell.name:startswith('スリプ') or spell.name == 'ブレクガ' then
+            if spell.ja:startswith('スリプ') or spell.ja == 'ブレクガ' then
                 equip(sets.precast['スリプル'])
             elseif spell.cast_time > 3 then
                 equip(sets.precast.FC[spell.element])
@@ -387,32 +394,32 @@ function precast(spell)
 end
 
 function midcast(spell)
-    if ignore_spells:contains(spell.name) then return end
+    if ignore_spells:contains(spell.ja) then return end
     local sets_equip = nil
     if spell.type == 'JobAbility' then
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
-        if spell.name == 'スタン' then
+        if spell.ja == 'スタン' then
             sets_equip = sets.midcast['スタン']
         elseif spell.skill=='回復魔法' then
-            if string.find(spell.name, 'ケアル') then
+            if string.find(spell.ja, 'ケアル') then
                 sets_equip = sets.midcast['ケアル']
-            elseif spell.name:find('レイズ') then
+            elseif spell.ja:find('レイズ') then
                 sets_equip = sets.midcast.RECAST[spell.element]
             elseif spell.cast_time > 3 then
                 --windower.add_to_chat(123,'equip midcast healingmagic')
                 sets_equip = sets.midcast[spell.skill]
             end
         elseif spell.skill== '強化魔法' then
-            if string.startswith(spell.name, 'バ')
-               or spell.name == 'ファランクス' then
+            if string.startswith(spell.ja, 'バ')
+               or spell.ja == 'ファランクス' then
                 sets_equip = sets.midcast['強化魔法']
-            elseif spell.name == 'ストンスキン' then
+            elseif spell.ja == 'ストンスキン' then
                 sets_equip = sets.midcast['ストンスキン']
             elseif  spell.cast_time > 3 then
                 sets_equip = sets.midcast.RECAST[spell.element]
             end
         elseif spell.skill=='精霊魔法' then
-            if spell.name == 'インパクト' then
+            if spell.ja == 'インパクト' then
                 equip(sets.midcast['インパクト'])
             elseif spell.cast_time > 3 then
                 equip(set_element(spell))
@@ -423,7 +430,7 @@ function midcast(spell)
                 sets_equip = sets.midcast[spell.skill]
             end
         elseif spell.skill=='弱体魔法' then
-            if spell.name:startswith('スリプ') or spell.name == 'ブレクガ' then
+            if spell.ja:startswith('スリプ') or spell.ja == 'ブレクガ' then
                 sets_equip = sets.midcast['スリプル']
             elseif spell.cast_time > 3 then
                 sets_equip = sets.midcast[spell.skill]
@@ -442,7 +449,7 @@ function set_element(spell)
     local sets_equip = nil
     
     if sets.midcast.element.mode ~= 'VW' then
-        if ancient_spells:contains(spell.name) then
+        if ancient_spells:contains(spell.ja) then
             sets_equip = sets.midcast.element['古代']
         elseif buffactive['精霊の印'] or buffactive['サテルソーサリー'] then
             sets_equip = sets.midcast.element['ATTK']
@@ -465,7 +472,7 @@ function set_element(spell)
         end
     end
     if sets.equip.treasure 
-        and sets.equip.treasure_spells:contains(spell.name) then
+        and sets.equip.treasure_spells:contains(spell.ja) then
         sets_equip = set_combine(sets_equip, {waist="チャークベルト"})
     end
     return sets_equip
@@ -475,7 +482,7 @@ function aftercast(spell)
     if sets.aftercast.idle ~= nil then
         equip(sets.aftercast.idle)
     end
-    if spell.name == 'スリプガII' and not spell.interrupted then
+    if spell.ja == 'スリプガII' and not spell.interrupted then
         my_send_command('@wait 35;input /echo -----35秒経過------------------;wait 40;input /echo -----75秒経過----------------')
     end
 end
@@ -597,6 +604,8 @@ function self_command(command)
                 windower.add_to_chat(123, '待機:背中＝メシストピンマント')
                 sets.equip.IDLE_DEF.back = 'メシストピンマント'
             end
+        elseif args[1] == 'move' then
+            equip(set_move(sets.aftercast.idle))
         end
     end
     if #args >= 2 then
@@ -610,34 +619,40 @@ end
 function refresh_equip()
 end
 
-indent='                                                                         '
+indent='\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t'
 function myGetProperties(t,comment,level)
+    if not _settings.debug_mode then return end
     if type(t) == 'table' then
         local spaces=string.sub(indent,1,level)
         local spaces2=string.sub(indent,1,level+1)
         local key,val
-        add_to_chat(123, spaces..comment..'={')
+        local f,err
+        f, err = debugf:append(spaces..comment..'={\n')
+        if not f then
+            add_to_chat(123, 'file.append error '..err)
+        end
         for key,val in pairs(t)
         do
             if type(val) == 'string' or type(val) == 'number' then
-                add_to_chat(123,spaces2..key..'="'..val..'"')
+               debugf:append(spaces2..key..'="'..val..'"\n')
             elseif type(val) == 'boolean' then
-                add_to_chat(123,spaces2..key..'='..tostring(val))
+                debugf:append(spaces2..key..'='..tostring(val)..'\n')
             elseif type(val) == 'table' then
                 myGetProperties(val, key,level+1)
             else 
-                add_to_chat(123,space2..key..' is '..type(val))
+                debugf:append(space2..key..' is '..type(val)..'\n')
             end
         end
-        add_to_chat(123,spaces..'}--end of'..comment)
+        debugf:append(spaces..'}--end of '..comment..'\n')
     elseif type(t) == 'number' or type(t) == 'string' then
-        add_to_chat(123,spaces..comment..' ="'..val..'"')
+        debugf:append(spaces..comment..' ="'..val..'"\n')
     elseif type(val) == 'boolean' then
-        add_to_chat(123,spaces..comment..' ='..tostring(val))
+        debugf:append(spaces..comment..' ='..tostring(val)..'\n')
     else
-        add_to_chat(123,spaces..comment..' type is '..type(val))
+        debugf:append(spaces..comment..' type is '..type(val)..'\n')
     end
 end
+
 function buff_change(buff, gain)
     if buff == 'レイヴシンボル' then
         if gain then
@@ -672,3 +687,5 @@ end
 function my_send_command(cmd)
     send_command(windower.to_shift_jis(cmd))
 end
+include('script/script/common.lua')
+

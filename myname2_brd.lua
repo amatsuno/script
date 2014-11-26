@@ -367,7 +367,7 @@ function pretarget(spell)
 end
 
 function precast(spell)
-    myGetProperties(spell,'spell',0)
+    myGetProperties(spell,'pre:spell',0)
     if ignore_spells:contains(spell.name) then return end
     if spell.type == 'JobAbility' then
         if spell.name == 'ナイチンゲール'
@@ -511,6 +511,7 @@ end
 
 function aftercast(spell)
     --監視対象の歌の監視状態を更新
+    myGetProperties(spell,'after:spell',0)
     if not spell.interrupted then
         if watchtime_spells:contains(spell.name) then
             update_timer(spell)

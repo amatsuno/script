@@ -18,7 +18,7 @@ function get_sets()
         left_ear="エンチャンピアス+1",
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
-        right_ring="サンゴマリング",
+        right_ring="ダークリング",
         back="スイスケープ+1",
     }
     local pre_low = {
@@ -58,8 +58,8 @@ function get_sets()
         waist="オリンポスサッシュ",
         left_ear="アンドアーピアス",
         right_ear="ロケイシャスピアス",
-        left_ring="メディアトルリング",
-        right_ring="サンゴマリング",
+        left_ring="守りの指輪",
+        right_ring="ダークリング",
         back="メンディングケープ",
     }
     local baXX = set_combine(enhance, {body="ＯＲブリオー+2"})
@@ -80,7 +80,7 @@ function get_sets()
         left_ear="ラウンデルピアス",
         right_ear="ノーヴィアピアス",
         left_ring="プロリクスリング",
-        right_ring="クチェクラリング",
+        right_ring="ウェーザーリング",
         back="パートリケープ",
     }
     local cure2 = set_combine(cure,
@@ -93,6 +93,7 @@ function get_sets()
     local midcure = set_combine(cure,
         {
             back="メンディングケープ",
+            left_ring="クチェクラリング",
         })
     
 --弱体
@@ -109,8 +110,8 @@ function get_sets()
         waist="オヴェイトロープ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
-        left_ring="メディアトルリング",
-        right_ring="サンゴマリング",
+        left_ring="サンゴマリング",
+        right_ring="ウェーザーリング",
         back="リフラクトケープ",
     }
 --神聖
@@ -130,7 +131,7 @@ function get_sets()
         left_ear="エンチャンピアス+1",
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
-        right_ring="サンゴマリング",
+        right_ring="ウェーザーリング",
         back="スイスケープ+1",
     }
     --待機時の装備（リフレ装備とかカット装備とか)
@@ -143,13 +144,13 @@ function get_sets()
         hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
         legs="ナレストルーズ",
         feet="ヘラルドゲートル",
-        neck="ワイケトルク",
+        neck="黄昏の光輪",
         waist="オヴェイトロープ",
-        right_ear="ロケイシャスピアス",
+        right_ear="驕慢の耳",
         left_ear="胡蝶のイヤリング",
-        left_ring="メディアトルリング",
-        right_ring="サンゴマリング",
-        back="リフラクトケープ",
+        left_ring="守りの指輪",
+        right_ring="ダークリング",
+        back="チェビオットケープ",
     }
     local idle_healing = set_combine(idle, 
         {
@@ -161,11 +162,6 @@ function get_sets()
         head="ＧＥカウビーン+1",
         legs="シファヒジパンツ",
         feet="ＧＥガロッシュ+1",
-        neck="黄昏の光輪",
-        left_ring="守りの指輪",
-        right_ring="ダークリング",
-        right_ear="驕慢の耳",
-        back="チェビオットケープ",
         });
     
     sets.precast = {}
@@ -430,6 +426,8 @@ function self_command(command)
                 windower.add_to_chat(123, '待機:背中＝メシストピンマント')
                 sets.equip.IDLE_DEF.back = 'メシストピンマント'
             end
+        elseif args[1] == 'move' then
+            equip(set_move(sets.aftercast.idle))
         end
     end
     if #args >= 2 then
@@ -441,3 +439,4 @@ function self_command(command)
         
     end
 end
+include('script/script/common.lua')

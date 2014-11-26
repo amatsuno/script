@@ -31,7 +31,7 @@ function get_sets()
     local idle_def = set_combine(idle, 
         {
         head="ＨＡハット+1",
-        legs="ＨＡパンツ+1",
+        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','"Mag.Atk.Bns."+21',}},
         feet="ＨＡサボ+1",
         });
 
@@ -49,7 +49,7 @@ function get_sets()
         right_ear="エンチャンピアス+1",
         left_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
-        right_ring="サンゴマリング",
+        right_ring="ダークリング",
         back="スイスケープ+1",
     }
     local pre_low = {
@@ -104,7 +104,7 @@ function get_sets()
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
         left_ring="プロリクスリング",
-        right_ring="サンゴマリング",
+        right_ring="ウェーザーリング",
         back="スイスケープ+1",
         
     }
@@ -129,14 +129,14 @@ function get_sets()
         head="アートシクハット",
         body="イスキミアシャブル",
         hands="ＨＡカフス+1",
-        legs="アートシクロップス",
+        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
         feet="アートシクブーツ",
         neck="ワイケトルク",
         waist="オヴェイトロープ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
-        left_ring="メディアトルリング",
-        right_ring="サンゴマリング",
+        left_ring="サンゴマリング",
+        right_ring="ウェーザーリング",
         back="リフラクトケープ",
     }
     local renkan={
@@ -150,23 +150,26 @@ function get_sets()
         head="アートシクハット",
         body="アートシクジュバ",
         hands="ＨＡカフス+1",
-        legs="アートシクロップス",
+        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
         feet="アートシクブーツ",
         neck="エディネクラス",
         waist="山吹の帯",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
-        left_ring="ストレンドゥリング",
-        right_ring="サンゴマリング",
+        right_ring="ストレンドゥリング",
+        left_ring="サンゴマリング",
         back="ブックワームケープ",
     }
     local element_attk = set_combine(
           element_acc
-        , {hands="ハゴンデスカフス",legs="ハゴンデスパンツ",feet="ウンバニブーツ",})
+        , {hands="ハゴンデスカフス",
+           feet="ウンバニブーツ",
+           })
     local element_fullattk = set_combine(
           element_attk
         , {head="ＨＡハット+1",sub="ズーゾーウグリップ",neck="水影の首飾り",
-           left_ear="怯懦の耳", right_ear="フリオミシピアス",right_ring="女王の指輪",
+           legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','"Mag.Atk.Bns."+21',}},
+           left_ear="怯懦の耳", right_ear="フリオミシピアス",left_ring="女王の指輪",
            ammo="ドシスタスラム",})
     --インパクト
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
@@ -179,20 +182,20 @@ function get_sets()
         head="アートシクハット",
         body="アートシクジュバ",
         hands="ＨＡカフス+1",
-        legs="アートシクロップス",
+        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
         feet="アートシクブーツ",
         neck="エディネクラス",
         waist="ニヌルタサッシュ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
-        left_ring="ストレンドゥリング",
-        right_ring="サンゴマリング",
+        right_ring="ストレンドゥリング",
+        left_ring="サンゴマリング",
         back="ブックワームケープ",
     }
     local meltdown = set_combine(dark_acc
         ,{ hands="ハゴンデスカフス",
            body="ＨＡコート+1",
-           legs="ハゴンデスパンツ",
+           legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','"Mag.Atk.Bns."+21',}},
            feet="ウンバニブーツ",
            head="ＨＡハット+1",
            sub="ズーゾーウグリップ",
@@ -219,14 +222,14 @@ function get_sets()
         head="ナティラハット",
         body="アートシクジュバ",
         hands="オトミグローブ",
-        legs="アートシクロップス",
+        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
         feet="アートシクブーツ",
         neck="エディネクラス",
         waist="ニヌルタサッシュ",
         left_ear="胡蝶のイヤリング",
         right_ear="ロケイシャスピアス",
-        left_ring="ビフロストリング",
-        right_ring="サンゴマリング",
+        left_ring="サンゴマリング",
+        right_ring="ビフロストリング",
         back="ベーンケープ",
     }
 
@@ -669,6 +672,8 @@ function self_command(command)
                 windower.add_to_chat(123, '待機:背中＝メシストピンマント')
                 sets.equip.IDLE_DEF.back = 'メシストピンマント'
             end
+        elseif args[1] == 'move' then
+            equip(set_move(sets.aftercast.idle))
         end
     end
     if #args >= 2 then
@@ -760,3 +765,4 @@ function debug_mode_chat(message)
         windower.add_to_chat(8,"GearSwap (Debug Mode): "..tostring(message))
     end
 end
+include('script/script/common.lua')

@@ -25,7 +25,7 @@ function get_sets()
         left_ear="エンチャンピアス+1",
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
-        right_ring="サンゴマリング",
+        right_ring="ダークリング",
         back="スイスケープ+1",
     }
     local pre_song_low = set_combine(
@@ -47,7 +47,7 @@ function get_sets()
         left_ear="エンチャンピアス+1",
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
-        right_ring="サンゴマリング",
+        right_ring="ダークリング",
         back="スイスケープ+1",
     }
     local pre_song_fire = set_combine(pre_song_base, {main="アターI"})
@@ -188,8 +188,8 @@ function get_sets()
         waist="オヴェイトロープ",
         left_ear="エンチャンピアス+1",
         right_ear="グアチピアス",
-        left_ring="メディアトルリング",
-        right_ring="サンゴマリング",
+        left_ring="サンゴマリング",
+        right_ring="ウェーザーリング",
         back="ラプソドスケープ",
     }
     local finale = set_combine(bard_acc,
@@ -200,7 +200,7 @@ function get_sets()
         right_ear="ロケイシャスピアス",
         left_ear="胡蝶のイヤリング",
         left_ring="プロリクスリング",
-        right_ring="サンゴマリング",})
+        })
 --属性帯
     local obi = {}
     --所持している属性帯の属性を列挙
@@ -715,6 +715,8 @@ function self_command(command)
             end
         elseif args[1] == 'refresh' then
             refresh_equip()
+        elseif args[1] == 'move' then
+            equip(set_move(sets.aftercast.idle))
         end
     end
     if #args >= 2 then
@@ -792,3 +794,4 @@ end
 function my_send_command(cmd)
     send_command(windower.to_shift_jis(cmd))
 end
+include('script/script/common.lua')
