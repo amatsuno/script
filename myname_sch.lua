@@ -545,7 +545,7 @@ function buff_change(buff, gain)
     end
 end
 function self_command(command)
-    local args = windower.from_shift_jis(command):split(' ')
+    local args = command:split(' ')
     if #args >= 1 then
         if args[1] == 'treasure' then
             if sets.equip.treasure then

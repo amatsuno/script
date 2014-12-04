@@ -60,9 +60,37 @@ function get_sets()
     local pre_cure = set_combine(pre_light, {})
 --弱体
     local enfeebling = {
+        main="レブレイルグ+2",
+        sub="メフィテスグリップ",
+        head="ナティラハット",
+        body="ＨＡコート+1",
+        hands="ＨＡカフス+1",
+        legs="ボクワススロップス",
+        feet="ハゴンデスサボ",
+        neck="エディネクラス",
+        waist="デモンリーサッシュ",
+        left_ear="ライストームピアス",
+        right_ear="サイストームピアス",
+        left_ring="オメガリング",
+        right_ring="サンゴマリング",
+        back="リフラクトケープ",
     }
 --精霊
     local element_acc={
+        main="レブレイルグ+2",
+        sub="メフィテスグリップ",
+        head="ナティラハット",
+        body="ＨＡコート+1",
+        hands="ＨＡカフス+1",
+        legs="ＨＡパンツ+1",
+        feet="ハゴンデスサボ",
+        neck="エディネクラス",
+        waist="デモンリーサッシュ",
+        left_ear="ライストームピアス",
+        right_ear="サイストームピアス",
+        left_ring="オメガリング",
+        right_ring="サンゴマリング",
+        back="リフラクトケープ",
     }
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
@@ -78,6 +106,7 @@ function get_sets()
         waist="デモンリーサッシュ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
+        range="デュンナ",
     }
 --stun
     local stun = {
@@ -187,6 +216,18 @@ function get_sets()
     if not debugf:exists() then
         debugf:create()
     end
+    keep_geo = {
+        ['インデ'] = {
+            name = 'インデフォーカス',
+            interval=150,
+            flag = false,
+        },
+        ['ジオ'] = {
+            name = 'ジオヘイスト',
+            interval=150,
+            flag = false,
+        }
+    }
 end
 function bindKeys(f)
     if f then
@@ -379,6 +420,9 @@ function set_song(spell)
     return set_equip
 end
 
+function buff_change(buff, gain)
+    windower.add_to_chat(123, buff..tostring(gain))
+end
 function aftercast(spell)
     myGetProperties(spell,'aft:splell', 0)
     if sets.aftercast.idle ~= nil and not sets.aftercast.skip then
@@ -388,6 +432,21 @@ function aftercast(spell)
     --myGetProperties(spell,'splell', 0)
     if watch_recast:contains(spell.name) and not spell.interrupted then
         my_send_command('@wait 0.1;gs c recast '..spell.id..' '..spell.name)
+    end
+    if not spell.interrupted then
+        if spell.name == 'スタン' then
+            if not keep_geo['インデ'].flag then
+                my_send_command('@wait 3.5;input /ma '..keep_geo['インデ'].name..' <me>')
+            elseif not keep_geo['ジオ'].flag then
+                my_send_command('@wait 3.5;input /ja フルサークル <me>;wait 2;input /ma '..keep_geo['ジオ'].name..' <me>')
+            end
+        elseif spell.name == keep_geo['インデ'].name then
+            my_send_command('@wait '..keep_geo['インデ'].interval..';gs c indi')
+            keep_geo['インデ'].flag =true
+        elseif spell.name == keep_geo['ジオ'].name then
+            my_send_command('@wait '..keep_geo['ジオ'].interval..';gs c geo')
+            keep_geo['ジオ'].flag =true
+        end
     end
 end
 
@@ -400,7 +459,8 @@ function showrecast(spellid, spellname)
 end
 
 function self_command(command)
-    local args = windower.from_shift_jis(command):split(' ')
+    --local args = windower.from_shift_jis(command):split(' ')
+    local args = command:split(' ')
     if #args >= 1 then
         if args[1] == 'lock' then
             if #args == 1 then
@@ -453,6 +513,10 @@ function self_command(command)
                 end
                 equip(sets.aftercast.idle)
             end
+        elseif args[1] == 'indi' then
+            keep_geo['インデ'].flag = false
+        elseif args[1] == 'geo' then
+            keep_geo['ジオ'].flag = false
         elseif args[1] == 'move' then
             equip(set_move(sets.aftercast.idle))
         end

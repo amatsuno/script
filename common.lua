@@ -7,12 +7,14 @@ move_equip = {
     ['学'] = {feet="ヘラルドゲートル",},
     ['白'] = {feet="ヘラルドゲートル",},
     ['学'] = {feet="ヘラルドゲートル",},
+    ['赤'] = {legs="ブラッドクウィス",},
     ['詩'] = {feet="ＡＤコテュルヌ+2",},
+    ['風'] = {feet="ジオサンダル",},
 }
 function set_move(original)
     local setm = nil
     --add_to_chat(123, 'adulin?'..world.area..' job='..player.main_job)
-    if adulincities:contains(world.area) then
+    if adulincities:contains(world.area) and player.wardrobe['カウンセラーガーブ'] then
         --add_to_chat(123, 'adulin')
         setm = {body="カウンセラーガーブ",}
     else

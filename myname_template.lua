@@ -339,7 +339,7 @@ function showrecast(spellid, spellname)
 end
 
 function self_command(command)
-    local args = windower.from_shift_jis(command):split(' ')
+    local args = command:split(' ')
     if #args >= 1 then
         if args[1] == 'lock' then
             if #args == 1 then
