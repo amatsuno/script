@@ -172,6 +172,7 @@ function precast(spell)
         else
             set_equip = sets.midcast.RECAST[spell.element]
         end
+        cancel_buff(spell)
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
         windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
         if spell.skill == '回復魔法' then
@@ -198,6 +199,7 @@ function precast(spell)
             else
                 set_equip = sets.midcast.RECAST[spell.element]
             end
+            cancel_buff(spell)
         elseif spell.name == 'スタン' then
             set_equip = sets.precast['スタン']
         elseif spell.skill=='精霊魔法' then
@@ -446,3 +448,4 @@ end
 function my_send_command(cmd)
     send_command(windower.to_shift_jis(cmd))
 end
+include('script/script/common.lua')

@@ -356,13 +356,12 @@ function precast(spell)
                 end
             elseif spell.ja == 'ストンスキン' then
                 equip(sets.precast['ストンスキン'])
-                add_to_chat(123, 'cancel stoneskin')
-                send_command('@wait 1.2;cancel 37')
             elseif spell.cast_time > 3 then
                 equip(sets.precast.FC[spell.element], {waist="ジーゲルサッシュ",})
             else
                 equip(sets.midcast.RECAST[spell.element])
             end
+            cancel_buff(spell)
         elseif spell.ja == 'スタン' then
             equip(sets.precast['スタン'])
         elseif spell.skill=='精霊魔法' then

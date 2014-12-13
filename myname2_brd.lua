@@ -391,6 +391,7 @@ function precast(spell)
         else
             equip(sets.midcast.RECAST[spell.element])
         end
+        cancel_buff(spell)
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
         --windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
         if spell.skill == '回復魔法' then
@@ -415,6 +416,7 @@ function precast(spell)
             else
                 equip(sets.midcast.RECAST[spell.element])
             end
+            cancel_buff(spell)
         elseif spell.cast_time > 3 then
             equip(sets.precast.FC.magic[spell.element])
         else
@@ -791,3 +793,4 @@ function debug_mode_chat(message)
         windower.add_to_chat(8,"GearSwap (Debug Mode): "..tostring(message))
     end
 end
+include('script/script/common.lua')

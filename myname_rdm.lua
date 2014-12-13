@@ -336,6 +336,7 @@ function precast(spell)
         else
             set_equip = sets.midcast.RECAST[spell.element]
         end
+        cancel_buff(spell)
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
         windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
         if spell.skill == '回復魔法' then
@@ -369,6 +370,7 @@ function precast(spell)
             else
                 set_equip = sets.midcast.RECAST[spell.element]
             end
+            cancel_buff(spell)
         elseif spell.name == 'スタン' then
             add_to_chat(123,'spell.name=スタン')
             set_equip = sets.precast['スタン']

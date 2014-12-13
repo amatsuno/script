@@ -34,6 +34,7 @@ function get_sets()
         head="ナティラハット",
         body="アンフルローブ",
         legs="ＧＯパンツ+1",
+        hands="オトミグローブ",
         feet="リーガルパンプス+1",
         neck="オルンミラトルク",
         waist="ニヌルタサッシュ",
@@ -41,7 +42,7 @@ function get_sets()
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
-        back="スイスケープ",
+        back="龍脈の外套",
     }
     local pre_low = {
     }
@@ -135,13 +136,16 @@ function get_sets()
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
         range="デュンナ",
+        back="龍脈の外套",        
     }
 --stun
     local stun = {
         main="レブレイルグ+2",
         head="ナティラハット",
         body="ヘデラコタルディ",
+        hands="オトミグローブ",
         legs="ＧＯパンツ+1",
+        hands="オトミグローブ",
         feet="リーガルパンプス+1",
         neck="オルンミラトルク",
         waist="ニヌルタサッシュ",
@@ -149,7 +153,7 @@ function get_sets()
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
-        back="スイスケープ",
+        back="龍脈の外套",
     }
     
 --属性帯
@@ -216,7 +220,7 @@ function get_sets()
     sets.equip['IDLE_DEFMG'] = idle_defmg
     sets.equip.obi = obi
     --マクロブック、セット変更
-    send_command('input /macro book 5;wait .2;input /macro set 1')
+    send_command('input /macro book 9;wait .2;input /macro set 10')
     --キーバインド設定
     bindKeys(true)
 
@@ -229,12 +233,14 @@ function get_sets()
             name = 'インデフォーカス',
             target='me',
             interval=150,
+            time=0,
             flag = false,
         },
         ['ジオ'] = {
             name = 'ジオヘイスト',
             target='me',
             interval=150,
+            time=0,
             flag = false,
         },
         keep=true,
@@ -281,6 +287,7 @@ function precast(spell)
         else
             set_equip = sets.midcast.RECAST[spell.element]
         end
+        cancel_buff(spell)
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' or spell.type == 'Geomancy' then
         windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
         if spell.skill == '回復魔法' then
@@ -307,6 +314,7 @@ function precast(spell)
             else
                 set_equip = sets.midcast.RECAST[spell.element]
             end
+            cancel_buff(spell)
         elseif spell.name == 'スタン' then
             set_equip = sets.precast['スタン']
         elseif spell.skill=='精霊魔法' then
@@ -446,22 +454,35 @@ function aftercast(spell)
     end
     if not spell.interrupted then
         if keep_geo.keep and spell.name == 'スタン' then
-            if not keep_geo['インデ'].flag then
+            local currenttime=os.time()
+            if currenttime > keep_geo['インデ'].time + keep_geo['インデ'].interval then
+            --if not keep_geo['インデ'].flag then
                 my_send_command('@wait 3.5;input /ma '..keep_geo['インデ'].name..' <'..keep_geo['インデ'].target..'>')
-            elseif not keep_geo['ジオ'].flag then
+            elseif currenttime > keep_geo['ジオ'].time + keep_geo['ジオ'].interval then
+            --elseif not keep_geo['ジオ'].flag then
                 my_send_command('@wait 3.5;input /ja フルサークル <me>;wait 2'
                     ..';input /ma '..keep_geo['ジオ'].name..' <'..keep_geo['ジオ'].target..'>')
             end
         elseif spell.name == keep_geo['インデ'].name then
             my_send_command('@wait '..keep_geo['インデ'].interval..';gs c indi')
+            keep_geo['インデ'].time = os.time()
             keep_geo['インデ'].flag =true
         elseif spell.name == keep_geo['ジオ'].name then
             my_send_command('@wait '..keep_geo['ジオ'].interval..';gs c geo')
+            keep_geo['ジオ'].time = os.time()
             keep_geo['ジオ'].flag =true
         end
     end
 end
-
+function cast_geo()
+    local currenttime=os.time()
+    if currenttime > keep_geo['インデ'].time + keep_geo['インデ'].interval then
+        my_send_command('@wait 3.5;input /ma '..keep_geo['インデ'].name..' <'..keep_geo['インデ'].target..'>')
+    elseif currenttime > keep_geo['ジオ'].time + keep_geo['ジオ'].interval then
+        my_send_command('@wait 3.5;input /ja フルサークル <me>;wait 2'
+            ..';input /ma '..keep_geo['ジオ'].name..' <'..keep_geo['ジオ'].target..'>')
+    end
+end
 function status_change(new,old)
 end
 function showrecast(spellid, spellname)
@@ -474,8 +495,11 @@ end
 --keep (on|off)
 function set_keep_geo(command)
     table.remove(command, 1)
-    for i, v in pairs(command)
+    local i, v
+    i = 1
+    while i <= #command
     do
+        v=command[i]
         local arr = v:split(':')
         if #arr < 3 then 
             if #arr == 1 and arr[1] == 'off' then
@@ -508,6 +532,7 @@ function set_keep_geo(command)
                 ..',target='..keep_geo[arr[1]].target
                 ..',interval='..keep_geo[arr[1]].interval)
         end
+        i=i+1
     end
     keep_geo.keep = true
 

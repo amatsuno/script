@@ -265,6 +265,7 @@ function precast(spell)
         else
             equip(sets.midcast.RECAST[spell.element])
         end
+        cancel_buff(spell)
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
         windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
         if spell.skill == '回復魔法' then
@@ -289,6 +290,7 @@ function precast(spell)
             else
                 equip(sets.midcast['強化魔法'])
             end
+            cancel_buff(spell)
         elseif spell.name == 'スタン' then
             if buffactive['疾風迅雷の章'] then
                 equip(sets.precast['スタン'], {feet="ＰＤローファー+1",})
@@ -342,7 +344,6 @@ function midcast(spell)
         elseif spell.skill== '強化魔法' then
             if spell.name == 'ストンスキン' then
                 sets_equip = sets.midcast['強化魔法']
-                send_command('@wait 1.2;cancel 37')
             elseif spell.name:startswith('バ')
                or spell.name:startswith('エン')
                or spell.name == 'ファランクス' then
@@ -592,4 +593,5 @@ end
 function my_send_command(cmd)
     send_command(windower.to_shift_jis(cmd))
 end
+include('script/script/common.lua')
 include('lib/counter.lua')
