@@ -177,7 +177,7 @@ function get_sets()
 --stun
     local stun = {
         main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
-        sub="ビビドストラップ",
+        sub="メフィテスグリップ",
         head="ＡＴシャポー+1",
         body="ヴァニアコタルディ",
         hands="ＨＡカフス+1",
@@ -186,7 +186,7 @@ function get_sets()
         neck="エーシルトルク",
         waist="ニヌルタサッシュ",
         neck="オルンミラトルク",
-        right_ear="ロケイシャスピアス",
+        right_ear="サイストームピアス",
         left_ear="エンチャンピアス+1",
         left_ring="プロリクスリング",
         right_ring="ウェーザーリング",
@@ -194,9 +194,10 @@ function get_sets()
     }
     local stun_recast = set_combine(
     stun,{
-         head="ＡＴシャポー+1",
+         sub="ビビドストラップ",
          body="ＶＩタバード+1",
          hands="ＧＥゲージ+1",
+        right_ear="ロケイシャスピアス",
     })
     --コンバート
     local convert = {
