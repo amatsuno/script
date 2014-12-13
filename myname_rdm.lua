@@ -25,7 +25,7 @@ function get_sets()
     local idle_def = set_combine(idle, 
         {
         head="ＨＡハット+1",
-        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','"Mag.Atk.Bns."+21',}},
+        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
         })
     local idle_defmg = set_combine(idel_def,
         {
@@ -170,7 +170,7 @@ function get_sets()
     local element_dmg = set_combine(
         element_acc, {
             head="ＨＡハット+1",
-            legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','"Mag.Atk.Bns."+21',}},
+            legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -2%','"Mag.Atk.Bns."+22',}},
             neck="水影の首飾り"})
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
@@ -694,3 +694,4 @@ function my_send_command(cmd)
     send_command(windower.to_shift_jis(cmd))
 end
 include('script/script/common.lua')
+include('lib/counter.lua')

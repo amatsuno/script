@@ -7,14 +7,36 @@ function get_sets()
     watch_recast = T{
         'スタン','ドレイン','アスピル'
     }
+--待機装備
+    local idle = {
+        main="アーススタッフ",
+        head="ＨＡハット+1",
+        body="ＨＡコート+1",
+        hands="ジオミテーヌ",
+        legs="ナレストルーズ",
+        left_ring="ダークリング",
+        right_ring="ダークリング",
+        left_ear="胡蝶のイヤリング",
+    }
+    local idle_def = set_combine(idle, 
+        {
+        legs="ＨＡパンツ+1",
+        feet="ハゴンデスサボ",
+        back="リパルスマント",
+        
+        })
+    local idle_defmg = set_combine(idel_def,
+        {
+        })
     
 --FC_BASE
     local pre_base ={
         head="ナティラハット",
         body="アンフルローブ",
-        legs="ジオパンツ",
+        legs="ＧＯパンツ+1",
+        feet="リーガルパンプス+1",
         neck="オルンミラトルク",
-        waist="セトルベルト",
+        waist="ニヌルタサッシュ",
         left_ear="胡蝶のイヤリング",
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
@@ -44,8 +66,14 @@ function get_sets()
     
 
 --強化
-    local enhance = {
-    }
+    local enhance = set_combine(idle_def, {
+        main="麒麟棍",
+        sub="フルキオグリップ",
+        body="アンフルローブ",
+        feet="リーガルパンプス+1",
+        neck="コロッサストルク",
+        waist="オリンポスサッシュ",
+        back="慈悲の羽衣",})
     --強化魔法専用の詠唱短縮装備（属性ごとの短縮装備とset_combineされる)
     local pre_enhance = {}
     
@@ -65,7 +93,7 @@ function get_sets()
         head="ナティラハット",
         body="ＨＡコート+1",
         hands="ＨＡカフス+1",
-        legs="ボクワススロップス",
+        legs="アートシクロップス",
         feet="ハゴンデスサボ",
         neck="エディネクラス",
         waist="デモンリーサッシュ",
@@ -85,7 +113,7 @@ function get_sets()
         legs="ＨＡパンツ+1",
         feet="ハゴンデスサボ",
         neck="エディネクラス",
-        waist="デモンリーサッシュ",
+        waist="山吹の帯",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
         left_ring="オメガリング",
@@ -100,7 +128,7 @@ function get_sets()
         head="ＨＡハット+1",
         body="ＨＡコート+1",
         hands="ジオミテーヌ",
-        legs="ジオパンツ",
+        legs="ＧＯパンツ+1",
         feet="ハゴンデスサボ",
         neck="エディネクラス",
         waist="デモンリーサッシュ",
@@ -113,10 +141,10 @@ function get_sets()
         main="レブレイルグ+2",
         head="ナティラハット",
         body="ヘデラコタルディ",
-        legs="ジオパンツ",
-        feet="ハゴンデスサボ",
+        legs="ＧＯパンツ+1",
+        feet="リーガルパンプス+1",
         neck="オルンミラトルク",
-        waist="セトルベルト",
+        waist="ニヌルタサッシュ",
         left_ear="胡蝶のイヤリング",
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
@@ -139,27 +167,7 @@ function get_sets()
     obi.buffs['火'] = 178 --熱波の陣
 --神聖
     local divine = enfeebling
---待機装備
-    local idle = {
-        main="アーススタッフ",
-        head="ＨＡハット+1",
-        body="ＨＡコート+1",
-        hands="ジオミテーヌ",
-        legs="ナレストルーズ",
-        left_ring="ダークリング",
-        right_ring="ダークリング",
-        left_ear="胡蝶のイヤリング",
-    }
-    local idle_def = set_combine(idle, 
-        {
-        legs="ＨＡパンツ+1",
-        feet="ハゴンデスサボ",
-        back="リパルスマント",
-        
-        })
-    local idle_defmg = set_combine(idel_def,
-        {
-        })
+
     sets.precast = {}
     sets.precast['ケアル']= pre_cure
     sets.precast['スタン'] = stun
@@ -219,14 +227,17 @@ function get_sets()
     keep_geo = {
         ['インデ'] = {
             name = 'インデフォーカス',
+            target='me',
             interval=150,
             flag = false,
         },
         ['ジオ'] = {
             name = 'ジオヘイスト',
+            target='me',
             interval=150,
             flag = false,
-        }
+        },
+        keep=true,
     }
 end
 function bindKeys(f)
@@ -434,11 +445,12 @@ function aftercast(spell)
         my_send_command('@wait 0.1;gs c recast '..spell.id..' '..spell.name)
     end
     if not spell.interrupted then
-        if spell.name == 'スタン' then
+        if keep_geo.keep and spell.name == 'スタン' then
             if not keep_geo['インデ'].flag then
-                my_send_command('@wait 3.5;input /ma '..keep_geo['インデ'].name..' <me>')
+                my_send_command('@wait 3.5;input /ma '..keep_geo['インデ'].name..' <'..keep_geo['インデ'].target..'>')
             elseif not keep_geo['ジオ'].flag then
-                my_send_command('@wait 3.5;input /ja フルサークル <me>;wait 2;input /ma '..keep_geo['ジオ'].name..' <me>')
+                my_send_command('@wait 3.5;input /ja フルサークル <me>;wait 2'
+                    ..';input /ma '..keep_geo['ジオ'].name..' <'..keep_geo['ジオ'].target..'>')
             end
         elseif spell.name == keep_geo['インデ'].name then
             my_send_command('@wait '..keep_geo['インデ'].interval..';gs c indi')
@@ -458,6 +470,48 @@ function showrecast(spellid, spellname)
     my_send_command('@wait '..tostring(recast[spellid] / 60)..';input /echo '..spellname..'詠唱可能')
 end
 
+--keep インデ:インデフォーカス:t[:間隔] ジオ:ジオヘイスト:me[:間隔]
+--keep (on|off)
+function set_keep_geo(command)
+    table.remove(command, 1)
+    for i, v in pairs(command)
+    do
+        local arr = v:split(':')
+        if #arr < 3 then 
+            if #arr == 1 and arr[1] == 'off' then
+                keep_geo.keep = false
+                add_to_chat(123, 'geo keep→off')
+            elseif arr[1] == 'on' then
+                keep_geo.keep = true
+                add_to_chat(123, 'geo keep→**ON**')
+            else
+                add_to_chat(123, 'error:パラメータが不足')
+            end
+            return
+        end
+        local geo = nil
+        if arr[1] == 'インデ' then
+            geo = keep_geo['インデ']
+        elseif arr[1] == 'ジオ' then
+            geo = keep_geo['ジオ']
+        else
+            add_to_chat(123, arr[1]..'はインデかジオを指定')
+            return
+        end
+        if geo then
+            geo.name = arr[2]
+            geo.target = arr[3]
+            if #arr > 3 and tonumber(arr[4]) then
+                geo.interval = tonumber(arr[4])
+            end
+            add_to_chat(123, arr[1]..'の設定を変更:name='..keep_geo[arr[1]].name
+                ..',target='..keep_geo[arr[1]].target
+                ..',interval='..keep_geo[arr[1]].interval)
+        end
+    end
+    keep_geo.keep = true
+
+end
 function self_command(command)
     --local args = windower.from_shift_jis(command):split(' ')
     local args = command:split(' ')
@@ -513,6 +567,8 @@ function self_command(command)
                 end
                 equip(sets.aftercast.idle)
             end
+        elseif args[1] == 'keep' then
+            set_keep_geo(args)
         elseif args[1] == 'indi' then
             keep_geo['インデ'].flag = false
         elseif args[1] == 'geo' then

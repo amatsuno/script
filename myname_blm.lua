@@ -14,7 +14,7 @@ function get_sets()
         head="ナティラハット",
         body="アンフルローブ",
         legs="アートシクロップス",
-        feet="ケロナブーツ",
+        feet="リーガルパンプス",
         waist="ニヌルタサッシュ",
         left_ear="エンチャンピアス+1",
         right_ear="ロケイシャスピアス",
@@ -49,7 +49,7 @@ function get_sets()
         sub="ビビドストラップ",
         head="ウムシクハト",
         body="アンフルローブ",
-        feet="ルベウスブーツ",
+        feet="リーガルパンプス",
         neck="コロッサストルク",
         waist="オリンポスサッシュ",
         left_ear="アンドアーピアス",
@@ -164,7 +164,7 @@ function get_sets()
     local element_fullattk = set_combine(
           element_attk
         , { head={ name="ＨＡハット+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -4%','"Mag.Atk.Bns."+25',}},
-            legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','"Mag.Atk.Bns."+21',}},
+            legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -2%','"Mag.Atk.Bns."+22',}},
             sub="エルダーグリップ+1",neck="水影の首飾り",
             range=empty,ammo="オンブルタスラム+1",
             left_ring="女王の指輪",})
@@ -208,7 +208,7 @@ function get_sets()
         head="ＨＡハット+1",
         hands="ＨＡカフス+1",
         body="ＨＡコート+1",
-        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','"Mag.Atk.Bns."+21',}},
+        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
         feet="ＨＡサボ+1",
         neck="黄昏の光輪",
         right_ear="驕慢の耳",
@@ -640,7 +640,7 @@ function myGetProperties(t,comment,level)
             elseif type(val) == 'table' then
                 myGetProperties(val, key,level+1)
             else 
-                debugf:append(space2..key..' is '..type(val)..'\n')
+                debugf:append(space2..key..' is '..tostring(type(val))..'\n')
             end
         end
         debugf:append(spaces..'}--end of '..comment..'\n')
@@ -649,7 +649,7 @@ function myGetProperties(t,comment,level)
     elseif type(val) == 'boolean' then
         debugf:append(spaces..comment..' ='..tostring(val)..'\n')
     else
-        debugf:append(spaces..comment..' type is '..type(val)..'\n')
+        debugf:append(spaces..comment..' type is '..tostring(type(val))..'\n')
     end
 end
 
@@ -688,4 +688,4 @@ function my_send_command(cmd)
     send_command(windower.to_shift_jis(cmd))
 end
 include('script/script/common.lua')
-
+include('lib/counter.lua')

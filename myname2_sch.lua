@@ -3,6 +3,10 @@ function get_sets()
     ignore_spells = T{
         'ディア','ディアII','ディアガ'
     }
+--リキャストを監視したいアビ・魔法のリスト
+    watch_recast = T{
+        'スタン','ドレイン','アスピル'
+    }
 --FC_BASE
     local pre_base ={
         ammo="インカントストーン",
@@ -11,7 +15,7 @@ function get_sets()
         hands="ゲンデサゲージ",
         legs="ＯＶパンツ+1",
         feet="ペダゴギローファー",
-        waist="セトルベルト",
+        waist="ニヌルタサッシュ",
         left_ear="胡蝶のイヤリング",
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
@@ -50,7 +54,7 @@ function get_sets()
         body="アンフルローブ",
         hands="ＳＶブレーサー+2",
         legs="スカラーパンツ",
-        feet="ルベウスブーツ",
+        feet="リーガルパンプス+1",
         neck="コロッサストルク",
         waist="オリンポスサッシュ",
         
@@ -60,23 +64,23 @@ function get_sets()
 --stun
     local stun = {
         main="レブレイルグ+2",
-        sub="ビビドストラップ",
+        sub="アルブダグリップ",
         ammo="インカントストーン",
-        head="ナティラハット",
+        head="ペダゴギボード",
         body="ヘデラコタルディ",
-        hands="ハゴンデスカフス",
-        legs="ボクワススロップス",
+        hands="オトミグローブ",
+        legs="アートシクロップス",
         feet="ペダゴギローファー",
         neck="オルンミラトルク",
-        waist="セトルベルト",
+        waist="ニヌルタサッシュ",
         left_ear="ロケイシャスピアス",
         right_ear="胡蝶のイヤリング",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
         back="スイスケープ",
     }
-    local stun_fc = set_combine(stun, {main="アパマジャII", body="アンフルローブ",})
-    local stun_recast = set_combine(stun,{main="アパマジャII",})
+    local stun_fc = set_combine(stun, {body="アンフルローブ",})
+    local stun_recast = stun
     
 --CURE
     local cure ={
@@ -93,7 +97,7 @@ function get_sets()
         head="ナティラハット",
         body="ＨＡコート+1",
         hands="ハゴンデスカフス",
-        legs="ボクワススロップス",
+        legs="アートシクロップス",
         feet="ボクワスブーツ",
         neck="インフィブルトルク",
         waist="デモンリーサッシュ",
@@ -113,11 +117,11 @@ function get_sets()
         range="オウレオール",
         head="ナティラハット",
         body="ＨＡコート+1",
-        hands="ハゴンデスカフス",
-        legs="ボクワススロップス",
+        hands="オトミグローブ",
+        legs="アートシクロップス",
         feet="ハゴンデスサボ",
         neck="エディネクラス",
-        waist="デモンリーサッシュ",
+        waist="山吹の帯",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
         left_ring="バルラーンリング",
@@ -160,7 +164,7 @@ function get_sets()
         {
         head="ＨＡハット+1",
         hands="ＨＡカフス+1",
-        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','"Mag.Atk.Bns."+21',}},
+        legs="ＨＡパンツ+1",
         feet="ハゴンデスサボ",
         neck="黄昏の光輪",
         left_ring="ダークリング",
@@ -391,6 +395,9 @@ function aftercast(spell)
     if sets.aftercast.idle ~= nil then
         equip(sets.aftercast.idle)
     end
+    if watch_recast:contains(spell.name) and not spell.interrupted then
+        my_send_command('@wait 0.1;gs c recast '..spell.id..' '..spell.name)
+    end
 end
 
 function status_change(new,old)
@@ -489,9 +496,11 @@ function self_command(command)
             end
         elseif args[1] == 'arts' then
             if #args == 1 then
-                if buffactive['白のグリモア'] then
+                if buffactive['白のグリモア'] or buffactive['白の補遺'] then
+                    windower.add_to_chat(123,'白のグリモア中→黒のグリモアへ')
                     my_send_command('input /ja 黒のグリモア <me>')
                 else
+                    windower.add_to_chat(123,'黒のグリモア中→白のグリモアへ')
                     my_send_command('input /ja 白のグリモア <me>')
                 end
             else
@@ -514,8 +523,20 @@ function self_command(command)
             if sets.equip[args[2]] ~= nil then
                 equip(sets.equip[args[2]])
             end
+        elseif args[1] == 'recast' then
+            local spellid = tonumber(args[2])
+            local spellname = " "
+            if #args[1] >= 3 then
+                spellname = args[3]
+            end
+            showrecast(spellid, spellname)
         end
     end
+end
+function showrecast(spellid, spellname)
+    local recast = windower.ffxi.get_spell_recasts()
+    windower.add_to_chat(123,'recast::'..spellname..'('..spellid..')='..recast[spellid] / 60)
+    my_send_command('@wait '..tostring(recast[spellid] / 60)..';input /echo '..spellname..'詠唱可能')
 end
 
 function myGetProperties(t)
@@ -571,3 +592,4 @@ end
 function my_send_command(cmd)
     send_command(windower.to_shift_jis(cmd))
 end
+include('lib/counter.lua')

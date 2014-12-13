@@ -31,7 +31,7 @@ function get_sets()
     local idle_def = set_combine(idle, 
         {
         head="ＨＡハット+1",
-        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','"Mag.Atk.Bns."+21',}},
+        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
         feet="ＨＡサボ+1",
         });
 
@@ -168,7 +168,7 @@ function get_sets()
     local element_fullattk = set_combine(
           element_attk
         , {head="ＨＡハット+1",sub="ズーゾーウグリップ",neck="水影の首飾り",
-           legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','"Mag.Atk.Bns."+21',}},
+           legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -2%','"Mag.Atk.Bns."+22',}},
            left_ear="怯懦の耳", right_ear="フリオミシピアス",left_ring="女王の指輪",
            ammo="ドシスタスラム",})
     --インパクト
@@ -195,7 +195,7 @@ function get_sets()
     local meltdown = set_combine(dark_acc
         ,{ hands="ハゴンデスカフス",
            body="ＨＡコート+1",
-           legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','"Mag.Atk.Bns."+21',}},
+            legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -2%','"Mag.Atk.Bns."+22',}},
            feet="ウンバニブーツ",
            head="ＨＡハット+1",
            sub="ズーゾーウグリップ",
@@ -766,3 +766,4 @@ function debug_mode_chat(message)
     end
 end
 include('script/script/common.lua')
+include('lib/counter.lua')
