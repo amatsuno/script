@@ -59,16 +59,17 @@ function get_sets()
     local pre_dark  = set_combine(pre_base, {})
     local pre_earth = set_combine(pre_base, {})
     local pre_water = set_combine(pre_base, {})
-    local pre_wind  = set_combine(pre_base, {})
+    local pre_wind  = set_combine(pre_base, {main="バユバタI",})
+    local pre_fire  = set_combine(pre_base, {})
     local pre_fire  = set_combine(pre_base, {})
     local pre_ice   = set_combine(pre_base, {})
     local pre_thunder = set_combine(pre_base, {})
     local mid_base = set_combine(pre_base, {feet='ＧＥガロッシュ+1',})
-    local mid_light = set_combine(mid_base, {})
+    local mid_light = set_combine(mid_base, {main="アーカII",})
     local mid_dark  = set_combine(mid_base, {})
     local mid_earth = set_combine(mid_base, {})
     local mid_water = set_combine(mid_base, {})
-    local mid_wind  = set_combine(mid_base, {})
+    local mid_wind  = set_combine(mid_base, {main="バユバタII",})
     local mid_fire  = set_combine(mid_base, {})
     local mid_ice   = set_combine(mid_base, {})
     local mid_thunder = set_combine(mid_base, {})
@@ -639,6 +640,14 @@ function self_command(command)
                 windower.ffxi.cancel_buff(419)
             else
                 my_send_command('input /ja コンポージャー <me>')
+            end
+        elseif args[1] == 'jb' then
+            if sets.equip.IDLE_DEF.back == 'メシストピンマント' then
+                windower.add_to_chat(123, '待機:背中＝チェビオットケープ')
+                sets.equip.IDLE_DEF.back = 'チェビオットケープ'
+            else
+                windower.add_to_chat(123, '待機:背中＝メシストピンマント')
+                sets.equip.IDLE_DEF.back = 'メシストピンマント'
             end
         elseif args[1] == 'move' then
             equip(set_move(sets.aftercast.idle))
