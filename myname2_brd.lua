@@ -3,6 +3,8 @@ function get_sets()
     ignore_spells = T{
         'ディア','ディアII','ディアガ'
     }
+    reiv_neck='レフージネックレス'
+    
     --timersで監視する歌を列挙
     watchtime_spells = T{
          '猛者のメヌエットV','猛者のメヌエットIV','猛者のメヌエットIII','猛者のメヌエットII','猛者のメヌエット'
@@ -509,6 +511,19 @@ function set_song(spell)
 end
 function set_element(spell)
     return sets.midcast.RECAST[spell.element]
+end
+function buff_change(buff, gain)
+    windower.add_to_chat(123, buff..tostring(gain))
+    if buff == 'レイヴシンボル' then
+        if gain then
+            windower.add_to_chat(123,'オートリレズON')
+            equip({neck=reiv_neck,})
+            disable('neck')
+        else
+            windower.add_to_chat(8,'オートリレズOFF')
+            enable('neck')
+        end
+    end
 end
 
 function aftercast(spell)

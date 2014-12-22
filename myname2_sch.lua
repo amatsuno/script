@@ -3,6 +3,8 @@ function get_sets()
     ignore_spells = T{
         'ディア','ディアII','ディアガ'
     }
+    reiv_neck='レフージネックレス'
+    
 --リキャストを監視したいアビ・魔法のリスト
     watch_recast = T{
         'スタン','ドレイン','アスピル'
@@ -65,7 +67,7 @@ function get_sets()
     local stun = {
         main="レブレイルグ+2",
         sub="アルブダグリップ",
-        ammo="インカントストーン",
+        ammo="ヘイスティピニオン",
         head="ペダゴギボード",
         body="ヘデラコタルディ",
         hands="オトミグローブ",
@@ -80,7 +82,7 @@ function get_sets()
         back="スイスケープ",
     }
     local stun_fc = set_combine(stun, {body="アンフルローブ",})
-    local stun_recast = stun
+    local stun_recast = set_combine(stun, {hands="ゲンデサゲージ",})
     
 --CURE
     local cure ={
@@ -96,7 +98,7 @@ function get_sets()
         range="オウレオール",
         head="ナティラハット",
         body="ＨＡコート+1",
-        hands="ハゴンデスカフス",
+        hands="ＨＡカフス+1",
         legs="アートシクロップス",
         feet="ボクワスブーツ",
         neck="インフィブルトルク",
@@ -293,7 +295,7 @@ function precast(spell)
             cancel_buff(spell)
         elseif spell.name == 'スタン' then
             if buffactive['疾風迅雷の章'] then
-                equip(sets.precast['スタン'], {feet="ＰＤローファー+1",})
+                equip(sets.precast['スタン'], {feet="ペダゴギローファー",})
             else
                 equip(sets.precast['スタン'])
             end
@@ -391,6 +393,19 @@ function set_element(spell_element)
     end
     return sets_equip
 end
+function buff_change(buff, gain)
+    windower.add_to_chat(123, buff..tostring(gain))
+    if buff == 'レイヴシンボル' then
+        if gain then
+            windower.add_to_chat(123,'オートリレズON')
+            equip({neck=reiv_neck,})
+            disable('neck')
+        else
+            windower.add_to_chat(8,'オートリレズOFF')
+            enable('neck')
+        end
+    end
+end
 
 function aftercast(spell)
     if sets.aftercast.idle ~= nil then
@@ -460,9 +475,6 @@ function self_command(command)
                 if sets.precast['スタン'] == sets.equip['スタン'] then
                     windower.add_to_chat(123,'スタン：リキャスト')
                     sets.precast['スタン'] = sets.equip['スタンリキャ']
-                elseif sets.precast['スタン'] == sets.equip['スタンリキャ'] then
-                    windower.add_to_chat(123,'スタン：FC')
-                    sets.precast['スタン'] = sets.equip['スタンFC']
                 else
                     windower.add_to_chat(123,'スタン：魔命')
                     sets.precast['スタン'] = sets.equip['スタン'] 
