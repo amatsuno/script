@@ -5,6 +5,7 @@ function get_sets()
         'トルネド','フリーズ','フレア','フラッド','バースト','クエイク',
         'トルネドII','フリーズII','フレアII','フラッドII','バーストII','クエイクII',
     }
+    reiv_neck='レフージネックレス'
     
 --着替えしたくないアビ・魔法のリスト
     ignore_spells = T{
@@ -178,7 +179,7 @@ function get_sets()
     local idle_healing = set_combine(idle, 
         {
         main="ブンウェルスタッフ",
-        feet="ケロナブーツ",
+        waist="神術帯+1",
         });
             
     sets.precast = {}
@@ -432,7 +433,19 @@ function set_song(spell)
     set_equip = sets.midcast.RECAST[spell.element]
     return set_equip
 end
-
+function buff_change(buff, gain)
+    windower.add_to_chat(123, buff..tostring(gain))
+    if buff == 'レイヴシンボル' then
+        if gain then
+            windower.add_to_chat(123,'オートリレズON')
+            equip({neck=reiv_neck,})
+            disable('neck')
+        else
+            windower.add_to_chat(8,'オートリレズOFF')
+            enable('neck')
+        end
+    end
+end
 function aftercast(spell)
     if sets.aftercast.idle ~= nil and not sets.aftercast.skip then
       equip(sets.aftercast.idle)

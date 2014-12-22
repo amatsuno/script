@@ -7,6 +7,7 @@ function get_sets()
     watch_recast = T{
         'スタン','ドレイン','アスピル'
     }
+    reiv_neck='レフージネックレス'
 --待機装備
     local idle = {
         main="アーススタッフ",
@@ -14,21 +15,28 @@ function get_sets()
         body="ＨＡコート+1",
         hands="ジオミテーヌ",
         legs="ナレストルーズ",
+        back="龍脈の外套",
         left_ring="ダークリング",
         right_ring="ダークリング",
+        neck='黄昏の光輪',
+        range="デュンナ",
         left_ear="胡蝶のイヤリング",
     }
     local idle_def = set_combine(idle, 
         {
         legs="ＨＡパンツ+1",
         feet="ハゴンデスサボ",
-        back="リパルスマント",
         
         })
     local idle_defmg = set_combine(idel_def,
         {
         })
-    
+    local idle_healing = set_combine(idle, 
+        {
+        main="ブンウェルスタッフ",
+        waist="神術帯+1",
+        });
+
 --FC_BASE
     local pre_base ={
         head="ナティラハット",
@@ -123,21 +131,20 @@ function get_sets()
     }
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
-    
-    local geomancy = {
+--風水
+    local geomancy = set_combine(idel_def, {
         main="レブレイルグ+2",
         head="ＨＡハット+1",
-        body="ＨＡコート+1",
+        body="バグアチュニック",
         hands="ジオミテーヌ",
         legs="ＧＯパンツ+1",
-        feet="ハゴンデスサボ",
-        neck="エディネクラス",
+        feet="リーガルパンプス+1",
         waist="デモンリーサッシュ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
         range="デュンナ",
         back="龍脈の外套",        
-    }
+    })
 --stun
     local stun = {
         main="レブレイルグ+2",
@@ -218,6 +225,7 @@ function get_sets()
     sets.equip['IDLE'] = idle
     sets.equip['IDLE_DEF'] = idle_def
     sets.equip['IDLE_DEFMG'] = idle_defmg
+    sets.equip['HEALING'] = idle_healing
     sets.equip.obi = obi
     --マクロブック、セット変更
     send_command('input /macro book 9;wait .2;input /macro set 10')
@@ -441,6 +449,16 @@ end
 
 function buff_change(buff, gain)
     windower.add_to_chat(123, buff..tostring(gain))
+    if buff == 'レイヴシンボル' then
+        if gain then
+            windower.add_to_chat(123,'オートリレズON')
+            equip({neck=reiv_neck,})
+            disable('neck')
+        else
+            windower.add_to_chat(8,'オートリレズOFF')
+            enable('neck')
+        end
+    end
 end
 function aftercast(spell)
     myGetProperties(spell,'aft:splell', 0)
@@ -484,6 +502,16 @@ function cast_geo()
     end
 end
 function status_change(new,old)
+    if new == 'Resting' then
+        if player.mpp < 70 and
+           sets.equip.HEALING ~= nil then
+            equip(sets.equip.HEALING)
+         end
+    elseif new == 'Idle' then
+        if sets.aftercast.idle ~= nil then
+            equip(sets.aftercast.idle)
+         end
+    end
 end
 function showrecast(spellid, spellname)
     local recast = windower.ffxi.get_spell_recasts()
@@ -596,8 +624,10 @@ function self_command(command)
             set_keep_geo(args)
         elseif args[1] == 'indi' then
             keep_geo['インデ'].flag = false
+            keep_geo['インデ'].time = 0
         elseif args[1] == 'geo' then
             keep_geo['ジオ'].flag = false
+            keep_geo['ジオ'].time = 0
         elseif args[1] == 'move' then
             equip(set_move(sets.aftercast.idle))
         end
