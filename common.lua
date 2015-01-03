@@ -43,3 +43,43 @@ function set_move(original)
         return setm
     end
 end
+
+dumpf = file.new('data/logs/dump.log',true)
+if not dumpf:exists() then
+    dumpf:create()
+end
+
+indent='\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t'
+function dumpProperties(t,comment,level)
+    if not _settings.debug_mode then return end
+    if type(t) == 'table' then
+        local spaces=string.sub(indent,1,level)
+        local spaces2=string.sub(indent,1,level+1)
+        local key,val
+        local f,err
+        f, err = dumpf:append(spaces..comment..'={\n')
+        if not f then
+            add_to_chat(123, 'file.append error '..err)
+        end
+        for key,val in pairs(t)
+        do
+            if type(val) == 'string' or type(val) == 'number' then
+               dumpf:append(spaces2..key..'="'..val..'"\n')
+            elseif type(val) == 'boolean' then
+                dumpf:append(spaces2..key..'='..tostring(val)..'\n')
+            elseif type(val) == 'table' then
+                dumpProperties(val, key,level+1)
+            else
+                dumpf:append(space2..key..' is '..tostring(type(val))..'\n')
+            end
+        end
+        dumpf:append(spaces..'}--end of '..comment..'\n')
+    elseif type(t) == 'number' or type(t) == 'string' then
+        dumpf:append(spaces..comment..' ="'..val..'"\n')
+    elseif type(val) == 'boolean' then
+        dumpf:append(spaces..comment..' ='..tostring(val)..'\n')
+    else
+        dumpf:append(spaces..comment..' type is '..tostring(type(val))..'\n')
+    end
+end
+
