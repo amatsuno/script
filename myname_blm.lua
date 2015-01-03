@@ -61,23 +61,32 @@ function get_sets()
 --stun
     local stun = {
             main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
-        sub="ビビドストラップ",
+        sub="メフィテスグリップ",
         head="ナティラハット",
         body="ヴァニアコタルディ",
         hands="ＨＡカフス+1",
         legs="アートシクロップス",
-        feet="アートシクブーツ",
-        neck="エーシルトルク",
+        feet="リーガルパンプス+1",
         waist="ニヌルタサッシュ",
         neck="オルンミラトルク",
+        range="オウレオール",
         right_ear="ロケイシャスピアス",
         left_ear="エンチャンピアス+1",
         left_ring="プロリクスリング",
         right_ring="ウェーザーリング",
         back="スイスケープ+1",
     }
-    local stun_fc = set_combine(stun, {main="アパマジャII", body="アンフルローブ",})
-    local stun_recast = set_combine(stun,{main="アパマジャII",})
+    local stun_acc1 = set_combine(stun, 
+    	{
+        	feet="アートシクブーツ",
+ 	       left_ring="サンゴマリング",
+        	right_ear="グアチピアス",
+    	})
+    local stun_acc2 = set_combine(stun_acc1,
+    	{
+	        head="アートシクハット",
+    	 	neck="エーシルトルク",
+    	})
     
 --CURE
     local cure ={
@@ -89,13 +98,13 @@ function get_sets()
     local enfeebling = {
             main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="メフィテスグリップ",
-        range="オウレオール",
         head="アートシクハット",
         body="イスキミアシャブル",
         hands="ＨＡカフス+1",
         legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
         feet="アートシクブーツ",
         neck="ワイケトルク",
+        range="オウレオール",
         waist="オヴェイトロープ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
@@ -106,7 +115,6 @@ function get_sets()
     local pre_sleep ={
         main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="メフィテスグリップ",
-        range="オウレオール",
         head="ナティラハット",
         hands="ＨＡカフス+1",
         body="ヴァニアコタルディ",
@@ -116,6 +124,7 @@ function get_sets()
         left_ear="エンチャンピアス+1",
         right_ear="ロケイシャスピアス",
         neck="オルンミラトルク",
+        range="オウレオール",
         left_ring="サンゴマリング",
         right_ring="ダークリング",
         back="スイスケープ+1",
@@ -125,13 +134,13 @@ function get_sets()
     local dark_acc={
         main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
         sub="メフィテスグリップ",
-        range="オウレオール",
         head="アートシクハット",
         body="アートシクジュバ",
         hands="ＨＡカフス+1",
         legs="アートシクロップス",
         feet="アートシクブーツ",
         neck="エーシルトルク",
+        range="オウレオール",
         waist="オヴェイトロープ",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
@@ -144,13 +153,13 @@ function get_sets()
     local element_acc={
     main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
     sub="メフィテスグリップ",
-    range="オウレオール",
     head="ＡＲペタソス+1",
     body="ＳＰコート+1",
     hands="ＨＡカフス+1",
     legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
     feet="ＡＲサボ+1",
     neck="エディネクラス",
+    range="オウレオール",
     waist="山吹の帯",
     left_ear="怯懦の耳",
     right_ear="フリオミシピアス",
@@ -285,8 +294,8 @@ function get_sets()
     sets.equip.treasure = false
     sets.equip.treasure_spells = T{'ストンガ'}
     sets.equip['スタン'] = stun
-    sets.equip['スタンリキャ'] = stun_recast
-    sets.equip['スタンFC'] = stun_fc
+    sets.equip['スタン魔命2'] = stun_acc2
+    sets.equip['スタン魔命1'] = stun_acc1
     sets.equip['強化魔法'] = enhance
     sets.equip['IDLE'] = idle
     sets.equip['IDLE_DEF'] = idle_def
@@ -311,6 +320,7 @@ function bindKeys(f)
         windower.add_to_chat(8,'bind key')
         send_command('bind ^y gs c treasure')
         send_command('bind ^, gs c idle')
+        send_command('bind ^. gs c stunmode')
         send_command('bind ^/ gs c elementmode')
         send_command('bind ^[ gs c lock')
         send_command('bind ^] gs c unlock')
@@ -319,6 +329,7 @@ function bindKeys(f)
         send_command('unbind ^y')
         send_command('unbind ^,')
         send_command('unbind ^/')
+        send_command('unbind ^.')
         send_command('unbind ^[')
         send_command('unbind ^]')
     end
@@ -584,6 +595,24 @@ function self_command(command)
                     sets.aftercast.idle = sets.precast['ケアル']
                 end
                 equip(sets.aftercast.idle)
+            end
+        elseif args[1] == 'stunmode' then
+            if #args == 1 then
+                if sets.precast['スタン'] == sets.equip['スタン'] then
+                    windower.add_to_chat(123,'スタン：魔命1')
+                    sets.precast['スタン'] = sets.equip['スタン魔命1']
+                elseif sets.precast['スタン'] == sets.equip['スタン魔命1'] then
+                    windower.add_to_chat(123,'スタン：魔命2')
+                    sets.precast['スタン'] = sets.equip['スタン魔命2']
+                else
+                    windower.add_to_chat(123,'スタン')
+                    sets.precast['スタン'] = sets.equip['スタン']
+                end
+            else
+                if sets.equip[args[2]] ~= nil then
+                    windower.add_to_chat(123,'スタン：'..args[2])
+                    sets.precast['スタン'] = sets.equip[args[2]]
+                end
             end
         elseif args[1] == 'treasure' then
             if sets.equip.treasure then
