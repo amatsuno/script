@@ -612,6 +612,10 @@ function self_command(command)
             if sets.equip[args[2]] ~= nil then
                 equip(sets.equip[args[2]])
             end
+        elseif args[1] == 'assist' then
+            local cmd = 'send @others gs c ra '..args[2]..' '..player.target.id
+            add_to_chat(123, 'cmd='..cmd)
+            my_send_command(cmd)
         end
     end
 end

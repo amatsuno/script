@@ -7,7 +7,7 @@ function get_sets()
     watch_recast = T{
         'スタン','ドレイン','アスピル'
     }
-    reiv_neck='レフージネックレス'
+    reiv_neck='レフジネックレス+1'
 --待機装備
     local idle = {
         main="アーススタッフ",
@@ -117,7 +117,7 @@ function get_sets()
         main="レブレイルグ+2",
         sub="メフィテスグリップ",
         head="ナティラハット",
-        body="ＨＡコート+1",
+        body="セイズルコタルディ",
         hands="ＨＡカフス+1",
         legs="ＨＡパンツ+1",
         feet="ハゴンデスサボ",
@@ -628,6 +628,13 @@ function self_command(command)
         elseif args[1] == 'geo' then
             keep_geo['ジオ'].flag = false
             keep_geo['ジオ'].time = 0
+        elseif args[1] == 'ra' then
+            if #args >= 3 then
+                local cmd = nil
+                cmd = 'input /ma '..args[2]..' '..args[3]
+                my_send_command(cmd)
+            end
+            
         elseif args[1] == 'move' then
             equip(set_move(sets.aftercast.idle))
         end
