@@ -651,6 +651,9 @@ function self_command(command)
             end
         elseif args[1] == 'move' then
             equip(set_move(sets.aftercast.idle))
+        elseif args[1] == 'assist' then
+            add_to_chat(123, 'send @others /ta '..player.target.id)
+            my_send_command('send @others /ta '..player.target.id)
         end
     end
     if #args >= 2 then
