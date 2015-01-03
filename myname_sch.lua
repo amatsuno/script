@@ -92,7 +92,7 @@ function get_sets()
 --stun
     local stun = {
             main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
-        sub="ビビドストラップ",
+        sub="メフィテスグリップ",
         range="オウレオール",
         head="ＰＤボード+1",
         body="ヴァニアコタルディ",
@@ -101,18 +101,24 @@ function get_sets()
         feet="ＰＤローファー+1",
         neck="オルンミラトルク",
         waist="ニヌルタサッシュ",
-        left_ear="ライストームピアス",
-        right_ear="サイストームピアス",
+        left_ear="エンチャンピアス+1",
+        right_ear="グアチピアス",
         left_ring="プロリクスリング",
         right_ring="ウェーザーリング",
         back="スイスケープ+1",
         
     }
-    local stun_fc = set_combine(stun, {body="アンフルローブ",hands="ＧＥゲージ+1",})
-    local stun_recast = set_combine(stun,
-        {hands="ＧＥゲージ+1",
-         left_ear="ロケイシャスピアス",
-         right_ear="エンチャンピアス+1",})
+    local stun_acc1 = set_combine(stun, {
+        
+        head="ナティラハット",
+        left_ring="サンゴマリング",
+    })
+    local stun_acc2 = set_combine(stun_acc1,
+        {
+        head="アートシクハット",
+        feet="アートシクブーツ",
+		back="ブックワームケープ",
+        })
     
 --CURE
     local cure ={
@@ -133,8 +139,8 @@ function get_sets()
         feet="アートシクブーツ",
         neck="ワイケトルク",
         waist="オヴェイトロープ",
-        left_ear="ライストームピアス",
-        right_ear="サイストームピアス",
+        left_ear="エンチャンピアス+1",
+        right_ear="グアチピアス",
         left_ring="サンゴマリング",
         right_ring="ウェーザーリング",
         back="リフラクトケープ",
@@ -154,8 +160,8 @@ function get_sets()
         feet="アートシクブーツ",
         neck="エディネクラス",
         waist="山吹の帯",
-        left_ear="ライストームピアス",
-        right_ear="サイストームピアス",
+        left_ear="エンチャンピアス+1",
+        right_ear="グアチピアス",
         right_ring="ストレンドゥリング",
         left_ring="サンゴマリング",
         back="ブックワームケープ",
@@ -167,10 +173,10 @@ function get_sets()
            })
     local element_fullattk = set_combine(
           element_attk
-        , {head="ＨＡハット+1",sub="ズーゾーウグリップ",neck="水影の首飾り",
+        , {head="ＨＡハット+1",sub="エルダーグリップ+1",neck="水影の首飾り",
            legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -2%','"Mag.Atk.Bns."+22',}},
            left_ear="怯懦の耳", right_ear="フリオミシピアス",left_ring="女王の指輪",
-           ammo="ドシスタスラム",})
+           ammo="オンブルタスラム+1",})
     --インパクト
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
@@ -186,8 +192,8 @@ function get_sets()
         feet="アートシクブーツ",
         neck="エディネクラス",
         waist="ニヌルタサッシュ",
-        left_ear="ライストームピアス",
-        right_ear="サイストームピアス",
+        left_ear="エンチャンピアス+1",
+        right_ear="グアチピアス",
         right_ring="ストレンドゥリング",
         left_ring="サンゴマリング",
         back="ブックワームケープ",
@@ -285,8 +291,8 @@ function get_sets()
     sets.equip.treasure = false
     sets.equip.treasure_spells = T{'ストーン'}
     sets.equip['スタン'] = stun
-    sets.equip['スタンリキャ'] = stun_recast
-    --sets.equip['スタンFC'] = stun_fc
+    sets.equip['スタン魔命2'] = stun_acc2
+    sets.equip['スタン魔命1'] = stun_acc1
     sets.equip['強化魔法'] = enhance
     sets.equip['IDLE'] = idle
     sets.equip['IDLE_DEF'] = idle_def
@@ -575,10 +581,13 @@ function self_command(command)
         elseif args[1] == 'stunmode' then
             if #args == 1 then
                 if sets.precast['スタン'] == sets.equip['スタン'] then
-                    windower.add_to_chat(123,'スタン：リキャスト')
-                    sets.precast['スタン'] = sets.equip['スタンリキャ']
-                elseif sets.precast['スタン'] == sets.equip['スタンリキャ'] then
-                    windower.add_to_chat(123,'スタン：魔命')
+                    windower.add_to_chat(123,'スタン：魔命1')
+                    sets.precast['スタン'] = sets.equip['スタン魔命1']
+                elseif sets.precast['スタン'] == sets.equip['スタン魔命1'] then
+                    windower.add_to_chat(123,'スタン：魔命2')
+                    sets.precast['スタン'] = sets.equip['スタン魔命2']
+                elseif sets.precast['スタン'] == sets.equip['スタン魔命2'] then
+                    windower.add_to_chat(123,'スタン')
                     sets.precast['スタン'] = sets.equip['スタン'] 
                 end
             else
