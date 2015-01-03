@@ -3,7 +3,7 @@ function get_sets()
     ignore_spells = T{
         'ディア','ディアII','ディアガ'
     }
-    reiv_neck='レフージネックレス'
+    reiv_neck='レフジネックレス+1'
     
 --リキャストを監視したいアビ・魔法のリスト
     watch_recast = T{
@@ -86,7 +86,8 @@ function get_sets()
     
 --CURE
     local cure ={
-        main="アーカIV",
+        main="タマシチ",
+        sub="ソーズシールド",
         head="ゲンデサカウビーン",
         body="ゲンデサブリオー",
         hands="ボクワスグローブ",

@@ -3,7 +3,7 @@ function get_sets()
     ignore_spells = T{
         'ディア','ディアII','ディアガ'
     }
-    reiv_neck='レフージネックレス'
+    reiv_neck='レフジネックレス+1'
     
     --timersで監視する歌を列挙
     watchtime_spells = T{
