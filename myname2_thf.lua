@@ -68,6 +68,17 @@ function get_sets()
             waist="チュカバベルト",
             back="ケッニケープ",
         })
+    local we_Evisceration = set_combine(base,
+        {
+            neck="ブリーズゴルゲット",
+            hands="ユイトルリスト",
+            body="カークソハーネス",
+            feet="ＩＵゲートル+1",
+            left_ring="突風の指輪",
+            waist="チュカバベルト",
+            back="ケッニケープ",
+        })
+        
 --
     local idle = {
         back="リパルスマント",
@@ -82,6 +93,7 @@ function get_sets()
     sets.JA = {}
     sets.ws = {}
     sets.ws['エクゼンテレター'] = we_exenterator
+    sets.ws['エヴィサレーション'] = we_Evisceration
     sets.idle = {}
     sets.idle.idle = idle
     sets.engaged = {}

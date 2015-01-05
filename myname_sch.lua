@@ -15,7 +15,7 @@ function get_sets()
         head="槌の髪飾り",
         body="ＨＡコート+1",
         hands="ＨＡカフス+1",
-        legs="ナレストルーズ",
+        legs="アシドゥイズボン",
         feet="ヘラルドゲートル",
         neck="黄昏の光輪",
         left_ring="守りの指輪",

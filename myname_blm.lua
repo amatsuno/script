@@ -202,7 +202,7 @@ function get_sets()
         sub="ビビドストラップ",
         head="槌の髪飾り",
         body="ＨＡコート+1",
-        legs="ナレストルーズ",
+        legs="アシドゥイズボン",
         feet="ヘラルドゲートル",
         left_ear="胡蝶のイヤリング",
     }
