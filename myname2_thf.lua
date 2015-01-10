@@ -10,12 +10,15 @@ function get_sets()
     recover_spells['バインド'] = 'イレース'
     recover_spells['悪疫'] = 'カーズナ'
     recover_spells['毒'] = 'ポイゾナ'
+    recover_spells['静寂'] = 'サイレナ'
     recover_spells['石化'] = 'ストナ'
     recover_spells['スロウ'] = 'イレース'
     recover_spells['ヘヴィ'] = 'イレース'
     recover_spells['ドラウン'] = 'イレース'
     recover_spells['イレース回復'] = 'イレース'
     buff_spells = {
+        ['プロテス'] = 'プロテスV',
+        ['シェル'] = 'シェルV',
         ['ヘイスト'] = 'ヘイスト',
         ['リジェネ'] = 'リジェネV'
     }
@@ -26,11 +29,10 @@ function get_sets()
         legs="ＩＵタイツ+1",
         feet="プランダプーレーヌ",
         waist="ウィンドバフベルト",
-        left_ear="素破の耳",
-        right_ear="ブルタルピアス",
+        left_ear="ダッジョンピアス",
+        right_ear="ハートシーカピアス",
         left_ring="エポナリング",
         right_ring="ラジャスリング",
-        range="レイダーブーメラン",
         back="エスリングマント",
     }
 --戦闘時
@@ -39,13 +41,21 @@ function get_sets()
             neck='アスパーネックレス',
            --body="カークソハーネス",
         })
+    local normal2 = set_combine(base,
+        {
+           neck='アガサヤカラー',
+           body="エメットハーネス",
+           hands="ブレムテグローブ",
+           waist="フレフランサッシュ",
+           back="ケッニケープ",
+        })
     local treasure = {
             hands="ＰＤアムレット+1",
             --feet="ＲＤプーレーヌ+2",
         }
     local evation = set_combine(base,
         {
-            body="カークソハーネス",
+           body="エメットハーネス",
             feet="ＩＵゲートル+1",
             waist="カシリベルト",
             left_ring="ダークリング",
@@ -61,8 +71,8 @@ function get_sets()
     local we_exenterator = set_combine(base,
         {
             neck="ブリーズゴルゲット",
-            hands="ユイトルリスト",
-            body="カークソハーネス",
+            hands="ＰＤアムレット+1",
+           body="エメットハーネス",
             feet="ＩＵゲートル+1",
             left_ring="突風の指輪",
             waist="チュカバベルト",
@@ -70,12 +80,10 @@ function get_sets()
         })
     local we_Evisceration = set_combine(base,
         {
-            neck="ブリーズゴルゲット",
-            hands="ユイトルリスト",
-            body="カークソハーネス",
-            feet="ＩＵゲートル+1",
-            left_ring="突風の指輪",
-            waist="チュカバベルト",
+        
+            hands="ＰＤアムレット+1",
+            body="エメットハーネス",
+            feet="プランダプーレーヌ",
             back="ケッニケープ",
         })
         
@@ -100,12 +108,36 @@ function get_sets()
     sets.engaged.treasure = false
     sets.engaged.fight = normal
     sets.engaged.normal = normal
+    sets.engaged.normal2 = normal2
     sets.engaged.evation = evation
     sets.engaged.def = def
     sets.engaged.def_eva = evation
     sets.equip = {}
     sets.equip.treasure = treasure;
     send_command('input /macro book 3;wait .2;input /macro set 1')
+
+--カウンター定義
+--[[
+    [1599] = {id=1599,en="Hammer Beak",ja="ハンマービーク"},
+    [1600] = {id=1600,en="Poison Pick",ja="ポイズンピック"},
+]]
+    counter = {
+        action={
+            phdef={
+                condition = {
+                    only_self_target = true,
+                    spell={192,270,271,273,
+                        1599,    --en="Hammer Beak",ja="ハンマービーク"},
+                        1600,    --en="Poison Pick",ja="ポイズンピック"},
+                    },
+                    target={'SELF'},
+                },
+                preaction={equip=sets.engaged.def,},
+                interruptaction ={equip=sets.engaged.fight,},
+                finishaction={equip=sets.engaged.fight,},
+            },
+        },
+    }
     
 end
 function precast(spell)
@@ -183,7 +215,6 @@ end
 
 function execbuff(buff)
     if use_sub.pc == nil or buff == nil then return end
-    
     local buffspell = buff_spells[buff]
     if  buffspell ~= nil then
         if buff == 'リジェネ' then
@@ -208,6 +239,8 @@ function getDebuff()
         return '暗闇'
     elseif buffactive['バインド'] then
         return 'バインド'
+    elseif buffactive['静寂'] then
+        return '静寂'
     elseif buffactive['ヘヴィ'] then
         return 'ヘヴィ'
     elseif buffactive['防御力ダウン'] 
@@ -225,7 +258,11 @@ function getDebuff()
     end
 end
 function getNeedBuff()
-    if not buffactive['ヘイスト'] then
+    if not buffactive['プロテス'] then
+        return 'プロテス'
+    elseif not buffactive['シェル'] then
+        return 'シェル'
+    elseif not buffactive['ヘイスト'] then
         return 'ヘイスト'
     elseif not buffactive['リジェネ'] then
         return 'リジェネ'
@@ -250,7 +287,7 @@ function recover_hp(rhp)
      end
 end
 function recover()
-    if player.hpp < 70 then
+    if player.hpp < 76 then
         recover_hp(player.max_hp - player.hp)
     else
         local debuff = getDebuff()
@@ -272,14 +309,29 @@ end
 function self_command(command)
     if command == 'toggle TP set' then
         if sets.engaged.fight == sets.engaged.normal then
+            windower.add_to_chat(0xCE, '命中')
+            sets.engaged.fight = sets.engaged.normal2
+            counter.action.phdef.interruptaction.equip=sets.engaged.fight 
+            counter.action.phdef.finishaction.equip=sets.engaged.fight 
+            equip({range=empty,ammo='ホーンドタスラム',})
+        elseif sets.engaged.fight == sets.engaged.normal2 then
             windower.add_to_chat(0xCE, '回避')
             sets.engaged.fight = sets.engaged.evation
+            counter.action.phdef.interruptaction.equip=sets.engaged.fight 
+            counter.action.phdef.finishaction.equip=sets.engaged.fight 
+            equip({range='レイダーブーメラン',ammo=empty,})
         elseif sets.engaged.fight == sets.engaged.evation then
             windower.add_to_chat(0xCE, '防御')
             sets.engaged.fight = sets.engaged.def
+            counter.action.phdef.interruptaction.equip=sets.engaged.fight 
+            counter.action.phdef.finishaction.equip=sets.engaged.fight 
+            equip({range='レイダーブーメラン',ammo=empty,})
         else
             windower.add_to_chat(0xCE, '通常')
             sets.engaged.fight = sets.engaged.normal
+            counter.action.phdef.interruptaction.equip=sets.engaged.fight 
+            counter.action.phdef.finishaction.equip=sets.engaged.fight 
+            equip({range='レイダーブーメラン',ammo=empty,})
         end
         if sets.engaged.fight ~= nil then
             equip(set_fight())
@@ -329,9 +381,9 @@ function self_command(command)
 end
              
 windower.register_event('hp change', function(new_hp, old_hp)
-    local rhp = old_hp - new_hp
+    local rhp = player.max_hp - player.hp
     if rhp > 100 and player.hpp < 70 then
         recover_hp(rhp)
     end
 end)
-
+include('lib/counter_action.lua')
