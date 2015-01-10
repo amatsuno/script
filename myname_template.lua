@@ -167,7 +167,7 @@ function precast(spell)
             set_equip = sets.precast.FC[spell.element]
         end
     elseif spell.type == 'Ninjutsu' then
-        if spell.cast_time > 3 then
+        if spell.cast_time > 0.75 then
             set_equip = sets.precast.FC.magic[spell.element]
         else
             set_equip = sets.midcast.RECAST[spell.element]
@@ -180,21 +180,21 @@ function precast(spell)
                 set_equip = sets.precast['ケアル']
             elseif spell.name:find('レイズ') then
                 set_equip = sets.precast.FC[spell.element]
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 set_equip = sets.precast[spell.skill]
             else
                 set_equip = sets.midcast[spell.skill]
             end
         elseif spell.skill=='強化魔法' then
             if spell.name:startswith('バ') then
-                if spell.cast_time > 3 then
+                if spell.cast_time > 0.75 then
                     set_equip = set_combine(sets.precast.FC[spell.element], sets.precast.FC.enhance)
                 else
                     set_equip = sets.midcast['強化魔法']
                 end
             elseif spell.name == 'ストンスキン' then
                 set_equip = set_combine(sets.precast['ストンスキン'], sets.precast.FC.enhance)
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 set_equip = sets.precast.FC[spell.element]
             else
                 set_equip = sets.midcast.RECAST[spell.element]
@@ -205,9 +205,9 @@ function precast(spell)
         elseif spell.skill=='精霊魔法' then
             if spell.name == 'インパクト' then
                 set_equip = sets.precast['インパクト']
-            elseif spell.cast_time > 8 then
+            elseif spell.cast_time > 2.0 then
                 set_equip = sets.precast.FC[spell.element]
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 set_equip = sets.precast.FC.FC_LOW
             else
                 set_equip = set_element(spell)
@@ -215,12 +215,12 @@ function precast(spell)
         elseif spell.skill=='弱体魔法' or
                spell.skill=='神聖魔法' or 
                spell.skill=='暗黒魔法' then
-            if spell.cast_time > 3 then
+            if spell.cast_time > 0.75 then
                 set_equip = sets.precast.FC[spell.element]
             else
                 set_equip = sets.midcast[spell.skill]
             end
-        elseif spell.cast_time > 3 then
+        elseif spell.cast_time > 0.75 then
             set_equip = sets.precast.FC[spell.element]
         else
             set_equip = sets.midcast.RECAST[spell.element]
@@ -243,7 +243,7 @@ function midcast(spell)
             set_equip = set_song(spell)
         end
     elseif spell.type == 'Ninjutsu' then
-        if spell.cast_time > 3 then
+        if spell.cast_time > 0.75 then
             set_equip = sets.midcast.RECAST[spell.element]
         end
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
@@ -254,7 +254,7 @@ function midcast(spell)
                 set_equip = sets.midcast['ケアル']
             elseif spell.name:find('レイズ') then
                 set_equip = sets.midcast.RECAST[spell.element]
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 windower.add_to_chat(123,'equip midcast healingmagic')
                 set_equip = sets.midcast[spell.skill]
             end
@@ -266,18 +266,18 @@ function midcast(spell)
                 sets_equip = sets.midcast['リジェネ']
             elseif spell.name == 'ストンスキン' then
                 set_equip = sets.midcast['ストンスキン']
-            elseif  spell.cast_time > 3 then
+            elseif  spell.cast_time > 0.75 then
                 set_equip = sets.midcast.RECAST[spell.element]
             end
         elseif spell.skill=='精霊魔法' then
             if spell.name == 'インパクト' then
                 set_equip = sets.midcast['インパクト']
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 set_equip = set_element(spell)
             end
         elseif spell.skill=='弱体魔法' or
                spell.skill=='神聖魔法' then
-            if spell.cast_time > 3 then
+            if spell.cast_time > 0.75 then
                 set_equip = sets.midcast[spell.skill]
             end
         elseif spell.skill=='暗黒魔法' then
@@ -285,7 +285,7 @@ function midcast(spell)
                 set_equip = sets.midcast['メルトン']
             elseif spell.name == '虚誘掩殺の策' then
                 set_equip = sets.midcast.RECAST[spell.element]
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 set_equip = sets.midcast[spell.skill]
             end
         else

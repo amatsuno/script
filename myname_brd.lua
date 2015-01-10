@@ -374,7 +374,7 @@ function precast(spell)
             equip(sets.precast.FC.song[spell.element])
         end
     elseif spell.type == 'Ninjutsu' then
-        if spell.cast_time > 3 then
+        if spell.cast_time > 0.75 then
             equip(sets.precast.FC.magic[spell.element])
         else
             equip(sets.midcast.RECAST[spell.element])
@@ -385,27 +385,27 @@ function precast(spell)
         if spell.skill == '回復魔法' then
             if string.find(spell.name, 'ケアル') then
                 equip(sets.precast['ケアル'])
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 equip(sets.precast.FC.magic[spell.element])
             else
                 equip(sets.midcast.RECAST[spell.element])
             end
         elseif spell.skill=='強化魔法' then
             if spell.name:startswith('バ') then
-                if spell.cast_time > 3 then
+                if spell.cast_time > 0.75 then
                     equip(sets.precast.FC.magic[spell.element], {waist="ジーゲルサッシュ",})
                 else
                     equip(sets.midcast['強化魔法'])
                 end
             elseif spell.name == 'ストンスキン' then
                 equip(sets.precast['ストンスキン'])
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 equip(sets.precast.FC.magic[spell.element], {waist="ジーゲルサッシュ",})
             else
                 equip(sets.midcast.RECAST[spell.element])
             end
             cancel_buff(spell)
-        elseif spell.cast_time > 3 then
+        elseif spell.cast_time > 0.75 then
             equip(sets.precast.FC.magic[spell.element])
         else
             equip(sets.midcast.RECAST[spell.element])
@@ -424,7 +424,7 @@ function midcast(spell)
             equip(set_song(spell))
         end
     elseif spell.type == 'Ninjutsu' then
-        if spell.cast_time > 3 then
+        if spell.cast_time > 0.75 then
             equip(sets.midcast.RECAST[spell.element])
         end
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
@@ -435,7 +435,7 @@ function midcast(spell)
                 sets_equip = sets.midcast['ケアル']
             elseif spell.name:find('レイズ') then
                 sets_equip = sets.midcast.RECAST[spell.element]
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 windower.add_to_chat(123,'equip midcast healingmagic')
                 sets_equip = sets.midcast[spell.skill]
             end
@@ -445,7 +445,7 @@ function midcast(spell)
                 sets_equip = sets.midcast['強化魔法']
             elseif spell.name == 'ストンスキン' then
                 sets_equip = sets.midcast['ストンスキン']
-            elseif  spell.cast_time > 3 then
+            elseif  spell.cast_time > 0.75 then
                 sets_equip = sets.midcast.RECAST[spell.element]
             end
         else

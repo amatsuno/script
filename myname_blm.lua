@@ -353,21 +353,21 @@ function precast(spell)
                 equip(sets.precast['ケアル'])
             elseif spell.ja:find('レイズ') then
                 equip(sets.precast.FC[spell.element])
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 equip(sets.precast[spell.skill])
             else
                 equip(sets.midcast[spell.skill])
             end
         elseif spell.skill=='強化魔法' then
             if spell.ja:startswith('バ') then
-                if spell.cast_time > 3 then
+                if spell.cast_time > 0.75 then
                     equip(sets.precast.FC[spell.element], {waist="ジーゲルサッシュ",})
                 else
                     equip(sets.midcast['強化魔法'])
                 end
             elseif spell.ja == 'ストンスキン' then
                 equip(sets.precast['ストンスキン'])
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 equip(sets.precast.FC[spell.element], {waist="ジーゲルサッシュ",})
             else
                 equip(sets.midcast.RECAST[spell.element])
@@ -378,9 +378,9 @@ function precast(spell)
         elseif spell.skill=='精霊魔法' then
             if spell.ja == 'インパクト' then
                 equip(sets.precast['インパクト'])
-            elseif spell.cast_time > 8 then
+            elseif spell.cast_time > 2.0 then
                 equip(sets.precast.FC[spell.element])
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 equip(sets.precast.FC.FC_LOW)
             else
                 equip(set_element(spell))
@@ -390,12 +390,12 @@ function precast(spell)
                spell.skill=='暗黒魔法' then
             if spell.ja:startswith('スリプ') or spell.ja == 'ブレクガ' then
                 equip(sets.precast['スリプル'])
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 equip(sets.precast.FC[spell.element])
             else
                 equip(sets.midcast[spell.skill])
             end
-        elseif spell.cast_time > 3 then
+        elseif spell.cast_time > 0.75 then
             equip(sets.precast.FC[spell.element])
         else
             equip(sets.midcast.RECAST[spell.element])
@@ -415,7 +415,7 @@ function midcast(spell)
                 sets_equip = sets.midcast['ケアル']
             elseif spell.ja:find('レイズ') then
                 sets_equip = sets.midcast.RECAST[spell.element]
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 --windower.add_to_chat(123,'equip midcast healingmagic')
                 sets_equip = sets.midcast[spell.skill]
             end
@@ -425,24 +425,24 @@ function midcast(spell)
                 sets_equip = sets.midcast['強化魔法']
             elseif spell.ja == 'ストンスキン' then
                 sets_equip = sets.midcast['ストンスキン']
-            elseif  spell.cast_time > 3 then
+            elseif  spell.cast_time > 0.75 then
                 sets_equip = sets.midcast.RECAST[spell.element]
             end
         elseif spell.skill=='精霊魔法' then
             if spell.ja == 'インパクト' then
                 equip(sets.midcast['インパクト'])
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 equip(set_element(spell))
             end
         elseif spell.skill=='神聖魔法' or
                spell.skill=='暗黒魔法' then
-            if spell.cast_time > 3 then
+            if spell.cast_time > 0.75 then
                 sets_equip = sets.midcast[spell.skill]
             end
         elseif spell.skill=='弱体魔法' then
             if spell.ja:startswith('スリプ') or spell.ja == 'ブレクガ' then
                 sets_equip = sets.midcast['スリプル']
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 sets_equip = sets.midcast[spell.skill]
             end
         else

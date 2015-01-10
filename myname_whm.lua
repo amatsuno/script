@@ -236,7 +236,7 @@ function precast(spell)
     if ignore_spells:contains(spell.name) then return end
     if spell.type == 'JobAbility' then
     elseif spell.type == 'Ninjutsu' then
-        if spell.cast_time > 3 then
+        if spell.cast_time > 0.75 then
             equip(sets.precast.FC[spell.element])
         else
             equip(sets.midcast.RECAST[spell.element])
@@ -254,19 +254,19 @@ function precast(spell)
                 end
             elseif spell.name:find('レイズ') then
                 equip(sets.precast.FC[spell.element])
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 equip(sets.precast[spell.skill])
             else
                 equip(sets.midcast[spell.skill])
             end
         elseif spell.skill=='強化魔法' then
             if spell.name:startswith('バ') then
-                if spell.cast_time > 3 then
+                if spell.cast_time > 0.75 then
                     equip(sets.precast.FC[spell.element], {waist="ジーゲルサッシュ",})
                 else
                     equip(sets.midcast['バ系'])
                 end
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 equip(sets.precast.FC[spell.element], {waist="ジーゲルサッシュ",})
             else
                 equip(sets.midcast.RECAST[spell.element])
@@ -274,12 +274,12 @@ function precast(spell)
             cancel_buff(spell)
         elseif spell.skill=='弱体魔法' or
                spell.skill=='神聖魔法'then
-            if spell.cast_time > 3 then
+            if spell.cast_time > 0.75 then
                 equip(sets.precast.FC[spell.element])
             else
                 equip(sets.midcast[spell.skill])
             end
-        elseif spell.cast_time > 3 then
+        elseif spell.cast_time > 0.75 then
             equip(sets.precast.FC[spell.element])
         else
             equip(sets.midcast.RECAST[spell.element])
@@ -290,7 +290,7 @@ function midcast(spell)
     if ignore_spells:contains(spell.name) then return end
     if spell.type == 'JobAbility' then
     elseif spell.type == 'Ninjutsu' then
-        if spell.cast_time > 3 then
+        if spell.cast_time > 0.75 then
             equip(sets.midcast.RECAST[spell.element])
         end
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
@@ -305,7 +305,7 @@ function midcast(spell)
                 end
             elseif spell.name:find('レイズ') then
                 equip(sets.midcast.RECAST[spell.element])
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 --windower.add_to_chat(123,'equip midcast healingmagic')
                 equip(sets.midcast[spell.skill])
             else
@@ -313,7 +313,7 @@ function midcast(spell)
             end
         elseif spell.skill=='強化魔法' then
             if spell.name:startswith('バ') then
-                if spell.cast_time > 3 then
+                if spell.cast_time > 0.75 then
                     equip(sets.midcast['バ系'])
                 end
             elseif (spell.name == 'ストンスキン' 
@@ -326,15 +326,15 @@ function midcast(spell)
                 equip(sets.midcast['プロシェル'])
             elseif spell.name == 'イレース' then
                 equip(sets.midcast['回復魔法'])
-            elseif spell.cast_time > 3 then
+            elseif spell.cast_time > 0.75 then
                 equip(sets.midcast.RECAST[spell.element])
             end
         elseif spell.skill=='弱体魔法' or
                spell.skill=='神聖魔法'then
-            if spell.cast_time > 3 then
+            if spell.cast_time > 0.75 then
                 equip(sets.midcast[spell.skill])
             end
-        elseif spell.cast_time > 3 then
+        elseif spell.cast_time > 0.75 then
             equip(sets.midcast.RECAST[spell.element])
         end
     end
