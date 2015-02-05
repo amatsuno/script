@@ -129,6 +129,17 @@ function get_sets()
         right_ring="サンゴマリング",
         back="リフラクトケープ",
     }
+    local element_attk = set_combine(
+          element_acc
+        , {hands="オトミグローブ",
+           back="トーロケープ",
+        })
+    local element_fullattk = set_combine(
+          element_attk,
+          { left_ear="ヘカテーピアス",
+            right_ear="フリオミシピアス",
+          })
+    
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 --風水
@@ -217,6 +228,11 @@ function get_sets()
     sets.midcast.RECAST['水'] = mid_water
     sets.midcast.RECAST['火'] = mid_fire
     sets.midcast.RECAST['氷'] = mid_ice
+    sets.midcast.element = {}
+    sets.midcast.element.mode = 'ACC'
+    sets.midcast.element['ACC'] = element_acc
+    sets.midcast.element['ATTK'] = element_attk
+    sets.midcast.element['FULL'] = element_fullattk
     sets.aftercast = {}
     sets.aftercast.skip = false
     sets.aftercast.idle = nil    
@@ -426,8 +442,8 @@ end
 
 function set_element(spell)
     local set_equip = nil
-    set_equip = sets.midcast['精霊魔法']
     
+    set_equip = sets.midcast.element[sets.midcast.element.mode]
     if sets.equip.obi.weathers:contains(spell.element) then
         --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
         if world.weather_element == spell.element 
@@ -439,6 +455,7 @@ function set_element(spell)
             end
          end
     end
+    
     return set_equip
 end
 function set_song(spell)
@@ -584,6 +601,41 @@ function self_command(command)
             else
                 windower.add_to_chat(123,'unlock '..args[2])
                 enable(args[2])
+            end
+        elseif args[1] == 'elementmode' then
+            if #args == 1 then
+                if sets.midcast.element.mode == 'ACC' then
+                    windower.add_to_chat(123,'精霊：魔攻')
+                    sets.midcast.element.mode = 'ATTK'
+                    sets.midcast['神聖魔法'] = sets.midcast.element['ATTK']
+                elseif sets.midcast.element.mode == 'ATTK' then
+                    windower.add_to_chat(123,'精霊：FULL魔攻')
+                    sets.midcast.element.mode = 'FULL'
+                    sets.midcast['神聖魔法'] = sets.midcast.element['FULL']
+                else
+                    windower.add_to_chat(123,'精霊：魔命')
+                    sets.midcast.element.mode = 'ACC'
+                    sets.midcast['神聖魔法'] = enfeebling
+                    sets.precast['スリプル'] = sets.midcast['スリプル']
+                end
+            else
+                if args[2] == 'ACC' then
+                    sets.midcast.element.mode = 'ACC'
+                    sets.midcast['神聖魔法'] = enfeebling
+                    sets.precast['スリプル'] = sets.midcast['スリプル']
+                elseif args[2] == 'ATTK' then
+                    sets.midcast.element.mode = 'ATTK'
+                    sets.midcast['神聖魔法'] = sets.midcast.element['ATTK']
+                    sets.precast['スリプル'] = sets.equip['スリプル'].precast
+                elseif args[2] == 'FULL' then
+                    sets.midcast.element.mode = 'FULL'
+                    sets.midcast['神聖魔法'] = sets.midcast.element['FULL']
+                    sets.precast['スリプル'] = sets.equip['スリプル'].precast
+                elseif args[2] == 'VW' then
+                    windower.add_to_chat(123,'精霊：VW')
+                    sets.midcast.element.mode = 'VW'
+                end
+                equip(sets.midcast.element[sets.midcast.element.mode])
             end
         elseif args[1] == 'idle' then
             if #args == 1 then

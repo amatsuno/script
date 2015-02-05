@@ -439,10 +439,10 @@ function myGetProperties(t,comment,level)
         debugf:append(spaces..'}--end of '..comment..'\n')
     elseif type(t) == 'number' or type(t) == 'string' then
         debugf:append(spaces..comment..' ="'..val..'"\n')
-    elseif type(val) == 'boolean' then
-        debugf:append(spaces..comment..' ='..tostring(val)..'\n')
+    elseif type(t) == 'boolean' then
+        debugf:append(spaces..comment..' ='..tostring(t)..'\n')
     else
-        debugf:append(spaces..comment..' type is '..type(val)..'\n')
+        debugf:append(spaces..comment..' type is '..type(t)..'\n')
     end
 end
 function my_send_command(cmd)

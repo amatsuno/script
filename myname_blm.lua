@@ -339,7 +339,7 @@ function file_unload()
 end
 
 function precast(spell)
-    myGetProperties(spell,'spell',0)
+    dumpProperties(spell,'spell',0)
     if ignore_spells:contains(spell.ja) then return end
     if spell.type == 'JobAbility' then
     elseif spell.type=="WeaponSkill" then
@@ -472,7 +472,7 @@ function set_element(spell)
         if sets.equip.obi.weathers:contains(spell.element) then
             --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
             if world.weather_element == spell.element 
-                or world.day_element == spell_element
+                or world.day_element == spell.element
                 or buffactive[sets.equip.obi.buffs[spell.element]] then
                 if sets.equip.obi[spell.element] ~= nil then
                     sets_equip = set_combine(sets_equip, 
@@ -642,7 +642,7 @@ function self_command(command)
                 equip(sets.equip[args[2]])
             end
         elseif args[1] == 'assist' then
-            local cmd = 'send @others gs c ra '..args[2]..' '..player.target.id
+            local cmd = 'send @others gs c ra '..args[2]..' '..tostring(player.target.id)
             add_to_chat(123, 'cmd='..cmd)
             my_send_command(cmd)
         end
@@ -677,11 +677,11 @@ function myGetProperties(t,comment,level)
         end
         debugf:append(spaces..'}--end of '..comment..'\n')
     elseif type(t) == 'number' or type(t) == 'string' then
-        debugf:append(spaces..comment..' ="'..val..'"\n')
-    elseif type(val) == 'boolean' then
-        debugf:append(spaces..comment..' ='..tostring(val)..'\n')
+        debugf:append(spaces..comment..' ="'..t..'"\n')
+    elseif type(t) == 'boolean' then
+        debugf:append(spaces..comment..' ='..tostring(t)..'\n')
     else
-        debugf:append(spaces..comment..' type is '..tostring(type(val))..'\n')
+        debugf:append(spaces..comment..' type is '..tostring(type(t))..'\n')
     end
 end
 

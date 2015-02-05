@@ -87,7 +87,7 @@ function get_sets()
         back="慈悲の羽衣",
     })
     local baXX = enhance
-    local regen = set_combine(enhance, {head="ＳＶボネット+2",})
+    local regen = set_combine(enhance, {head="ＳＶボネット+2",back="ブックワームケープ",})
     local stoneskin = set_combine(enhance, {waist="ジーゲルサッシュ",})
 --stun
     local stun = {

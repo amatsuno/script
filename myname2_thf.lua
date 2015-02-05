@@ -26,7 +26,7 @@ function get_sets()
         head="ウァールマスク",
         body="タウマスコート",
         hands="ＰＤアムレット+1",
-        legs="ＩＵタイツ+1",
+        legs="マニボゾブレー",
         feet="プランダプーレーヌ",
         waist="ウィンドバフベルト",
         left_ear="ダッジョンピアス",
@@ -46,6 +46,7 @@ function get_sets()
            neck='アガサヤカラー',
            body="エメットハーネス",
            hands="ブレムテグローブ",
+           feet="カークソレギンス",
            waist="フレフランサッシュ",
            back="ケッニケープ",
         })
@@ -55,7 +56,8 @@ function get_sets()
         }
     local evation = set_combine(base,
         {
-           body="エメットハーネス",
+            body="エメットハーネス",
+            legs="ＩＵタイツ+1",
             feet="ＩＵゲートル+1",
             waist="カシリベルト",
             left_ring="ダークリング",
@@ -64,8 +66,14 @@ function get_sets()
         })
     local def=set_combine(evation,
         {
+            hands="ブレムテグローブ",
             neck="黄昏の光輪",
             back="モルスカマント",
+        })
+    local mgdef = set_combine(def,
+        {
+            head="ウェフェラクレット",
+            body="ウェフェラローブ",
         })
 --WS装備
     local we_exenterator = set_combine(base,
@@ -80,13 +88,12 @@ function get_sets()
         })
     local we_Evisceration = set_combine(base,
         {
-        
-            hands="ＰＤアムレット+1",
+            hands="ブレムテグローブ",
             body="エメットハーネス",
             feet="プランダプーレーヌ",
-            back="ケッニケープ",
+            back="ヴェスピッドマント",
         })
-        
+    local we_rudra = we_Evisceration
 --
     local idle = {
         back="リパルスマント",
@@ -102,6 +109,7 @@ function get_sets()
     sets.ws = {}
     sets.ws['エクゼンテレター'] = we_exenterator
     sets.ws['エヴィサレーション'] = we_Evisceration
+    sets.ws['ルドラストーム'] = we_rudra
     sets.idle = {}
     sets.idle.idle = idle
     sets.engaged = {}
@@ -111,34 +119,58 @@ function get_sets()
     sets.engaged.normal2 = normal2
     sets.engaged.evation = evation
     sets.engaged.def = def
+    sets.engaged.mgdef = mgdef
     sets.engaged.def_eva = evation
     sets.equip = {}
     sets.equip.treasure = treasure;
     send_command('input /macro book 3;wait .2;input /macro set 1')
-
+    initCounter()
+end
+function initCounter()
 --カウンター定義
 --[[
     [1599] = {id=1599,en="Hammer Beak",ja="ハンマービーク"},
     [1600] = {id=1600,en="Poison Pick",ja="ポイズンピック"},
-]]
-    counter = {
-        action={
-            phdef={
-                condition = {
-                    only_self_target = true,
-                    spell={192,270,271,273,
-                        1599,    --en="Hammer Beak",ja="ハンマービーク"},
-                        1600,    --en="Poison Pick",ja="ポイズンピック"},
-                    },
-                    target={'SELF'},
-                },
-                preaction={equip=sets.engaged.def,},
-                interruptaction ={equip=sets.engaged.fight,},
-                finishaction={equip=sets.engaged.fight,},
-            },
-        },
-    }
+    [315] = {id=315,en="Dark Spore",ja="ダークスポア",element=6,icon_id=46,monster_level=10,prefix="/monsterskill",range=0,targets    [314] = {id=314,en="Silence Gas",ja="サイレスガス",element=6,icon_id=46,monster_level=30,prefix="/monsterskill",range=0,target
+    [308] = {id=308,en="Frogkick",ja="フロッグキック",element=6,icon_id=46,monster_level=10,prefix="/monsterskill",range=2,targets=32,tp_cost=1000},
     
+]]
+    counter = {}
+    counter.action = {}
+    counter.action.phdef={}
+    counter.action.phdef.condition = {
+        only_self_target = true,
+        spell={ --270,271,273,トラ
+            308,    --フロッグキック
+            1599,    --en="Hammer Beak",ja="ハンマービーク"},
+            1600,    --en="Poison Pick",ja="ポイズンピック"},
+            2096,
+            2099,
+        },
+        target={'SELF'},
+    }
+    counter.action.phdef.preaction={equip=sets.engaged.def,}
+    counter.action.phdef.interruptaction ={equip=sets.engaged.fight,}
+    counter.action.phdef.finishaction={equip=sets.engaged.fight,}
+    
+    counter.action.mgdef={}
+    counter.action.mgdef.condition = {
+        only_self_target = true,
+        spell={
+            238,56,163,
+            314, 315,       --ダークスポア、サイレスガス
+            189,190,
+            191,192,499,    --ストンガIII,IV,ストンジャ
+            2094,
+            2098,
+            3275,
+        },
+        target={'SELF'},
+    }
+    counter.action.mgdef.preaction=
+        {equip=sets.engaged.mgdef,}
+    counter.action.mgdef.interruptaction = counter.action.phdef.interruptaction
+    counter.action.mgdef.finishaction = counter.action.phdef.interruptaction
 end
 function precast(spell)
     local equips = nil
@@ -152,6 +184,16 @@ function precast(spell)
     if equips ~= nil then
         equip(equips)
     end
+	if spell.name == '空蝉の術:壱' and buffactive['分身'] then
+		send_command('@wait 3;cancel 66;')
+	elseif spell.name == '空蝉の術:壱' and buffactive['分身(2)'] then
+		send_command('@wait 3;cancel 444;')
+	elseif spell.name == '空蝉の術:壱' and buffactive['分身(3)'] then
+		send_command('@wait 3;cancel 445;')
+	elseif spell.name == '空蝉の術:壱' and buffactive['分身(4+)'] then
+		send_command('@wait 3;cancel 446;')
+	end
+    
 end
 function aftercast(spell)
     local equips = nil
@@ -165,11 +207,13 @@ function status_change(new,old)
     if T{'Idle','Resting'}:contains(new) then
         equip(sets.idle.idle)
         if use_sub.pc ~= nil then
+            --[[
             send_command(
               'send '..use_sub.pc..' gs equip sets.equip.IDLE'
             ..';wait 4;send '..use_sub.pc..' /follow '..player.name
             ..';wait 1;send '..use_sub.pc..' /follow '..player.name
             )
+            ]]
         end
     elseif new == 'Engaged' then
         if use_sub.pc ~= nil then
@@ -244,7 +288,10 @@ function getDebuff()
     elseif buffactive['ヘヴィ'] then
         return 'ヘヴィ'
     elseif buffactive['防御力ダウン'] 
-        or buffactive['魔法防御力ダウン'] then
+        or buffactive['魔法防御力ダウン'] 
+        or buffactive['攻撃力ダウン']
+        or buffactive['魔法命中率ダウン'] 
+        or buffactive['命中率ダウン']then
         return 'イレース回復'
     elseif buffactive['バイオ'] then
         return 'イレース回復'
@@ -284,6 +331,7 @@ function recover_hp(rhp)
         if rspell ~= nil then
             send_command(windower.to_shift_jis('send '..use_sub.pc..' /ma '..rspell..' '..player.name))
         end
+        windower.add_to_chat(0xCE, 'need '..rhp..' points recover')
      end
 end
 function recover()
@@ -311,26 +359,30 @@ function self_command(command)
         if sets.engaged.fight == sets.engaged.normal then
             windower.add_to_chat(0xCE, '命中')
             sets.engaged.fight = sets.engaged.normal2
-            counter.action.phdef.interruptaction.equip=sets.engaged.fight 
-            counter.action.phdef.finishaction.equip=sets.engaged.fight 
+            initCounter()
+            --counter.action.phdef.interruptaction.equip=sets.engaged.fight 
+            --counter.action.phdef.finishaction.equip=sets.engaged.fight 
             equip({range=empty,ammo='ホーンドタスラム',})
         elseif sets.engaged.fight == sets.engaged.normal2 then
             windower.add_to_chat(0xCE, '回避')
             sets.engaged.fight = sets.engaged.evation
-            counter.action.phdef.interruptaction.equip=sets.engaged.fight 
-            counter.action.phdef.finishaction.equip=sets.engaged.fight 
+            --counter.action.phdef.interruptaction.equip=sets.engaged.fight 
+            --counter.action.phdef.finishaction.equip=sets.engaged.fight 
+            initCounter()
             equip({range='レイダーブーメラン',ammo=empty,})
         elseif sets.engaged.fight == sets.engaged.evation then
             windower.add_to_chat(0xCE, '防御')
             sets.engaged.fight = sets.engaged.def
-            counter.action.phdef.interruptaction.equip=sets.engaged.fight 
-            counter.action.phdef.finishaction.equip=sets.engaged.fight 
+            --counter.action.phdef.interruptaction.equip=sets.engaged.fight 
+            --counter.action.phdef.finishaction.equip=sets.engaged.fight 
+            initCounter()
             equip({range='レイダーブーメラン',ammo=empty,})
         else
             windower.add_to_chat(0xCE, '通常')
             sets.engaged.fight = sets.engaged.normal
-            counter.action.phdef.interruptaction.equip=sets.engaged.fight 
-            counter.action.phdef.finishaction.equip=sets.engaged.fight 
+            --counter.action.phdef.interruptaction.equip=sets.engaged.fight 
+            --counter.action.phdef.finishaction.equip=sets.engaged.fight 
+            initCounter()
             equip({range='レイダーブーメラン',ammo=empty,})
         end
         if sets.engaged.fight ~= nil then

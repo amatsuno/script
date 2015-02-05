@@ -46,7 +46,7 @@ function get_sets()
 
     --強化
     local enhance = {
-        main="麒麟棍",
+        main="アバブリニ",
         sub="フルキオグリップ",
         range="オウレオール",
         head="ウムシクハット",
@@ -67,8 +67,8 @@ function get_sets()
         {legs="パエティパンタロン", feet='ＰＩダックビル+1',right_ring="シェルターリング"})
 --CURE
     local cure ={
-        main="タマシチ",
-        sub="玄武盾",
+        main="アバブリニ",
+        sub="ビビドストラップ",
         ammo="インカントストーン",
         head="ＧＥカウビーン+1",
         body="ＯＲブリオー+2",
@@ -136,8 +136,7 @@ function get_sets()
     }
     --待機時の装備（リフレ装備とかカット装備とか)
     local idle = {
-        main="タマシチ",
-        sub="玄武盾",
+        main="アーススタッフ",
         range="オウレオール",
         head="槌の髪飾り",
         body="ＧＥブリオー+1",
@@ -234,6 +233,7 @@ function pretarget(spell)
 end
 function precast(spell)
     if ignore_spells:contains(spell.name) then return end
+    dumpProperties(spell,'pre:spell', 0)
     if spell.type == 'JobAbility' then
     elseif spell.type == 'Ninjutsu' then
         if spell.cast_time > 0.75 then
@@ -396,11 +396,14 @@ function self_command(command)
                 if sets.aftercast.idle == nil then
                     windower.add_to_chat(123,'リフレ装備待機')
                     sets.aftercast.idle = sets.equip.IDLE
+                    sets.midcast['ケアル'].body="ＯＲブリオー+2" 
                 elseif sets.aftercast.idle == sets.equip.IDLE then
                     windower.add_to_chat(123,'カット装備待機')
                     sets.aftercast.idle = sets.equip.IDLE_DEF
+                    sets.midcast['ケアル'].body="ＧＥブリオー+1" 
                 else
                     windower.add_to_chat(123,'着替え待機なし')
+                    sets.midcast['ケアル'].body="ＯＲブリオー+2" 
                     sets.aftercast.idle = nil
                 end
             else

@@ -75,11 +75,11 @@ function dumpProperties(t,comment,level)
         end
         dumpf:append(spaces..'}--end of '..comment..'\n')
     elseif type(t) == 'number' or type(t) == 'string' then
-        dumpf:append(spaces..comment..' ="'..val..'"\n')
-    elseif type(val) == 'boolean' then
-        dumpf:append(spaces..comment..' ='..tostring(val)..'\n')
+        dumpf:append(spaces..comment..' ="'..t..'"\n')
+    elseif type(t) == 'boolean' then
+        dumpf:append(spaces..comment..' ='..tostring(t)..'\n')
     else
-        dumpf:append(spaces..comment..' type is '..tostring(type(val))..'\n')
+        dumpf:append(spaces..comment..' type is '..tostring(type(t))..'\n')
     end
 end
 
