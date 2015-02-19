@@ -46,7 +46,7 @@ function get_sets()
 
     --強化
     local enhance = {
-        main="アバブリニ",
+        main="アバブリニ+1",
         sub="フルキオグリップ",
         range="オウレオール",
         head="ウムシクハット",
@@ -67,7 +67,7 @@ function get_sets()
         {legs="パエティパンタロン", feet='ＰＩダックビル+1',right_ring="シェルターリング"})
 --CURE
     local cure ={
-        main="アバブリニ",
+        main="アバブリニ+1",
         sub="ビビドストラップ",
         ammo="インカントストーン",
         head="ＧＥカウビーン+1",

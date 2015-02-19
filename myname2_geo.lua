@@ -30,6 +30,8 @@ function get_sets()
         })
     local idle_defmg = set_combine(idel_def,
         {
+            left_ear='ハンドラーピアス',
+            right_ear='ハンドラーピアス+1',
         })
     local idle_healing = set_combine(idle, 
         {

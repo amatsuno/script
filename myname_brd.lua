@@ -19,7 +19,7 @@ function get_sets()
         body="ＭＫジュバ+1",
         hands="ＧＥゲージ+1",
         legs="ゲンデサスパッツ",
-        feet="ＢＩスリッパー+1",
+        feet="コールレークサボ",
         neck="オルンミラトルク",
         waist="アエドベルト",
         left_ear="エンチャンピアス+1",
@@ -142,7 +142,7 @@ function get_sets()
         head="ナティラハット",
         hands="ＧＥゲージ+1",
         legs="ＡＤラングラヴ+2",
-        feet={ name="ＧＥガロッシュ+1", augments={'Phys. dmg. taken -4%','Song recast delay -3',}},
+        feet="コールレークサボ",
         back="スイスケープ+1",
         waist="ニヌルタサッシュ",
     }
@@ -177,7 +177,8 @@ function get_sets()
     }
 --敵うた
     local bard_acc = {
-            main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
+        main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
+        range="ギャッラルホルン",
         sub="メフィテスグリップ",
         head="ＢＩラウンドリト+1",
         body="ＢＲジュスト+1",
@@ -196,7 +197,7 @@ function get_sets()
         {
         hands="ＧＥゲージ+1",
         legs="ＡＤラングラヴ+2",
-        feet={ name="ＧＥガロッシュ+1", augments={'Phys. dmg. taken -4%','Song recast delay -3',}},
+        feet="コールレークサボ",
         right_ear="ロケイシャスピアス",
         left_ear="胡蝶のイヤリング",
         left_ring="プロリクスリング",
@@ -488,6 +489,8 @@ function set_song(spell)
     if sets.midcast.basesong then
         if spell.target.type ~= 'MONSTER' and not spell.name:find('マーチ') then
             set_equip = set_combine(set_equip, sets.equip.BASESONG)
+        elseif spell.name:find('ララバイ') then
+            set_equip = set_combine(set_equip, {range="ダウルダヴラ",})
         end
         sets.midcast.basesong = false
     end
