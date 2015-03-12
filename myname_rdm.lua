@@ -138,7 +138,7 @@ function get_sets()
         range="オウレオール",
         head="ナティラハット",
         hands="ＨＡカフス+1",
-        body="ヴァニアコタルディ",
+        body="ヘリオスジャケット",
         legs="アートシクロップス",
         feet="アートシクブーツ",
         waist="オヴェイトロープ",
@@ -152,7 +152,7 @@ function get_sets()
     
 --精霊
     local element_acc={
-        main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
+        main={ name="レブレイルグ+2", augments={'DMG:+17','INT+4','"Mag.Atk.Bns."+25',}},
         sub="メフィテスグリップ",
         range="オウレオール",
         head="アートシクハット",
@@ -172,6 +172,8 @@ function get_sets()
         element_acc, {
             head="ＨＡハット+1",
             legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -2%','"Mag.Atk.Bns."+22',}},
+            hands="ヘリオスグローブ",
+            feet="ヘリオスブーツ",
             neck="水影の首飾り"})
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
@@ -180,7 +182,7 @@ function get_sets()
         main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="メフィテスグリップ",
         head="ＡＴシャポー+1",
-        body="ヴァニアコタルディ",
+        body="ヘリオスジャケット",
         hands="ＨＡカフス+1",
         legs="アートシクロップス",
         feet="アートシクブーツ",

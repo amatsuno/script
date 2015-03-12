@@ -95,7 +95,7 @@ function get_sets()
         sub="メフィテスグリップ",
         range="オウレオール",
         head="ＰＤボード+1",
-        body="ヴァニアコタルディ",
+        body="ヘリオスジャケット",
         hands="ＨＡカフス+1",
         legs="アートシクロップス",
         feet="ＰＤローファー+1",
@@ -150,11 +150,11 @@ function get_sets()
     }
 --精霊
     local element_acc={
-        main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
+        main= "ケラウノス",
         sub="メフィテスグリップ",
         range="オウレオール",
         head="アートシクハット",
-        body="アートシクジュバ",
+        body="ヘリオスジャケット",
         hands="ＨＡカフス+1",
         legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
         feet="アートシクブーツ",
@@ -168,8 +168,8 @@ function get_sets()
     }
     local element_attk = set_combine(
           element_acc
-        , {hands="ハゴンデスカフス",
-           feet="ウンバニブーツ",
+        , {hands="ヘリオスグローブ",
+           feet="ヘリオスブーツ",
            })
     local element_fullattk = set_combine(
           element_attk
@@ -182,11 +182,11 @@ function get_sets()
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 --暗黒
     local dark_acc={
-        main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
+        main= "ケラウノス",
         sub="メフィテスグリップ",
         range="オウレオール",
         head="アートシクハット",
-        body="アートシクジュバ",
+        body="ヘリオスジャケット",
         hands="ＨＡカフス+1",
         legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
         feet="アートシクブーツ",
@@ -202,7 +202,7 @@ function get_sets()
         ,{ hands="ハゴンデスカフス",
            body="ＨＡコート+1",
             legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -2%','"Mag.Atk.Bns."+22',}},
-           feet="ウンバニブーツ",
+           feet="ヘリオスブーツ",
            head="ＨＡハット+1",
            sub="ズーゾーウグリップ",
            neck="水影の首飾り",
@@ -212,11 +212,16 @@ function get_sets()
 --属性帯
     local obi = {}
     --所持している属性帯の属性を列挙
-    obi.weathers = T{'風','土','火',}
+    obi.weathers = T{'風','土','火','水','氷','雷','光','闇'}
     --所持している属性帯の装備コマンド
-    obi['風']={waist="風輪の帯",}
-    obi['土']={waist="土輪の帯",}
-    obi['火']={waist="火輪の帯",}
+    obi['風']={waist="八輪の帯",}
+    obi['土']={waist="八輪の帯",}
+    obi['氷']={waist="八輪の帯",}
+    obi['火']={waist="八輪の帯",}
+    obi['水']={waist="八輪の帯",}
+    obi['雷']={waist="八輪の帯",}
+    obi['光']={waist="八輪の帯",}
+    obi['闇']={waist="八輪の帯",}
     --陣のID
     obi.buffs ={}
     obi.buffs['風'] = 180 --烈風の陣
@@ -260,6 +265,7 @@ function get_sets()
     sets.precast.FC['FC_LOW'] = pre_low
     sets.midcast = {}
     sets.midcast['暗黒魔法'] = dark_acc
+    sets.midcast['スタン'] = stun
     sets.midcast['インパクト'] = mid_impact
     sets.midcast['強化魔法'] = enhance
     sets.midcast['バ系'] = baXX
@@ -271,10 +277,10 @@ function get_sets()
     sets.midcast['メルトン'] = meltdown
     sets.midcast['リジェネ'] = regen
     sets.midcast.element = {}
-    sets.midcast.element.mode = '魔命'
-    sets.midcast.element['魔命'] = element_acc
-    sets.midcast.element['魔攻'] = element_attk
-    sets.midcast.element['FULL魔攻'] = element_fullattk
+    sets.midcast.element.mode = 'ACC'
+    sets.midcast.element['ACC'] = element_acc
+    sets.midcast.element['ATTK'] = element_attk
+    sets.midcast.element['FULL'] = element_fullattk
     sets.midcast.RECAST = {}
     sets.midcast.RECAST['光'] =mid_light
     sets.midcast.RECAST['闇'] =mid_base
@@ -486,7 +492,7 @@ end
 function set_element(spell)
     local sets_equip = nil
     if buffactive['一心精進の章'] then
-        sets_equip = sets.midcast.element['魔攻']
+        sets_equip = sets.midcast.element['ATTK']
     else
         sets_equip = sets.midcast.element[sets.midcast.element.mode]
     end
@@ -583,38 +589,42 @@ function self_command(command)
                 if sets.precast['スタン'] == sets.equip['スタン'] then
                     windower.add_to_chat(123,'スタン：魔命1')
                     sets.precast['スタン'] = sets.equip['スタン魔命1']
+                    sets.midcast['スタン'] = sets.precast['スタン']
                 elseif sets.precast['スタン'] == sets.equip['スタン魔命1'] then
                     windower.add_to_chat(123,'スタン：魔命2')
                     sets.precast['スタン'] = sets.equip['スタン魔命2']
+                    sets.midcast['スタン'] = sets.precast['スタン']
                 elseif sets.precast['スタン'] == sets.equip['スタン魔命2'] then
                     windower.add_to_chat(123,'スタン')
                     sets.precast['スタン'] = sets.equip['スタン'] 
+                    sets.midcast['スタン'] = sets.precast['スタン']
                 end
             else
                 if sets.equip[args[2]] ~= nil then
                     windower.add_to_chat(123,'スタン：'..args[2])
                     sets.precast['スタン'] = sets.equip[args[2]]
+                    sets.midcast['スタン'] = sets.precast['スタン']
                 end
             end
         elseif args[1] == 'elementmode' then
             if #args == 1 then
-                if sets.midcast.element.mode == '魔命' then
+                if sets.midcast.element.mode == 'ACC' then
                     windower.add_to_chat(123,'精霊：魔攻')
-                    sets.midcast.element.mode = '魔攻'
-                elseif sets.midcast.element.mode == '魔攻' then
+                    sets.midcast.element.mode = 'ATTK'
+                elseif sets.midcast.element.mode == 'ATTK' then
                     windower.add_to_chat(123,'精霊：FULL魔攻')
-                    sets.midcast.element.mode = 'FULL魔攻'
+                    sets.midcast.element.mode = 'FULL'
                 else
                     windower.add_to_chat(123,'精霊：魔命')
-                    sets.midcast.element.mode = '魔命'
+                    sets.midcast.element.mode = 'ACC'
                 end
             else
                 if args[2] == 'ACC' then
-                    sets.midcast.element.mode = '魔命'
+                    sets.midcast.element.mode = 'ACC'
                 elseif args[2] == 'ATTK' then
-                    sets.midcast.element.mode = '魔攻'
+                    sets.midcast.element.mode = 'ATTK'
                 elseif args[2] == 'FULL' then
-                    sets.midcast.element.mode = 'FULL魔攻'
+                    sets.midcast.element.mode = 'FULL'
                 end
                 equip(sets.midcast.element[sets.midcast.element.mode])
             end

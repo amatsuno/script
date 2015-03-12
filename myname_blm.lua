@@ -1,3 +1,4 @@
+assit = true
 function get_sets()
     set_language('japanese')
     ancient_spells = T{
@@ -9,7 +10,7 @@ function get_sets()
     }
 --FC_BASE
     local pre_base ={
-        main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
+        main="ケラウノス",
         sub="ビビドストラップ",
         head="ナティラハット",
         body="アンフルローブ",
@@ -63,7 +64,7 @@ function get_sets()
             main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="メフィテスグリップ",
         head="ナティラハット",
-        body="ヴァニアコタルディ",
+        body="ヘリオスジャケット",
         hands="ＨＡカフス+1",
         legs="アートシクロップス",
         feet="リーガルパンプス+1",
@@ -117,7 +118,7 @@ function get_sets()
         sub="メフィテスグリップ",
         head="ナティラハット",
         hands="ＨＡカフス+1",
-        body="ヴァニアコタルディ",
+        body="ヘリオスジャケット",
         legs="アートシクロップス",
         feet="アートシクブーツ",
         waist="オヴェイトロープ",
@@ -132,10 +133,10 @@ function get_sets()
 
 --暗黒
     local dark_acc={
-        main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
+        main="ケラウノス",
         sub="メフィテスグリップ",
-        head="アートシクハット",
-        body="アートシクジュバ",
+        head="妖蟲の髪飾り+1",
+        body="ヘリオスジャケット",
         hands="ＨＡカフス+1",
         legs="アートシクロップス",
         feet="アートシクブーツ",
@@ -145,14 +146,14 @@ function get_sets()
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
         left_ring="サンゴマリング",
-        right_ring="ストレンドゥリング",
+        right_ring="ウェーザーリング",
         back="慈悲の羽衣",
     }
     
 --精霊
     local element_acc={
-    main= {name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}},
-    sub="メフィテスグリップ",
+    main="ケラウノス",
+    sub="エルダーグリップ+1",
     head="ＡＲペタソス+1",
     body="ＳＰコート+1",
     hands="ＨＡカフス+1",
@@ -163,20 +164,20 @@ function get_sets()
     waist="山吹の帯",
     left_ear="怯懦の耳",
     right_ear="フリオミシピアス",
-    left_ring="サンゴマリング",
-    right_ring="ストレンドゥリング",
+    left_ring="女王の指輪+1",
+    right_ring="ウェーザーリング",
     back="トーロケープ",
     }
     local element_attk = set_combine(
           element_acc
-        , {hands="ハゴンデスカフス",feet="ウンバニブーツ",})
+        , {hands="ヘリオスグローブ",feet="ヘリオスブーツ",})
     local element_fullattk = set_combine(
           element_attk
         , { head={ name="ＨＡハット+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -4%','"Mag.Atk.Bns."+25',}},
             legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -2%','"Mag.Atk.Bns."+22',}},
-            sub="エルダーグリップ+1",neck="水影の首飾り",
+            neck="水影の首飾り",
             range=empty,ammo="オンブルタスラム+1",
-            left_ring="女王の指輪",})
+            right_ring="女王の指輪+1",})
 
     local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 
@@ -186,11 +187,16 @@ function get_sets()
 --属性帯
     local obi = {}
     --所持している属性帯の属性を列挙
-    obi.weathers = T{'風','土','火',}
+    obi.weathers = T{'風','土','火','水','氷','雷','光','闇'}
     --所持している属性帯の装備コマンド
-    obi['風']={waist="風輪の帯",}
-    obi['土']={waist="土輪の帯",}
-    obi['火']={waist="火輪の帯",}
+    obi['風']={waist="八輪の帯",}
+    obi['土']={waist="八輪の帯",}
+    obi['氷']={waist="八輪の帯",}
+    obi['火']={waist="八輪の帯",}
+    obi['水']={waist="八輪の帯",}
+    obi['雷']={waist="八輪の帯",}
+    obi['光']={waist="八輪の帯",}
+    obi['闇']={waist="八輪の帯",}
     --陣のID
     obi.buffs ={}
     obi.buffs['風'] = 180 --烈風の陣
@@ -304,7 +310,7 @@ function get_sets()
     sets.equip['スリプル'] = {}
     sets.equip['スリプル'].precast = pre_sleep
     --enable('main','sub','ammo')
-    rev_attk = { name="レブレイルグ+2", augments={'DMG:+10','"Mag.Atk.Bns."+26',}}
+    rev_attk = "ケラウノス"
 
     send_command('input /macro book 4;wait .2;input /macro set 10')
     bindKeys(true)    
@@ -467,7 +473,7 @@ function set_element(spell)
             sets_equip = sets.midcast.element[sets.midcast.element.mode]
         end
         if buffactive['魔力の雫'] or buffactive['魔力の泉'] then
-            sets_equip = set_combine(sets_equip, {body='ヴァニアコタルディ'})
+            sets_equip = set_combine(sets_equip, {body='ヘリオスジャケット'})
         end
         if sets.equip.obi.weathers:contains(spell.element) then
             --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
@@ -475,6 +481,7 @@ function set_element(spell)
                 or world.day_element == spell.element
                 or buffactive[sets.equip.obi.buffs[spell.element]] then
                 if sets.equip.obi[spell.element] ~= nil then
+                    add_to_chat(8, '属性一致→帯使用')
                     sets_equip = set_combine(sets_equip, 
                         sets.equip.obi[spell.element])
                 end
@@ -642,9 +649,19 @@ function self_command(command)
                 equip(sets.equip[args[2]])
             end
         elseif args[1] == 'assist' then
-            local cmd = 'send @others gs c ra '..args[2]..' '..tostring(player.target.id)
-            add_to_chat(123, 'cmd='..cmd)
-            my_send_command(cmd)
+            if args[2] == 'on' then
+                assist = true
+            elseif args[2] == 'off' then
+                assist = false
+            else
+                if assist then
+                    local cmd = 'send @others gs c ra '..args[2]..' '..tostring(player.target.id)
+                    add_to_chat(123, 'cmd='..cmd)
+                    my_send_command(cmd)
+                else 
+                    add_to_chat(123, 'assist=off')
+                end
+            end
         end
     end
 end

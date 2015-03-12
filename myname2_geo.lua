@@ -28,7 +28,7 @@ function get_sets()
         feet="ハゴンデスサボ",
         
         })
-    local idle_defmg = set_combine(idel_def,
+    local idle_defmg = set_combine(idle_def,
         {
             left_ear='ハンドラーピアス',
             right_ear='ハンドラーピアス+1',
@@ -688,7 +688,14 @@ function self_command(command)
                 cmd = 'input /ma '..args[2]..' '..args[3]
                 my_send_command(cmd)
             end
-            
+        elseif args[1] == 'jb' then
+            if sets.equip.IDLE_DEF.back == 'メシストピンマント' then
+                windower.add_to_chat(123, '待機:背中＝龍脈の外套')
+                sets.equip.IDLE_DEF.back = '龍脈の外套'
+            else
+                windower.add_to_chat(123, '待機:背中＝メシストピンマント')
+                sets.equip.IDLE_DEF.back = 'メシストピンマント'
+            end
         elseif args[1] == 'move' then
             equip(set_move(sets.aftercast.idle))
         end
