@@ -127,7 +127,7 @@ function get_sets()
         waist="山吹の帯",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
-        left_ring="オメガリング",
+        left_ring="アクィロリング",
         right_ring="サンゴマリング",
         back="リフラクトケープ",
     }
@@ -138,7 +138,8 @@ function get_sets()
         })
     local element_fullattk = set_combine(
           element_attk,
-          { left_ear="ヘカテーピアス",
+          { head="ＨＡハット+1",
+            left_ear="ヘカテーピアス",
             right_ear="フリオミシピアス",
           })
     
