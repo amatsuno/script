@@ -232,6 +232,11 @@ function get_sets()
         right_ring="ダークリング",
         back="チェビオットケープ",
         });
+    local lock = {
+        main="ケラウノス",
+        sub="エルダーグリップ+1",
+        range=empty,ammo="オンブルタスラム+1",
+    }
 --MP装備
     local equip_mp = {
         head="ナティラハット",
@@ -309,6 +314,7 @@ function get_sets()
     sets.equip['HEALING'] = idle_healing
     sets.equip['スリプル'] = {}
     sets.equip['スリプル'].precast = pre_sleep
+    sets.equip['LOCK'] = lock
     --enable('main','sub','ammo')
     rev_attk = "ケラウノス"
 
@@ -524,7 +530,9 @@ function self_command(command)
         if args[1] == 'lock' then
             if #args == 1 then
                 windower.add_to_chat(123,'lock')
+                equip(sets.equip['LOCK'])
                 disable('main','sub','ammo','range')
+                my_send_command('@wait 1;input /lockstyle on')
             else
                 windower.add_to_chat(123,'lock '..args[2])
                 disable(args[2])

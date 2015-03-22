@@ -12,6 +12,9 @@ move_equip = {
     ['風'] = {feet="ジオサンダル",},
 }
 function cancel_buff(spell)
+    if windower.ffxi.get_spell_recasts()[spell.recast_id] > 0 then
+        return
+    end
 	if spell.name == 'ストンスキン' and buffactive['ストンスキン'] then
 		send_command('@wait 1.2;cancel 37;')
 	elseif spell.name == 'スニーク' and buffactive['スニーク'] and spell.target.id == player.id then
