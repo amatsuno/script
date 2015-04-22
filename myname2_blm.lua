@@ -1,4 +1,5 @@
 function get_sets()
+    assist = true
     set_language('japanese')
 --古代魔法のリスト
     ancient_spells = T{
@@ -102,22 +103,25 @@ function get_sets()
         sub="メフィテスグリップ",
         range="オウレオール",
         head="ナティラハット",
-        body="ＨＡコート+1",
+        body="スピコナコート",
         hands="ＨＡカフス+1",
         legs="ハゴンデスパンツ",
-        feet="ハゴンデスサボ",
+        feet="ヘリオスブーツ",
         neck="エディネクラス",
         waist="山吹の帯",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
-        left_ring="バルラーンリング",
+        left_ring="女王の指輪",
         right_ring="サンゴマリング",
         back="ベーンケープ",
     }
     local element_attk=set_combine(element_acc,
-        {head="ＨＡハット+1",hands="ハゴンデスカフス",range=empty, 
+        {sub="ズーゾーウグリップ",
+        head="ヘリオスバンド",hands="ヘリオスグローブ",range=empty, 
         left_ear="フリオミシピアス",right_ear="ヘカテーピアス",
-        waist="オティラサッシュ",ammo="ウィッチストーン",})
+        right_ring="アキュメンリング",
+        back="トーロケープ",
+        ammo="ドシスタスラム",})
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 --stun
@@ -181,6 +185,11 @@ function get_sets()
         main="ブンウェルスタッフ",
         waist="神術帯+1",
         });
+    local lock = {
+        main="ケラウノス",
+        sub="エルダーグリップ+1",
+        range=empty,ammo="オンブルタスラム+1",
+        }
             
     sets.precast = {}
     sets.precast['ケアル']= pre_cure
@@ -203,10 +212,10 @@ function get_sets()
     sets.midcast['強化魔法'] = enhance
     sets.midcast['弱体魔法'] = enfeebling
     sets.midcast['神聖魔法'] = divine
-    sets.midcast['精霊魔法'] = {}
-    sets.midcast['精霊魔法'].mode = 'ACC'
-    sets.midcast['精霊魔法']['ACC']  = element_acc
-    sets.midcast['精霊魔法']['ATTK'] = element_attk
+    sets.midcast.element = {}
+    sets.midcast.element.mode = 'ATTK'
+    sets.midcast.element['ACC']  = element_acc
+    sets.midcast.element['ATTK'] = element_attk
     sets.midcast['リジェネ'] = regen
     sets.midcast['ケアル'] = cure
     sets.midcast['スタン'] = stun
@@ -224,7 +233,7 @@ function get_sets()
     sets.midcast.RECAST['氷'] = mid_ice
     sets.aftercast = {}
     sets.aftercast.skip = false
-    sets.aftercast.idle = nil    
+    sets.aftercast.idle = idle_def    
     --コマンド着替え用 //gs c equip スタン とか
     sets.equip = {}
     sets.equip['IDLE'] = idle
@@ -234,6 +243,7 @@ function get_sets()
     sets.equip['魔命'] = element_acc
     sets.equip['魔攻'] = element_attk
     sets.equip.obi = obi
+    sets.equip['LOCK'] = lock
     --マクロブック、セット変更
     send_command('input /macro book 5;wait .2;input /macro set 1')
     --キーバインド設定
@@ -413,8 +423,8 @@ end
 
 function set_element(spell)
     local set_equip = nil
-    set_equip = sets.midcast['精霊魔法'][sets.midcast['精霊魔法'].mode]
-    add_to_chat(123,'mode='..sets.midcast['精霊魔法'].mode)
+    set_equip = sets.midcast.element[sets.midcast.element.mode]
+    add_to_chat(123,'mode='..sets.midcast.element.mode)
     if sets.equip.obi.weathers:contains(spell.element) then
         --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
         if world.weather_element == spell.element 
@@ -476,7 +486,7 @@ function showrecast(spellid, spellname)
 end
 
 function self_command(command)
-    local args = windower.from_shift_jis(command):split(' ')
+    local args = command:split(' ')
     if #args >= 1 then
         if args[1] == 'lock' then
             if #args == 1 then
@@ -484,6 +494,7 @@ function self_command(command)
                 disable('main','sub','ammo','range')
             else
                 windower.add_to_chat(123,'lock '..args[2])
+                equip(sets.equip['LOCK'])
                 disable(args[2])
             end
         elseif args[1] == 'unlock' then
@@ -528,24 +539,34 @@ function self_command(command)
             end
         elseif args[1] == 'elementmode' then
             if #args == 1 then
-                if sets.midcast['精霊魔法'].mode == 'ACC' then
+                if sets.midcast.element.mode == 'ACC' then
                     windower.add_to_chat(123,'精霊：魔攻')
-                    sets.midcast['精霊魔法'].mode = 'ATTK'
-                    sets.midcast['神聖魔法'] = sets.midcast['精霊魔法']['ATTK']
-                elseif sets.midcast['精霊魔法'].mode == 'ATTK' then
+                    sets.midcast.element.mode = 'ATTK'
+                    sets.midcast['神聖魔法'] = sets.midcast.element['ATTK']
+                elseif sets.midcast.element.mode == 'ATTK' then
                     windower.add_to_chat(123,'精霊：魔命')
-                    sets.midcast['精霊魔法'].mode = 'ACC'
-                    sets.midcast['神聖魔法'] = sets.midcast['精霊魔法']['ACC']
+                    sets.midcast.element.mode = 'ACC'
+                    sets.midcast['神聖魔法'] = sets.midcast.element['ACC']
                 end
             else
                 if args[2] == 'ACC' then
-                    sets.midcast['精霊魔法'].mode = 'ACC'
+                    sets.midcast.element.mode = 'ACC'
                     sets.midcast['神聖魔法'] = enfeebling
                 elseif args[2] == 'ATTK' then
-                    sets.midcast['精霊魔法'].mode = 'ATTK'
-                    sets.midcast['神聖魔法'] = sets.midcast['精霊魔法']['ATTK']
+                    sets.midcast.element.mode = 'ATTK'
+                    sets.midcast['神聖魔法'] = sets.midcast.element['ATTK']
                 end
-                equip(sets.midcast['精霊魔法'][sets.midcast['精霊魔法'].mode])
+                equip(sets.midcast.element[sets.midcast.element.mode])
+            end
+        elseif args[1] == 'move' then
+            equip(set_move(sets.aftercast.idle))
+        elseif args[1] == 'jb' then
+            if sets.equip.IDLE_DEF.back == 'メシストピンマント' then
+                windower.add_to_chat(123, '待機:背中＝リパルスマント')
+                sets.equip.IDLE_DEF.back = 'リパルスマント'
+            else
+                windower.add_to_chat(123, '待機:背中＝メシストピンマント')
+                sets.equip.IDLE_DEF.back = 'メシストピンマント'
             end
         end
     end
@@ -561,6 +582,20 @@ function self_command(command)
                 spellname = args[3]
             end
             showrecast(spellid, spellname)
+        elseif args[1] == 'assist' then
+            if args[2] == 'on' then
+                assist = true
+            elseif args[2] == 'off' then
+                assist = false
+            else
+                if assist then
+                    local cmd = 'send @others gs c ra '..args[2]..' '..tostring(player.target.id)
+                    add_to_chat(123, 'cmd='..cmd)
+                    my_send_command(cmd)
+                else 
+                    add_to_chat(123, 'assist=off')
+                end
+            end
         end
     end
 end

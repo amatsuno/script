@@ -122,25 +122,28 @@ function get_sets()
         body="セイズルコタルディ",
         hands="ＨＡカフス+1",
         legs="ＨＡパンツ+1",
-        feet="ハゴンデスサボ",
+        feet="ヘリオスブーツ",
         neck="エディネクラス",
         waist="山吹の帯",
         left_ear="ライストームピアス",
         right_ear="サイストームピアス",
-        left_ring="アクィロリング",
+        left_ring="女王の指輪",
         right_ring="サンゴマリング",
         back="リフラクトケープ",
     }
     local element_attk = set_combine(
           element_acc
-        , {hands="オトミグローブ",
+        , {hands="ヘリオスグローブ",
+           right_ring="アキュメンリング",
            back="トーロケープ",
         })
     local element_fullattk = set_combine(
           element_attk,
-          { head="ＨＡハット+1",
+          { head="ヘリオスバンド",
+            legs="ハゴンデスパンツ",
             left_ear="ヘカテーピアス",
             right_ear="フリオミシピアス",
+            sub="ズーゾーウグリップ",
           })
     
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
@@ -533,6 +536,15 @@ function status_change(new,old)
          end
     end
 end
+function break_luopan()
+    local cmd = 'input /ja フルサークル <me>'
+    local recast = windower.get_ability_recasts()
+    --レイディアルアルカナ
+    if recast and (not recast[355] or recast[355] == 0) then
+        cmd = 'input /ja レイディアルアルカナ <me>'
+    end
+    my_send_command(cmd)
+end
 function showrecast(spellid, spellname)
     local recast = windower.ffxi.get_spell_recasts()
     windower.add_to_chat(123,'recast::'..spellname..'('..spellid..')='..recast[spellid] / 60)
@@ -689,6 +701,8 @@ function self_command(command)
                 cmd = 'input /ma '..args[2]..' '..args[3]
                 my_send_command(cmd)
             end
+        elseif args[1] == 'break_luopan' then
+            break_luopan()
         elseif args[1] == 'jb' then
             if sets.equip.IDLE_DEF.back == 'メシストピンマント' then
                 windower.add_to_chat(123, '待機:背中＝龍脈の外套')
