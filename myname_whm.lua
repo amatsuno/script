@@ -29,13 +29,13 @@ function get_sets()
         head="ナティラハット",
         body="ＭＫジュバ+1",
     }
-    local mid_base = pre_base
+    local mid_base = set_combine(pre_base, {body="ヘリオスジャケット",})
     
     --光属性
     local pre_light = set_combine(pre_base, {main="アーカI",})
     local mid_light = set_combine(mid_base, {main="アーカII",})
     local pre_healing = set_combine(pre_light, {legs="ＯＲパンタロン+2",})
-    local mid_healing = set_combine(pre_light, {head="ＯＲキャップ+2",legs="ＯＲパンタロン+2",}) 
+    local mid_healing = set_combine(pre_light, {head="エーベルキャップ",legs="ＯＲパンタロン+2",}) 
     --風属性
     local pre_wind = set_combine(pre_base, {main="バユバタI",})
     local mid_wind = set_combine(mid_base, {main="バユバタII",})
@@ -51,7 +51,7 @@ function get_sets()
         sub="フルキオグリップ",
         range="オウレオール",
         head="ウムシクハット",
-        body="アンフルローブ",
+        body="テルキネシャジュブ",
         hands="ダイナスティミトン",
         legs="パエティパンタロン",
         feet="ＯＲダックビル+2",
@@ -63,16 +63,16 @@ function get_sets()
         right_ring="ダークリング",
         back="メンディングケープ",
     }
-    local baXX = set_combine(enhance, {body="ＯＲブリオー+2"})
+    local baXX = set_combine(enhance, {body="エーベルブリオー"})
     local protectshell = set_combine(mid_light, 
         {legs="パエティパンタロン", feet='ＰＩダックビル+1',right_ring="シェルターリング"})
 --CURE
     local cure ={
-        main="アバブリニ+1",
-        sub="ビビドストラップ",
+        main="タマシチ",
+        sub="玄武盾",
         ammo="インカントストーン",
         head="ＧＥカウビーン+1",
-        body="ＯＲブリオー+2",
+        body="エーベルブリオー",
         hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
         legs="シファヒジパンツ",
         feet="ケアルクロッグ",
@@ -398,14 +398,14 @@ function self_command(command)
                 if sets.aftercast.idle == nil then
                     windower.add_to_chat(123,'リフレ装備待機')
                     sets.aftercast.idle = sets.equip.IDLE
-                    sets.midcast['ケアル'].body="ＯＲブリオー+2" 
+                    sets.midcast['ケアル'].body="エーベルブリオー" 
                 elseif sets.aftercast.idle == sets.equip.IDLE then
                     windower.add_to_chat(123,'カット装備待機')
                     sets.aftercast.idle = sets.equip.IDLE_DEF
                     sets.midcast['ケアル'].body="ＧＥブリオー+1" 
                 else
                     windower.add_to_chat(123,'着替え待機なし')
-                    sets.midcast['ケアル'].body="ＯＲブリオー+2" 
+                    sets.midcast['ケアル'].body="エーベルブリオー" 
                     sets.aftercast.idle = nil
                 end
             else
