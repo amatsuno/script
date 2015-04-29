@@ -122,7 +122,7 @@ function get_sets()
         body="ＨＡコート+1",
         hands="オトミグローブ",
         legs="アートシクロップス",
-        feet="ハゴンデスサボ",
+        feet="ヘリオスブーツ",
         neck="エディネクラス",
         waist="山吹の帯",
         left_ear="ライストームピアス",
@@ -133,7 +133,7 @@ function get_sets()
     }
     local element_attk = set_combine(
           element_acc
-        , {head="ハゴンデスハット",legs="ハゴンデスパンツ",})
+        , {head="ヘリオスバンド",hands="ヘリオスグローブ",legs="ＨＡパンツ+1",})
     local element_fullattk = set_combine(
           element_attk
         , {left_ear="ヘカテーピアス", right_ear="フリオミシピアス",})
@@ -168,7 +168,7 @@ function get_sets()
         head="ＨＡハット+1",
         hands="ＨＡカフス+1",
         legs="ＨＡパンツ+1",
-        feet="ハゴンデスサボ",
+        feet="ＨＡサボ+1",
         neck="黄昏の光輪",
         left_ring="ダークリング",
         right_ring="ダークリング",

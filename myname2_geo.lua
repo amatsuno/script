@@ -25,7 +25,7 @@ function get_sets()
     local idle_def = set_combine(idle, 
         {
         legs="ＨＡパンツ+1",
-        feet="ハゴンデスサボ",
+        feet="ＨＡサボ+1",
         
         })
     local idle_defmg = set_combine(idle_def,
@@ -105,7 +105,7 @@ function get_sets()
         body="ＨＡコート+1",
         hands="ＨＡカフス+1",
         legs="アートシクロップス",
-        feet="ハゴンデスサボ",
+        feet="ＨＡサボ+1",
         neck="エディネクラス",
         waist="デモンリーサッシュ",
         left_ear="ライストームピアス",
@@ -140,7 +140,6 @@ function get_sets()
     local element_fullattk = set_combine(
           element_attk,
           { head="ヘリオスバンド",
-            legs="ハゴンデスパンツ",
             left_ear="ヘカテーピアス",
             right_ear="フリオミシピアス",
             sub="ズーゾーウグリップ",
@@ -261,14 +260,14 @@ function get_sets()
     keep_geo = {
         ['インデ'] = {
             name = 'インデフォーカス',
-            target='me',
+            target='<me>',
             interval=150,
             time=0,
             flag = false,
         },
         ['ジオ'] = {
             name = 'ジオヘイスト',
-            target='me',
+            target='<me>',
             interval=150,
             time=0,
             flag = false,
@@ -483,6 +482,13 @@ function buff_change(buff, gain)
         end
     end
 end
+function pet_change(pet,gain)
+    if not gain then
+        keep_geo['ジオ'].time = 0
+        keep_geo['ジオ'].flag =false
+    end
+end
+
 function aftercast(spell)
     myGetProperties(spell,'aft:splell', 0)
     if sets.aftercast.idle ~= nil and not sets.aftercast.skip then
@@ -497,12 +503,9 @@ function aftercast(spell)
         if keep_geo.keep and spell.name == 'スタン' then
             local currenttime=os.time()
             if currenttime > keep_geo['インデ'].time + keep_geo['インデ'].interval then
-            --if not keep_geo['インデ'].flag then
-                my_send_command('@wait 3.5;input /ma '..keep_geo['インデ'].name..' <'..keep_geo['インデ'].target..'>')
+                check_geo(keep_geo['インデ'])
             elseif currenttime > keep_geo['ジオ'].time + keep_geo['ジオ'].interval then
-            --elseif not keep_geo['ジオ'].flag then
-                my_send_command('@wait 3.5;input /ja フルサークル <me>;wait 2'
-                    ..';input /ma '..keep_geo['ジオ'].name..' <'..keep_geo['ジオ'].target..'>')
+                check_geo(keep_geo['ジオ'])
             end
         elseif spell.name == keep_geo['インデ'].name then
             my_send_command('@wait '..keep_geo['インデ'].interval..';gs c indi')
@@ -515,13 +518,15 @@ function aftercast(spell)
         end
     end
 end
-function cast_geo()
+function check_geo(keep)
     local currenttime=os.time()
-    if currenttime > keep_geo['インデ'].time + keep_geo['インデ'].interval then
-        my_send_command('@wait 3.5;input /ma '..keep_geo['インデ'].name..' <'..keep_geo['インデ'].target..'>')
-    elseif currenttime > keep_geo['ジオ'].time + keep_geo['ジオ'].interval then
-        my_send_command('@wait 3.5;input /ja フルサークル <me>;wait 2'
-            ..';input /ma '..keep_geo['ジオ'].name..' <'..keep_geo['ジオ'].target..'>')
+    if currenttime > keep.time + keep.interval then
+        local cmd = '@wait 3.5;'
+        if keep.name:startswith('ジオ') and pet.isvalid then
+            cmd = cmd..'input /ja フルサークル <me>;wait 2;'
+        end
+        cmd = cmd..'input /ma '..keep.name..' '..keep.target
+        my_send_command(cmd)
     end
 end
 function status_change(new,old)
@@ -538,9 +543,10 @@ function status_change(new,old)
 end
 function break_luopan()
     local cmd = 'input /ja フルサークル <me>'
-    local recast = windower.get_ability_recasts()
+    local recast = windower.ffxi.get_ability_recasts()
+    dumpProperties(recast, 'recast', 0)
     --レイディアルアルカナ
-    if recast and (not recast[355] or recast[355] == 0) then
+    if recast and (not recast[252] or recast[252] == 0) then
         cmd = 'input /ja レイディアルアルカナ <me>'
     end
     my_send_command(cmd)
@@ -584,7 +590,7 @@ function set_keep_geo(command)
         end
         if geo then
             geo.name = arr[2]
-            geo.target = arr[3]
+            geo.target = '<'..arr[3]..'>'
             if #arr > 3 and tonumber(arr[4]) then
                 geo.interval = tonumber(arr[4])
             end
@@ -695,8 +701,21 @@ function self_command(command)
         elseif args[1] == 'geo' then
             keep_geo['ジオ'].flag = false
             keep_geo['ジオ'].time = 0
+        elseif args[1] == 'cast_indi' then
+            check_geo(keep_geo['インデ'])
+        elseif args[1] == 'cast_geo' then
+            check_geo(keep_geo['ジオ'])
         elseif args[1] == 'ra' then
             if #args >= 3 then
+                if args[2]:startswith('ジオ') then
+                    if tonumber(args[3]) > 0 then
+                        keep_geo['ジオ'].name = args[2]
+                        keep_geo['ジオ'].target = tonumber(args[3])
+                        keep_geo['ジオ'].interval = 150
+                        keep_geo['ジオ'].flag = false
+                        keep_geo['ジオ'].time = 0
+                    end
+                end
                 local cmd = nil
                 cmd = 'input /ma '..args[2]..' '..args[3]
                 my_send_command(cmd)
