@@ -1,6 +1,6 @@
-assit = true
 function get_sets()
     set_language('japanese')
+    assist = true
     ancient_spells = T{
         'トルネド','フリーズ','フレア','フラッド','バースト','クエイク',
         'トルネドII','フリーズII','フレアII','フラッドII','バーストII','クエイクII',
@@ -28,8 +28,18 @@ function get_sets()
         head="ナティラハット",
         legs="アートシクロップス",
     }
-    local mid_base = pre_base
-    
+    local mid_base = set_combine(pre_base, {body="ヘリオスジャケット",})
+    --精霊用
+    local fc_element = {
+        head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+7%',}},
+        hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+23','"Fast Cast"+4','Magic burst mdg.+7%',}},
+        body="ヘリオスジャケット",
+        legs="アートシクロップス",
+        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+24','"Fast Cast"+3','INT+6',}},
+        neck="ボルトサージトルク",
+        left_ear="エンチャンピアス+1",
+        back="スイスケープ+1",
+     }
     --光属性
     local pre_light = set_combine(pre_base, {main="アーカI",})
     local mid_light = set_combine(mid_base, {main="アーカII",})
@@ -49,7 +59,7 @@ function get_sets()
         main="麒麟棍",
         sub="ビビドストラップ",
         head="ウムシクハト",
-        body="アンフルローブ",
+        body="テルキネシャジュブ",
         feet="リーガルパンプス+1",
         neck="コロッサストルク",
         waist="オリンポスサッシュ",
@@ -79,7 +89,7 @@ function get_sets()
     }
     local stun_acc1 = set_combine(stun, 
     	{
-        	feet="アートシクブーツ",
+        	feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+24','"Fast Cast"+3','INT+6',}},
  	       left_ring="サンゴマリング",
         	right_ear="グアチピアス",
     	})
@@ -103,7 +113,7 @@ function get_sets()
         body="イスキミアシャブル",
         hands="ＨＡカフス+1",
         legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
-        feet="アートシクブーツ",
+        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+24','"Fast Cast"+3','INT+6',}},
         neck="ワイケトルク",
         range="オウレオール",
         waist="オヴェイトロープ",
@@ -120,7 +130,7 @@ function get_sets()
         hands="ＨＡカフス+1",
         body="ヘリオスジャケット",
         legs="アートシクロップス",
-        feet="アートシクブーツ",
+        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+24','"Fast Cast"+3','INT+6',}},
         waist="オヴェイトロープ",
         left_ear="エンチャンピアス+1",
         right_ear="ロケイシャスピアス",
@@ -139,7 +149,7 @@ function get_sets()
         body="ヘリオスジャケット",
         hands="ＨＡカフス+1",
         legs="アートシクロップス",
-        feet="アートシクブーツ",
+        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Drain" and "Aspir" potency +10','INT+7 MND+7',}},
         neck="エーシルトルク",
         range="オウレオール",
         waist="オヴェイトロープ",
@@ -170,7 +180,9 @@ function get_sets()
     }
     local element_attk = set_combine(
           element_acc
-        , {hands="ヘリオスグローブ",feet="ヘリオスブーツ",})
+        , {hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+9','INT+9',}},
+           feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Drain" and "Aspir" potency +10','INT+7 MND+7',}},
+          })
     local element_fullattk = set_combine(
           element_attk
         , { head={ name="ＨＡハット+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -4%','"Mag.Atk.Bns."+25',}},
@@ -178,6 +190,13 @@ function get_sets()
             neck="水影の首飾り",
             range=empty,ammo="オンブルタスラム+1",
             right_ring="女王の指輪+1",})
+    local element_mb = {
+        head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+7%',}},
+        hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+23','"Fast Cast"+4','Magic burst mdg.+7%',}},
+        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -3%','Magic burst mdg.+8%',}},
+        neck="水影の首飾り",
+        right_ring="夢神の指輪",
+    }
 
     local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 
@@ -202,6 +221,9 @@ function get_sets()
     obi.buffs['風'] = 180 --烈風の陣
     obi.buffs['土'] = 181 --砂塵の陣
     obi.buffs['火'] = 178 --熱波の陣
+    obi.buffs['氷'] = '吹雪の陣'
+    obi.buffs['水'] = '豪雨の陣'
+    obi.buffs['雷'] = '疾雷の陣'
 --待機装備
     local idle = {
         main="アーススタッフ",
@@ -239,14 +261,14 @@ function get_sets()
     }
 --MP装備
     local equip_mp = {
-        head="ナティラハット",
+        head="妖蟲の髪飾り+1",
         body="アートシクジュバ",
         hands="オトミグローブ",
         legs="アートシクロップス",
-        feet="アートシクブーツ",
-        neck="エディネクラス",
-        waist="ニヌルタサッシュ",
-        left_ear="胡蝶のイヤリング",
+        feet="リーガルパンプス+1",
+        neck="オルンミラトルク",
+        waist="山吹の帯",
+        left_ear="ブラキュラピアス",
         right_ear="ロケイシャスピアス",
         left_ring="サンゴマリング",
         right_ring="ビフロストリング",
@@ -271,6 +293,7 @@ function get_sets()
     sets.precast.FC['火'] = pre_base
     sets.precast.FC['氷'] = pre_base
     sets.precast.FC['FC_LOW'] = pre_low
+    sets.precast.FC.element = fc_element
     sets.midcast = {}
     sets.midcast['インパクト'] = impact
     sets.midcast['強化魔法'] = enhance
@@ -289,6 +312,7 @@ function get_sets()
     sets.midcast.element['ATTK'] = element_attk
     sets.midcast.element['FULL'] = element_fullattk
     sets.midcast.element['VW'] = pre_base
+    sets.midcast.element['MBURST'] = element_mb
     sets.midcast.RECAST = {}
     sets.midcast.RECAST['光'] =mid_light
     sets.midcast.RECAST['闇'] =mid_base
@@ -391,7 +415,7 @@ function precast(spell)
             if spell.ja == 'インパクト' then
                 equip(sets.precast['インパクト'])
             elseif spell.cast_time > 2.0 then
-                equip(sets.precast.FC[spell.element])
+                equip(sets.precast.FC.element)
             elseif spell.cast_time > 0.75 then
                 equip(sets.precast.FC.FC_LOW)
             else
@@ -474,7 +498,7 @@ function set_element(spell)
         if ancient_spells:contains(spell.ja) then
             sets_equip = sets.midcast.element['古代']
         elseif buffactive['精霊の印'] or buffactive['サテルソーサリー'] then
-            sets_equip = sets.midcast.element['ATTK']
+            sets_equip = sets.midcast.element['FULL']
         else
             sets_equip = sets.midcast.element[sets.midcast.element.mode]
         end
@@ -498,12 +522,23 @@ function set_element(spell)
         and sets.equip.treasure_spells:contains(spell.ja) then
         sets_equip = set_combine(sets_equip, {waist="チャークベルト"})
     end
+    if mb and os.time() - mb.time < 5 and mb.element[spell.element] then
+        windower.add_to_chat(8, 'MBモード！！！！'..spell.element)
+        sets_equip = set_combine(sets_equip, sets.midcast.element.MBURST)
+    end
+    
     return sets_equip
 end
 
 function aftercast(spell)
     if sets.aftercast.idle ~= nil then
-        equip(sets.aftercast.idle)
+        local target = windower.ffxi.get_mob_by_target('t')
+        if target and 
+            (target.name == 'Perfidien' or target.name == 'Plouton') then
+            equip(sets.precast.FC.element)
+        else
+            equip(sets.aftercast.idle)
+        end
     end
     if spell.ja == 'スリプガII' and not spell.interrupted then
         my_send_command('@wait 35;input /echo -----35秒経過------------------;wait 40;input /echo -----75秒経過----------------')
@@ -605,6 +640,9 @@ function self_command(command)
                 elseif param == 'idle_def' then
                     windower.add_to_chat(123,'カット装備待機')
                     sets.aftercast.idle = sets.equip.IDLE_DEF
+                elseif param == 'idle_fc' then
+                    windower.add_to_chat(123,'FC装備待機')
+                    sets.aftercast.idle = sets.precast.FC.element
                 elseif param == 'cure' then
                    windower.add_to_chat(123,'set to idle_cure')
                     sets.aftercast.idle = sets.precast['ケアル']
@@ -670,6 +708,7 @@ function self_command(command)
                     add_to_chat(123, 'assist=off')
                 end
             end
+        elseif args[1] == 'content' then
         end
     end
 end
