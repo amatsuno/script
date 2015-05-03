@@ -30,6 +30,7 @@ function get_sets()
         })
     local idle_defmg = set_combine(idle_def,
         {
+            head="魔人の帽子",
             left_ear='ハンドラーピアス',
             right_ear='ハンドラーピアス+1',
         })

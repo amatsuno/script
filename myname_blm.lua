@@ -35,7 +35,7 @@ function get_sets()
         hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+23','"Fast Cast"+4','Magic burst mdg.+7%',}},
         body="ヘリオスジャケット",
         legs="アートシクロップス",
-        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+24','"Fast Cast"+3','INT+6',}},
+        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
         neck="ボルトサージトルク",
         left_ear="エンチャンピアス+1",
         back="スイスケープ+1",
@@ -149,7 +149,7 @@ function get_sets()
         body="ヘリオスジャケット",
         hands="ＨＡカフス+1",
         legs="アートシクロップス",
-        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Drain" and "Aspir" potency +10','INT+7 MND+7',}},
+        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
         neck="エーシルトルク",
         range="オウレオール",
         waist="オヴェイトロープ",
@@ -179,9 +179,9 @@ function get_sets()
     back="トーロケープ",
     }
     local element_attk = set_combine(
-          element_acc
-        , {hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+9','INT+9',}},
-           feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Drain" and "Aspir" potency +10','INT+7 MND+7',}},
+          element_acc,
+          {hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+9','INT+9',}},
+          feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
           })
     local element_fullattk = set_combine(
           element_attk
@@ -194,6 +194,7 @@ function get_sets()
         head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+7%',}},
         hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+23','"Fast Cast"+4','Magic burst mdg.+7%',}},
         legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -3%','Magic burst mdg.+8%',}},
+        feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst mdg.+5%',}},
         neck="水影の首飾り",
         right_ring="夢神の指輪",
     }
