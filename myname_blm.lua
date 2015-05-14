@@ -1,10 +1,10 @@
 function get_sets()
     set_language('japanese')
     assist = true
-    ancient_spells = T{
-        'トルネド','フリーズ','フレア','フラッド','バースト','クエイク',
-        'トルネドII','フリーズII','フレアII','フラッドII','バーストII','クエイクII',
-    }
+    --ancient_spells = T{
+    --    'トルネド','フリーズ','フレア','フラッド','バースト','クエイク',
+    --    'トルネドII','フリーズII','フレアII','フラッドII','バーストII','クエイクII',
+    --}
     ignore_spells = T{
         'ディア','ディアII','ディアガ'
     }
@@ -168,7 +168,7 @@ function get_sets()
     body="ＳＰコート+1",
     hands="ＨＡカフス+1",
     legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
-    feet="ＡＲサボ+1",
+    feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
     neck="エディネクラス",
     range="オウレオール",
     waist="山吹の帯",
@@ -181,7 +181,6 @@ function get_sets()
     local element_attk = set_combine(
           element_acc,
           {hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+9','INT+9',}},
-          feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
           })
     local element_fullattk = set_combine(
           element_attk
@@ -308,7 +307,6 @@ function get_sets()
     sets.midcast['ストンスキン'] = stoneskin
     sets.midcast.element = {}
     sets.midcast.element.mode = 'ACC'
-    sets.midcast.element['古代'] = element_acc
     sets.midcast.element['ACC'] = element_acc
     sets.midcast.element['ATTK'] = element_attk
     sets.midcast.element['FULL'] = element_fullattk
@@ -350,7 +348,8 @@ function get_sets()
     if not debugf:exists() then
         debugf:create()
     end
-    
+    jb_flag = false
+
 end
 function bindKeys(f)
     if f then
@@ -415,6 +414,8 @@ function precast(spell)
         elseif spell.skill=='精霊魔法' then
             if spell.ja == 'インパクト' then
                 equip(sets.precast['インパクト'])
+            elseif spell.ja == 'メテオ' then
+                add_to_chat(8, 'メテオ詠唱開始～')
             elseif spell.cast_time > 2.0 then
                 equip(sets.precast.FC.element)
             elseif spell.cast_time > 0.75 then
@@ -496,9 +497,7 @@ function set_element(spell)
     local sets_equip = nil
     
     if sets.midcast.element.mode ~= 'VW' then
-        if ancient_spells:contains(spell.ja) then
-            sets_equip = sets.midcast.element['古代']
-        elseif buffactive['精霊の印'] or buffactive['サテルソーサリー'] then
+        if buffactive['精霊の印'] or buffactive['サテルソーサリー'] then
             sets_equip = sets.midcast.element['FULL']
         else
             sets_equip = sets.midcast.element[sets.midcast.element.mode]
@@ -526,6 +525,9 @@ function set_element(spell)
     if mb and os.time() - mb.time < 5 and mb.element[spell.element] then
         windower.add_to_chat(8, 'MBモード！！！！'..spell.element)
         sets_equip = set_combine(sets_equip, sets.midcast.element.MBURST)
+    end
+    if jb_flag then
+        sets_equip = set_combine(sets_equip, {back='メシストピンマント',})
     end
     
     return sets_equip
@@ -682,9 +684,11 @@ function self_command(command)
             if sets.equip.IDLE_DEF.back == 'メシストピンマント' then
                 windower.add_to_chat(123, '待機:背中＝チェビオットケープ')
                 sets.equip.IDLE_DEF.back = 'チェビオットケープ'
+                jb_flag = false
             else
                 windower.add_to_chat(123, '待機:背中＝メシストピンマント')
                 sets.equip.IDLE_DEF.back = 'メシストピンマント'
+                jb_flag = true
             end
         elseif args[1] == 'move' then
             equip(set_move(sets.aftercast.idle))

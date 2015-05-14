@@ -308,6 +308,7 @@ function get_sets()
     if not debugf:exists() then
         debugf:create()
     end
+    jb_flag = false
 end
 function bindKeys(f)
     if f then
@@ -364,7 +365,6 @@ function init_element()
         hands="ＨＡカフス+1",
         legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
         feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
-},
         neck="エディネクラス",
         waist="山吹の帯",
         left_ear="エンチャンピアス+1",
@@ -600,6 +600,10 @@ function set_element(spell)
             and sets.equip.treasure_spells:contains(spell.name) then
             sets_equip = set_combine(sets_equip, {waist="チャークベルト"})
         end
+        if jb_flag then
+            sets_equip = set_combine(sets_equip, {back='メシストピンマント',})
+        end
+        
         if mb and os.time() - mb.time < 5 and mb.element[spell.element] then
             windower.add_to_chat(8, 'MBモード！！！！'..spell.element)
             sets_equip = set_combine(sets_equip, sets.midcast.element.MBURST)
@@ -787,9 +791,11 @@ function self_command(command)
             if sets.equip.IDLE_DEF.back == 'メシストピンマント' then
                 windower.add_to_chat(123, '待機:背中＝チェビオットケープ')
                 sets.equip.IDLE_DEF.back = 'チェビオットケープ'
+                jb_flag = false
             else
                 windower.add_to_chat(123, '待機:背中＝メシストピンマント')
                 sets.equip.IDLE_DEF.back = 'メシストピンマント'
+                jb_flag = true
             end
         elseif args[1] == 'move' then
             equip(set_move(sets.aftercast.idle))

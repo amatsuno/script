@@ -327,6 +327,7 @@ function get_sets()
         keep=false,
     }
 	timer_reg = {}
+    jb_flag = flag
 end
 function bindKeys(f)
     if f then
@@ -374,6 +375,7 @@ function init_element()
           element_acc
         , {
             legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -2%','"Mag.Atk.Bns."+22',}},
+            left_ring="女王の指輪+1",
           })
     local element_fullattk = set_combine(
           element_attk
@@ -383,7 +385,7 @@ function init_element()
             left_ear="怯懦の耳",
             right_ear="フリオミシピアス",
             range=empty,ammo="オンブルタスラム+1",
-            left_ring="女王の指輪",})
+            right_ring="女王の指輪+1",})
     local element_mb = {
         legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -3%','Magic burst mdg.+8%',}},
         feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst mdg.+5%',}},
@@ -593,6 +595,9 @@ function set_element(spell)
     if mb and os.time() - mb.time < 5 and mb.element[spell.element] then
         windower.add_to_chat(8, 'MBモード！！！！'..spell.element)
         set_equip = set_combine(set_equip, sets.midcast.element.MBURST)
+    end
+    if jb_flag then
+        set_equip = set_combine(set_equip, {back='メシストピンマント',})
     end
     
     return set_equip
@@ -861,9 +866,11 @@ function self_command(command)
             if sets.equip.IDLE_DEF.back == 'メシストピンマント' then
                 windower.add_to_chat(123, '待機:背中＝チェビオットケープ')
                 sets.equip.IDLE_DEF.back = 'チェビオットケープ'
+                jb_flag = false
             else
                 windower.add_to_chat(123, '待機:背中＝メシストピンマント')
                 sets.equip.IDLE_DEF.back = 'メシストピンマント'
+                jb_flag = true
             end
         elseif args[1] == 'move' then
             equip(set_move(sets.aftercast.idle))
