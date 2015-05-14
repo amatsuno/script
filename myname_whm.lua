@@ -161,7 +161,7 @@ function get_sets()
    local idle_def = set_combine(idle, 
         {
         head="ＧＥカウビーン+1",
-        legs="シファヒジパンツ",
+        legs="ＧＥスパッツ+1",
         feet="ＧＥガロッシュ+1",
         });
     
