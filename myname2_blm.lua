@@ -7,6 +7,20 @@ function get_sets()
         'トルネドII','フリーズII','フレアII','フラッドII','バーストII','クエイクII',
     }
     reiv_neck='レフジネックレス+1'
+    replace_magic = {
+        ['ストンラ']='ストンガ',
+        ['ストンラII']='ストンジャ',
+        ['ウォタラ']='ウォタガ',
+        ['ウォタラII']='ウォジャ',
+        ['エアロラ']='エアロガ',
+        ['エアロラII']='エアロジャ',
+        ['ファイラ']='ファイガ',
+        ['ファイラII']='ファイジャ',
+        ['ブリザラ']='ブリザガ',
+        ['ブリザラII']='ブリザジャ',
+        ['サンダラ']='サンダガ',
+        ['サンダラII']='サンダジャ',
+    } 
     
 --着替えしたくないアビ・魔法のリスト
     ignore_spells = T{
@@ -101,9 +115,8 @@ function get_sets()
     local element_acc={
         main="レブレイルグ+2",
         sub="メフィテスグリップ",
-        range="オウレオール",
         head="ナティラハット",
-        body="スピコナコート",
+        body="ＳＰコート+1",
         hands="ＨＡカフス+1",
         legs="ＨＡパンツ+1",
         feet="ヘリオスブーツ",
@@ -114,14 +127,19 @@ function get_sets()
         left_ring="女王の指輪",
         right_ring="サンゴマリング",
         back="ベーンケープ",
+        range=empty,
+        ammo="ドシスタスラム",        
     }
     local element_attk=set_combine(element_acc,
         {sub="ズーゾーウグリップ",
-        head="ヘリオスバンド",hands="ヘリオスグローブ",range=empty, 
-        left_ear="フリオミシピアス",right_ear="ヘカテーピアス",
+        head="ヘリオスバンド",hands="ＷＣグローブ+1", 
+        left_ear="フリオミシピアス",
+        right_ear="ヘカテーピアス",
+        })
+    local element_full=set_combine(element_attk,
+        {
         right_ring="アキュメンリング",
-        back="トーロケープ",
-        ammo="ドシスタスラム",})
+        back="トーロケープ",})
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 --stun
@@ -186,9 +204,9 @@ function get_sets()
         waist="神術帯+1",
         });
     local lock = {
-        main="ケラウノス",
-        sub="エルダーグリップ+1",
-        range=empty,ammo="オンブルタスラム+1",
+        main="レブレイルグ+2",
+        sub="スーゾーウグリップ",
+        range=empty,ammo="ドシスタスラム",
         }
             
     sets.precast = {}
@@ -216,6 +234,7 @@ function get_sets()
     sets.midcast.element.mode = 'ATTK'
     sets.midcast.element['ACC']  = element_acc
     sets.midcast.element['ATTK'] = element_attk
+    sets.midcast.element['FULL'] = element_attk
     sets.midcast['リジェネ'] = regen
     sets.midcast['ケアル'] = cure
     sets.midcast['スタン'] = stun
@@ -253,6 +272,7 @@ function get_sets()
     if not debugf:exists() then
         debugf:create()
     end
+    jb_flag = false
 end
 function bindKeys(f)
     if f then
@@ -271,6 +291,7 @@ function bindKeys(f)
     end
 end
 function file_unload()
+    enable('main','sub','ammo','range')
     bindKeys(false)
 end
 
@@ -436,6 +457,9 @@ function set_element(spell)
             end
          end
     end
+    if jb_flag then
+        set_equip = set_combine(set_equip, {back='メシストピンマント',})
+    end
     return set_equip
 end
 function set_song(spell)
@@ -490,11 +514,11 @@ function self_command(command)
     if #args >= 1 then
         if args[1] == 'lock' then
             if #args == 1 then
-                windower.add_to_chat(123,'lock')
+                equip(sets.equip['LOCK'])
+                windower.add_to_chat(123,'lock(武器も変更)')
                 disable('main','sub','ammo','range')
             else
                 windower.add_to_chat(123,'lock '..args[2])
-                equip(sets.equip['LOCK'])
                 disable(args[2])
             end
         elseif args[1] == 'unlock' then
@@ -544,9 +568,13 @@ function self_command(command)
                     sets.midcast.element.mode = 'ATTK'
                     sets.midcast['神聖魔法'] = sets.midcast.element['ATTK']
                 elseif sets.midcast.element.mode == 'ATTK' then
+                    windower.add_to_chat(123,'精霊：FULL魔攻')
+                    sets.midcast.element.mode = 'FULL'
+                    sets.midcast['神聖魔法'] = sets.midcast.element['FULL']
+                else
                     windower.add_to_chat(123,'精霊：魔命')
                     sets.midcast.element.mode = 'ACC'
-                    sets.midcast['神聖魔法'] = sets.midcast.element['ACC']
+                    sets.midcast['神聖魔法'] = enfeebling
                 end
             else
                 if args[2] == 'ACC' then
@@ -555,8 +583,17 @@ function self_command(command)
                 elseif args[2] == 'ATTK' then
                     sets.midcast.element.mode = 'ATTK'
                     sets.midcast['神聖魔法'] = sets.midcast.element['ATTK']
+                elseif args[2] == 'FULL' then
+                    sets.midcast.element.mode = 'FULL'
+                    sets.midcast['神聖魔法'] = sets.midcast.element['FULL']
                 end
                 equip(sets.midcast.element[sets.midcast.element.mode])
+            end
+        elseif args[1] == 'ra' then
+            if #args >= 3 then
+                local cmd = nil
+                cmd = 'input /ma '..args[2]..' '..args[3]
+                my_send_command(cmd)
             end
         elseif args[1] == 'move' then
             equip(set_move(sets.aftercast.idle))
@@ -564,9 +601,11 @@ function self_command(command)
             if sets.equip.IDLE_DEF.back == 'メシストピンマント' then
                 windower.add_to_chat(123, '待機:背中＝リパルスマント')
                 sets.equip.IDLE_DEF.back = 'リパルスマント'
+                jb_flag = false
             else
                 windower.add_to_chat(123, '待機:背中＝メシストピンマント')
                 sets.equip.IDLE_DEF.back = 'メシストピンマント'
+                jb_flag = true
             end
         end
     end
@@ -595,6 +634,16 @@ function self_command(command)
                 else 
                     add_to_chat(123, 'assist=off')
                 end
+            end
+        elseif args[1] == 'ra' then
+            if #args >= 3 then
+                local castspell=args[2]
+                if replace_magic[castspell] then
+                    castspell = replace_magic[castspell]
+                end
+                local cmd = nil
+                cmd = 'input /ma '..castspell..' '..args[3]
+                my_send_command(cmd)
             end
         end
     end

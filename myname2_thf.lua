@@ -74,6 +74,8 @@ function get_sets()
         {
             head="ウェフェラクレット",
             body="ウェフェラローブ",
+            legs="ウェフェラスロップ",
+            feet="ウェフェラクロッグ",
         })
 --WS装備
     local we_exenterator = set_combine(base,
@@ -131,7 +133,8 @@ function initCounter()
 --[[
     [1599] = {id=1599,en="Hammer Beak",ja="ハンマービーク"},
     [1600] = {id=1600,en="Poison Pick",ja="ポイズンピック"},
-    [315] = {id=315,en="Dark Spore",ja="ダークスポア",element=6,icon_id=46,monster_level=10,prefix="/monsterskill",range=0,targets    [314] = {id=314,en="Silence Gas",ja="サイレスガス",element=6,icon_id=46,monster_level=30,prefix="/monsterskill",range=0,target
+    [315] = {id=315,en="Dark Spore",ja="ダークスポア",element=6,icon_id=46,monster_level=10,prefix="/monsterskill",range=0,targets    [314] = {id=314,en="Silence Gas",ja="サイレスガス",element=6,icon_id=46,monster_level=30,prefix="/monsterskill",range=0,target    [2028] = {id=2028,en="Fulmination",ja="フルミネーション"},
+
     [308] = {id=308,en="Frogkick",ja="フロッグキック",element=6,icon_id=46,monster_level=10,prefix="/monsterskill",range=2,targets=32,tp_cost=1000},
     
 ]]
@@ -161,6 +164,7 @@ function initCounter()
             314, 315,       --ダークスポア、サイレスガス
             189,190,
             191,192,499,    --ストンガIII,IV,ストンジャ
+            2028,           --フルミネーション"
             2094,
             2098,
             3275,

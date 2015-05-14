@@ -39,7 +39,12 @@ function get_sets()
         main="ブンウェルスタッフ",
         waist="神術帯+1",
         });
-
+--ロック
+    local lock = {
+        main="レブレイルグ+2",
+        sub="メフィテスグリップ",
+        range="デュンナ",
+    }
 --FC_BASE
     local pre_base ={
         head="ナティラハット",
@@ -169,7 +174,6 @@ function get_sets()
         body="ヘデラコタルディ",
         hands="オトミグローブ",
         legs="ＧＯパンツ+1",
-        hands="オトミグローブ",
         feet="リーガルパンプス+1",
         neck="オルンミラトルク",
         waist="ニヌルタサッシュ",
@@ -248,6 +252,7 @@ function get_sets()
     sets.equip['IDLE_DEF'] = idle_def
     sets.equip['IDLE_DEFMG'] = idle_defmg
     sets.equip['HEALING'] = idle_healing
+    sets.equip['LOCK'] = lock
     sets.equip.obi = obi
     --マクロブック、セット変更
     send_command('input /macro book 9;wait .2;input /macro set 10')
@@ -258,6 +263,8 @@ function get_sets()
     if not debugf:exists() then
         debugf:create()
     end
+    jb_flag = false
+    
     keep_geo = {
         ['インデ'] = {
             name = 'インデフォーカス',
@@ -293,6 +300,7 @@ function bindKeys(f)
     end
 end
 function file_unload()
+    enable('main','sub','ammo','range')
     bindKeys(false)
 end
 
@@ -461,6 +469,9 @@ function set_element(spell)
             end
          end
     end
+    if jb_flag then
+        set_equip = set_combine(set_equip, {back='メシストピンマント',})
+    end
     
     return set_equip
 end
@@ -610,6 +621,7 @@ function self_command(command)
     if #args >= 1 then
         if args[1] == 'lock' then
             if #args == 1 then
+                equip(sets.equip['LOCK'])
                 windower.add_to_chat(123,'lock')
                 disable('main','sub','ammo','range')
             else
@@ -638,21 +650,17 @@ function self_command(command)
                     windower.add_to_chat(123,'精霊：魔命')
                     sets.midcast.element.mode = 'ACC'
                     sets.midcast['神聖魔法'] = enfeebling
-                    sets.precast['スリプル'] = sets.midcast['スリプル']
                 end
             else
                 if args[2] == 'ACC' then
                     sets.midcast.element.mode = 'ACC'
                     sets.midcast['神聖魔法'] = enfeebling
-                    sets.precast['スリプル'] = sets.midcast['スリプル']
                 elseif args[2] == 'ATTK' then
                     sets.midcast.element.mode = 'ATTK'
                     sets.midcast['神聖魔法'] = sets.midcast.element['ATTK']
-                    sets.precast['スリプル'] = sets.equip['スリプル'].precast
                 elseif args[2] == 'FULL' then
                     sets.midcast.element.mode = 'FULL'
                     sets.midcast['神聖魔法'] = sets.midcast.element['FULL']
-                    sets.precast['スリプル'] = sets.equip['スリプル'].precast
                 elseif args[2] == 'VW' then
                     windower.add_to_chat(123,'精霊：VW')
                     sets.midcast.element.mode = 'VW'
@@ -727,9 +735,11 @@ function self_command(command)
             if sets.equip.IDLE_DEF.back == 'メシストピンマント' then
                 windower.add_to_chat(123, '待機:背中＝龍脈の外套')
                 sets.equip.IDLE_DEF.back = '龍脈の外套'
+                jb_flag = true
             else
                 windower.add_to_chat(123, '待機:背中＝メシストピンマント')
                 sets.equip.IDLE_DEF.back = 'メシストピンマント'
+                jb_flag = false
             end
         elseif args[1] == 'move' then
             equip(set_move(sets.aftercast.idle))
