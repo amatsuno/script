@@ -128,7 +128,7 @@ function get_sets()
         right_ring="サンゴマリング",
         back="ベーンケープ",
         range=empty,
-        ammo="ドシスタスラム",        
+        ammo="ガストリタスラム",        
     }
     local element_attk=set_combine(element_acc,
         {sub="ズーゾーウグリップ",

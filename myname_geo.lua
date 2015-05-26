@@ -137,7 +137,7 @@ function get_sets()
         body="イスキミアシャブル",
         hands="ＨＡカフス+1",
         legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
-        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+24','"Fast Cast"+3','INT+6',}},
+        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
         neck="ワイケトルク",
         waist="オヴェイトロープ",
         left_ear="エンチャンピアス+1",
@@ -209,7 +209,7 @@ function get_sets()
     		legs="アートシクロップス",
             neck="ボルトサージトルク",
     		right_ear="グアチピアス",
-    		feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+24','"Fast Cast"+3','INT+6',}},
+            feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
     	})
     local stun_acc2 = set_combine(stun_acc1,
     	{
@@ -388,7 +388,7 @@ function init_element()
             right_ring="女王の指輪+1",})
     local element_mb = {
         legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -3%','Magic burst mdg.+8%',}},
-        feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst mdg.+5%',}},
+        feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst mdg.+10%',}},
         neck="水影の首飾り",
         right_ring="夢神の指輪",
     }

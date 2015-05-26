@@ -15,7 +15,7 @@ function get_sets()
     local pre_song_base ={
             main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="ビビドストラップ",
-        head="ＡＤキャロ+2",
+        head="フィリキャロ",
         body="ＭＫジュバ+1",
         hands="ＧＥゲージ+1",
         legs="ゲンデサスパッツ",
@@ -91,7 +91,7 @@ function get_sets()
         sub="玄武盾",
         range="ギャッラルホルン",
         head="ＢＩラウンドリト+1",
-        body="ＡＤオングルリヌ+2",
+        body="フィリオングルリヌ",
         hands="ＧＥゲージ+1",
         legs="ＢＩキャニオンズ+1",
         feet="ブリオソスリッパー",
@@ -104,28 +104,28 @@ function get_sets()
         back="ラプソドスケープ",
     }
 --マーチ
-    local march = set_combine(buffsong_base, {hands="ＡＤマンシェト+2",})
+    local march = set_combine(buffsong_base, {hands="フィリマンシェト",})
 --メヌ
-    local  minuet = set_combine(buffsong_base, {body="ＡＤオングルリヌ+2",})
+    local  minuet = set_combine(buffsong_base, {body="フィリオングルリヌ",})
 
 --マド
-    local Madrigal = set_combine(buffsong_base, {head="ＡＤキャロ+2",})
+    local Madrigal = set_combine(buffsong_base, {head="フィリキャロ",})
 --プレ
     local Prelude = set_combine(buffsong_base,
         {legs="ＭＫシャルワ+1",})
 --バラ
-    local Ballad = set_combine(buffsong_base, {legs="ＡＤラングラヴ+2",})
+    local Ballad = set_combine(buffsong_base, {legs="フィリラングラヴ",})
     local Ballad1 = Ballad
     
 --スケルツォ
     local Scherzo = set_combine(buffsong_base,
-        {legs="ＭＫシャルワ+1",feet="ＡＤコテュルヌ+2",})
+        {legs="ＭＫシャルワ+1",feet="フィリコテュルヌ",})
 --マズルカ
     local mazurka = {
         main="バユバタII",
         sub="ビビドストラップ",
         range="ダウルダヴラ",
-        body="ＡＤオングルリヌ+2",
+        body="フィリオングルリヌ",
         legs="ＭＫシャルワ+1",
         feet="ブリオソスリッパー",
         neck="アエドマティネ",
@@ -141,7 +141,7 @@ function get_sets()
         neck="オルンミラトルク",
         head="ナティラハット",
         hands="ＧＥゲージ+1",
-        legs="ＡＤラングラヴ+2",
+        legs="フィリラングラヴ",
         feet="コールレークサボ",
         back="スイスケープ+1",
         waist="ニヌルタサッシュ",
@@ -196,7 +196,7 @@ function get_sets()
     local finale = set_combine(bard_acc,
         {
         hands="ＧＥゲージ+1",
-        legs="ＡＤラングラヴ+2",
+        legs="フィリラングラヴ",
         feet="コールレークサボ",
         right_ear="ロケイシャスピアス",
         left_ear="胡蝶のイヤリング",
@@ -223,7 +223,7 @@ function get_sets()
         range="ギャッラルホルン",
         body="ＧＥブリオー+1",
         legs="ナレストルーズ",
-        feet="ＡＤコテュルヌ+2",
+        feet="フィリコテュルヌ",
         left_ear="胡蝶のイヤリング",
     }
     local idle_def = set_combine(idle, 
@@ -579,13 +579,13 @@ function calculate_duration(spell)
         if player.equipment.neck == "アエドマティネ" then mult = mult + 0.1 end
         if player.equipment.feet == "ブリオソスリッパー" then mult = mult + 0.1 end
         if player.equipment.feet == "ＢＲスリッパー+1" then mult = mult + 0.11 end
-        if player.equipment.body == "ＡＤオングルリヌ+2" then mult = mult + 0.1 end
+        if player.equipment.body == "フィリオングルリヌ" then mult = mult + 0.1 end
         if player.equipment.legs == "ＭＫシャルワ+1" then mult = mult + 0.1 end
         if player.equipment.main == "レガートダガー" then mult = mult + 0.05 end
         --if player.equipment.main == "カルンウェナン" then mult = mult + 0.5 end
         
         if string.find(spell.name,'マーチ') then
-            if player.equipment.hands == 'ＡＤマンシェト+2' then 
+            if player.equipment.hands == 'フィリマンシェト' then 
                 mult = mult + 0.1
             end
             if player.equipment.range == 'ランゲレイク' then
@@ -593,7 +593,7 @@ function calculate_duration(spell)
             end
         end
         if string.find(spell.name,'メヌエット') then
-            if player.equipment.body == "ＡＤオングルリヌ+2" then 
+            if player.equipment.body == "フィリオングルリヌ" then 
                 mult = mult + 0.1 
             end
             if player.equipment.range == 'アポロフルート' then
@@ -601,7 +601,7 @@ function calculate_duration(spell)
             end
         end
         if string.find(spell.name,'マドリガル') then
-            if player.equipment.head == "ＡＤキャロ+2" then 
+            if player.equipment.head == "フィリキャロ" then 
                 mult = mult + 0.1 
             end
             if player.equipment.range == 'カンタバンクホルン' then
@@ -614,12 +614,12 @@ function calculate_duration(spell)
             end
         end
         if string.find(spell.name,'バラード') then
-            if player.equipment.legs == "ＡＤラングラヴ+2" then 
+            if player.equipment.legs == "フィリラングラヴ" then 
                 mult = mult + 0.1 
             end
         end
         if string.find(spell.name,'スケルツォ') then
-            if player.equipment.feet == "ＡＤコテュルヌ+2" then 
+            if player.equipment.feet == "フィリコテュルヌ" then 
                 mult = mult + 0.1 
             end
         end

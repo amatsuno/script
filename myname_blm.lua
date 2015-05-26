@@ -89,8 +89,8 @@ function get_sets()
     }
     local stun_acc1 = set_combine(stun, 
     	{
-        	feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+24','"Fast Cast"+3','INT+6',}},
- 	       left_ring="サンゴマリング",
+            feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
+ 	        left_ring="サンゴマリング",
         	right_ear="グアチピアス",
     	})
     local stun_acc2 = set_combine(stun_acc1,
@@ -113,7 +113,7 @@ function get_sets()
         body="イスキミアシャブル",
         hands="ＨＡカフス+1",
         legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
-        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+24','"Fast Cast"+3','INT+6',}},
+        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
         neck="ワイケトルク",
         range="オウレオール",
         waist="オヴェイトロープ",
@@ -130,7 +130,7 @@ function get_sets()
         hands="ＨＡカフス+1",
         body="ヘリオスジャケット",
         legs="アートシクロップス",
-        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+24','"Fast Cast"+3','INT+6',}},
+        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
         waist="オヴェイトロープ",
         left_ear="エンチャンピアス+1",
         right_ear="ロケイシャスピアス",
@@ -186,14 +186,14 @@ function get_sets()
           element_attk
         , { head={ name="ＨＡハット+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -4%','"Mag.Atk.Bns."+25',}},
             legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -2%','"Mag.Atk.Bns."+22',}},
+           feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+25','"Occult Acumen"+9','INT+10',}},
             neck="水影の首飾り",
             range=empty,ammo="オンブルタスラム+1",
             right_ring="女王の指輪+1",})
     local element_mb = {
         head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+7%',}},
         hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+23','"Fast Cast"+4','Magic burst mdg.+7%',}},
-        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -3%','Magic burst mdg.+8%',}},
-        feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst mdg.+5%',}},
+        feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst mdg.+10%',}},
         neck="水影の首飾り",
         right_ring="夢神の指輪",
     }
