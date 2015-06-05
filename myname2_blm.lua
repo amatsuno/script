@@ -111,9 +111,29 @@ function get_sets()
         right_ring="サンゴマリング",
         back="リフラクトケープ",
     }
+--暗黒
+    local dark_acc={
+        main="レブレイルグ+2",
+        sub="メフィテスグリップ",
+        head="ナティラハット",
+        body="ヘリオスジャケット",
+        hands="ＨＡカフス+1",
+        legs="アートシクロップス",
+        feet="ヘリオスブーツ",
+        neck="エディネクラス",
+        waist="山吹の帯",
+        left_ear="ライストームピアス",
+        right_ear="サイストームピアス",
+        left_ring="女王の指輪",
+        right_ring="サンゴマリング",
+        back="ベーンケープ",
+        range=empty,
+        ammo="ガストリタスラム",        
+    }
+    
 --精霊
     local element_acc={
-        main="レブレイルグ+2",
+        main="ケラウノス",
         sub="メフィテスグリップ",
         head="ナティラハット",
         body="ＳＰコート+1",
@@ -204,7 +224,7 @@ function get_sets()
         waist="神術帯+1",
         });
     local lock = {
-        main="レブレイルグ+2",
+        main="ケラウノス",
         sub="スーゾーウグリップ",
         range=empty,ammo="ドシスタスラム",
         }
@@ -230,6 +250,7 @@ function get_sets()
     sets.midcast['強化魔法'] = enhance
     sets.midcast['弱体魔法'] = enfeebling
     sets.midcast['神聖魔法'] = divine
+    sets.midcast['暗黒魔法'] = dark_acc
     sets.midcast.element = {}
     sets.midcast.element.mode = 'ATTK'
     sets.midcast.element['ACC']  = element_acc
@@ -589,14 +610,6 @@ function self_command(command)
                 end
                 equip(sets.midcast.element[sets.midcast.element.mode])
             end
-        elseif args[1] == 'ra' then
-            if #args >= 3 then
-                local cmd = nil
-                cmd = 'input /ma '..args[2]..' '..args[3]
-                my_send_command(cmd)
-            end
-        elseif args[1] == 'move' then
-            equip(set_move(sets.aftercast.idle))
         elseif args[1] == 'jb' then
             if sets.equip.IDLE_DEF.back == 'メシストピンマント' then
                 windower.add_to_chat(123, '待機:背中＝リパルスマント')
@@ -645,6 +658,17 @@ function self_command(command)
                 cmd = 'input /ma '..castspell..' '..args[3]
                 my_send_command(cmd)
             end
+        elseif args[1] == 'content' then
+            local param = args[2]:lower()
+            if param == 'jb' then
+                sets.equip.IDLE_DEF.back = 'メシストピンマント'
+                jb_flag = true
+            elseif param == 'bc' then
+                my_send_command('gs c idle idle_def;gs c elementmode full')
+            end
+        elseif args[1] == 'getbuff' then
+            local param = tonumber(args[2])
+            get_buff(param)
         end
     end
 end

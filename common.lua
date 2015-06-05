@@ -11,6 +11,22 @@ move_equip = {
     ['詩'] = {feet="ＡＤコテュルヌ+2",},
     ['風'] = {feet="ジオサンダル",},
 }
+getbuffs = {
+    ['風'] = T{
+        'input /ma インデフォーカス <me>;wait 6;input /ma リフレシュ <me>',
+        'input /ma ストンスキン <me>',
+    },
+    ['黒'] = T{
+        'input /ma ファランクス <me>; wait 6;input /ma リフレシュ <me>',
+        'input /ma ストンスキン <me>',
+        'input /ma アクアベール <me>',
+    },
+}
+function get_buff(n)
+    if getbuffs[player.main_job] and getbuffs[player.main_job][n] then
+        _my_send_command(getbuffs[player.main_job][n])
+    end
+end
 function cancel_buff(spell)
     if windower.ffxi.get_spell_recasts()[spell.recast_id] > 0 then
         return
@@ -86,3 +102,6 @@ function dumpProperties(t,comment,level)
     end
 end
 
+function _my_send_command(cmd)
+    send_command(windower.to_shift_jis(cmd))
+end

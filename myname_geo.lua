@@ -107,8 +107,8 @@ function get_sets()
     local enhance = set_combine(idle_def, {
         main="麒麟棍",
         sub="フルキオグリップ",
-        head="ウムシクハト",
-        body="アンフルローブ",
+        head="ウムシクハット",
+        body="テルキネシャジュブ",
         feet="リーガルパンプス+1",
         neck="コロッサストルク",
         waist="オリンポスサッシュ",
@@ -832,21 +832,17 @@ function self_command(command)
                     windower.add_to_chat(123,'精霊：魔命')
                     sets.midcast.element.mode = 'ACC'
                     sets.midcast['神聖魔法'] = enfeebling
-                    sets.precast['スリプル'] = sets.midcast['スリプル']
                 end
             else
                 if args[2] == 'ACC' then
                     sets.midcast.element.mode = 'ACC'
                     sets.midcast['神聖魔法'] = enfeebling
-                    sets.precast['スリプル'] = sets.midcast['スリプル']
                 elseif args[2] == 'ATTK' then
                     sets.midcast.element.mode = 'ATTK'
                     sets.midcast['神聖魔法'] = sets.midcast.element['ATTK']
-                    sets.precast['スリプル'] = sets.equip['スリプル'].precast
                 elseif args[2] == 'FULL' then
                     sets.midcast.element.mode = 'FULL'
                     sets.midcast['神聖魔法'] = sets.midcast.element['FULL']
-                    sets.precast['スリプル'] = sets.equip['スリプル'].precast
                 elseif args[2] == 'VW' then
                     windower.add_to_chat(123,'精霊：VW')
                     sets.midcast.element.mode = 'VW'
@@ -895,6 +891,17 @@ function self_command(command)
                 local cmd = nil
                 cmd = 'input /ma '..args[2]..' '..args[3]
                 my_send_command(cmd)
+            end
+        elseif args[1] == 'getbuff' then
+            local param = tonumber(args[2])
+            get_buff(param)
+        elseif args[1] == 'content' then
+            local param = args[2]:lower()
+            if param == 'jb' then
+                sets.equip.IDLE_DEF.back = 'メシストピンマント'
+                jb_flag = true
+            elseif param == 'bc' then
+                my_send_command('gs c idle idle_def;gs c elementmode full')
             end
         end
     end

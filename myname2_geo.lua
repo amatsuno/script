@@ -153,6 +153,25 @@ function get_sets()
     
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
+
+    local dark_acc={
+        main="レブレイルグ+2",
+        sub="メフィテスグリップ",
+        head="ナティラハット",
+        body="ヘリオスジャケット",
+        hands="ＨＡカフス+1",
+        legs="アートシクロップス",
+        feet="ヘリオスブーツ",
+        neck="エディネクラス",
+        waist="山吹の帯",
+        left_ear="ライストームピアス",
+        right_ear="サイストームピアス",
+        left_ring="女王の指輪",
+        right_ring="サンゴマリング",
+        range=empty,
+        ammo="ガストリタスラム",        
+        back="リフラクトケープ",
+    }
 --風水
     local geomancy = set_combine(idel_def, {
         main="レブレイルグ+2",
@@ -223,6 +242,7 @@ function get_sets()
     sets.midcast['神聖魔法'] = divine
     sets.midcast['精霊魔法'] = element_acc
     sets.midcast['風水魔法'] = geomancy
+    sets.midcast['暗黒魔法'] = dark_acc
     sets.midcast['リジェネ'] = regen
     sets.midcast['ケアル'] = cure
     sets.midcast['スタン'] = stun
@@ -757,6 +777,14 @@ function self_command(command)
                 spellname = args[3]
             end
             showrecast(spellid, spellname)
+        elseif args[1] == 'content' then
+            local param = args[2]:lower()
+            if param == 'jb' then
+                sets.equip.IDLE_DEF.back = 'メシストピンマント'
+                jb_flag = true
+            elseif param == 'bc' then
+                my_send_command('gs c idle idle_def;gs c elementmode full')
+            end
         end
     end
 end

@@ -602,6 +602,7 @@ function self_command(command)
                     sets.precast['スリプル'] = sets.midcast['スリプル']
                 end
             else
+                args[2] = args[2]:upper()
                 if args[2] == 'ACC' then
                     sets.midcast.element.mode = 'ACC'
                     sets.midcast['神聖魔法'] = enfeebling
@@ -714,6 +715,16 @@ function self_command(command)
                 end
             end
         elseif args[1] == 'content' then
+            local param = args[2]:lower()
+            if param == 'jb' then
+                sets.equip.IDLE_DEF.back = 'メシストピンマント'
+                jb_flag = true
+            elseif param == 'bc' then
+                my_send_command('gs c idle idle_def;gs c elementmode full')
+            end
+        elseif args[1] == 'getbuff' then
+            local param = tonumber(args[2])
+            get_buff(param)
         end
     end
 end
@@ -786,7 +797,8 @@ function debug_mode_chat(message)
     end
 end
 function my_send_command(cmd)
-    send_command(windower.to_shift_jis(cmd))
+    _my_send_command(cmd)
+    --send_command(windower.to_shift_jis(cmd))
 end
 include('script/script/common.lua')
 include('lib/counter.lua')

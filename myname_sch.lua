@@ -21,7 +21,8 @@ function get_sets()
         neck="黄昏の光輪",
         left_ring="守りの指輪",
         right_ring="ダークリング",
-        right_ear="胡蝶のイヤリング",
+        right_ear="驕慢の耳",
+        left_ear="胡蝶のイヤリング",
         back="チェビオットケープ",
     }
     local idle_healing = set_combine(idle, 
@@ -101,8 +102,11 @@ function get_sets()
         back="慈悲の羽衣",
     })
     local baXX = enhance
-    local regen = set_combine(enhance, {head="アバテルボネット",body='テルキネシャジュブ',
-    back={ name="ブックワームケープ", augments={'INT+1','MND+4','"Regen" potency+8',}},})
+    local regen = set_combine(enhance, 
+        {
+            head="ＡＢボネット+1",body='テルキネシャジュブ',
+            back={ name="ブックワームケープ", augments={'INT+2','MND+2','"Regen" potency+10',}},
+        })
     local stoneskin = set_combine(enhance, {waist="ジーゲルサッシュ",})
 --stun
     local stun = {
@@ -373,6 +377,23 @@ function init_element()
         left_ring="サンゴマリング",
         back={ name="ブックワームケープ", augments={'INT+3','MND+4','Helix eff. dur. +19',}},
     }
+    local element_bc={
+        main= "ケラウノス",
+        sub="メフィテスグリップ",
+        range="オウレオール",
+        head="ＨＡハット+1",
+        body="ＨＡコート+1",
+        hands="ＨＡカフス+1",
+        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -2%','"Mag.Atk.Bns."+22',}},
+        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
+        neck="黄昏の光輪",
+        waist="山吹の帯",
+        left_ear="怯懦の耳",
+        right_ear="フリオミシピアス",
+        left_ring="守りの指輪",
+        right_ring="女王の指輪+1",
+        back={ name="ブックワームケープ", augments={'INT+3','MND+4','Helix eff. dur. +19',}},
+    }
     local element_attk = set_combine(
             element_acc,
             {   hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+9','INT+9',}},
@@ -404,6 +425,7 @@ function init_element()
     sets.midcast.element['ACC'] = element_acc
     sets.midcast.element['ATTK'] = element_attk
     sets.midcast.element['FULL'] = element_fullattk
+    sets.midcast.element['BC'] = element_bc
     sets.midcast.element['VG_CHAIN'] = element_vg_chain
     sets.midcast.element['VG'] = element_attk
     sets.midcast.element['MBURST'] = element_mb
@@ -529,7 +551,7 @@ function midcast(spell)
                 sets_equip = sets.midcast.RECAST[spell.element]
             end
             if buffactive['令狸執鼠の章'] then
-                sets_equip = set_combine(sets_equip, {hands="アバテルブレーサー",})
+                sets_equip = set_combine(sets_equip, {hands="ＡＢブレーサー+1",})
             end
         elseif spell.skill=='精霊魔法' then
             if spell.name == 'インパクト' then
@@ -719,12 +741,16 @@ function self_command(command)
                     sets.midcast.element.mode = 'ACC'
                 end
             else
+                args[2] = args[2]:upper()
                 if args[2] == 'ACC' then
                     sets.midcast.element.mode = 'ACC'
                 elseif args[2] == 'ATTK' then
                     sets.midcast.element.mode = 'ATTK'
                 elseif args[2] == 'FULL' then
                     sets.midcast.element.mode = 'FULL'
+                elseif args[2] == 'BC' then
+                    windower.add_to_chat(123,'精霊：BC用')
+                    sets.midcast.element.mode = 'BC'
                 elseif args[2] == 'VG' then
                     windower.add_to_chat(123,'精霊：ベガリー')
                     sets.midcast.element.mode = 'VG'
@@ -835,6 +861,14 @@ function self_command(command)
                 else 
                     add_to_chat(123, 'assist=off')
                 end
+            end
+        elseif args[1] == 'content' then
+            local param = args[2]:lower()
+            if param == 'jb' then
+                sets.equip.IDLE_DEF.back = 'メシストピンマント'
+                jb_flag = true
+            elseif param == 'bc' then
+                my_send_command('gs c idle idle_def;gs c elementmode bc')
             end
         end
         
