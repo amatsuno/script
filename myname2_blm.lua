@@ -95,7 +95,7 @@ function get_sets()
     local pre_cure = set_combine(pre_light, {back="パートリケープ",})
 --弱体
     local enfeebling = {
-        main="レブレイルグ+2",
+        main="ケラウノス",
         sub="メフィテスグリップ",
         range="オウレオール",
         head="ナティラハット",
@@ -113,7 +113,7 @@ function get_sets()
     }
 --暗黒
     local dark_acc={
-        main="レブレイルグ+2",
+        main="ケラウノス",
         sub="メフィテスグリップ",
         head="ナティラハット",
         body="ヘリオスジャケット",
@@ -164,7 +164,7 @@ function get_sets()
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 --stun
     local stun = {
-        main="レブレイルグ+2",
+        main="ケラウノス",
         sub="ビビドストラップ",
         head="ナティラハット",
         body="ヘデラコタルディ",
@@ -225,10 +225,27 @@ function get_sets()
         });
     local lock = {
         main="ケラウノス",
-        sub="スーゾーウグリップ",
+        sub="ズーゾーウグリップ",
         range=empty,ammo="ドシスタスラム",
         }
+--MP装備（ミルキル）
+    local equip_mp = {
+        head="ナティラハット",
+        body="ヘリオスジャケット",
+        hands="ボクワスグローブ",
+        legs="アートシクロップス",
+        feet="リーガルパンプス+1",
+        neck="オルンミラトルク",
+        waist="神術帯+1",
+        left_ear="胡蝶のイヤリング",
+        right_ear="ロケイシャスピアス",
+        left_ring="サンゴマリング",
+        right_ring="ダークリング",
+        back="ベーンケープ",
+    }
             
+    sets.ws = {}
+    sets.ws['ミルキル'] = equip_mp
     sets.precast = {}
     sets.precast['ケアル']= pre_cure
     sets.precast['スタン'] = stun
@@ -322,6 +339,10 @@ function precast(spell)
 
     if ignore_spells:contains(spell.name) then return end
     if spell.type == 'JobAbility' then
+    elseif spell.type=="WeaponSkill" then
+        if sets.ws[spell.ja] then
+            equip(sets.ws[spell.ja])
+        end
     elseif spell.type == 'BardSong' then
         if buffactive['ナイチンゲール']  then
             set_equip = set_song(spell)
@@ -535,8 +556,29 @@ function self_command(command)
     if #args >= 1 then
         if args[1] == 'lock' then
             if #args == 1 then
-                equip(sets.equip['LOCK'])
-                windower.add_to_chat(123,'lock(武器も変更)')
+                
+                local cmd = 'input /echo lock(武器も変更);'
+                local subcmd = ''
+                for key,val in pairs(sets.equip['LOCK'])
+                do
+                    if val ~= empty then
+                        if key == 'sub' then
+                            subcmd = 'wait 1;input /equip '..key..' '..val..';'
+                        else
+                            cmd = cmd..'input /equip '..key..' '..val..';'
+                        end
+                    end
+                end
+                --equip(sets.equip['LOCK'])
+                if subcmd then
+                    cmd = cmd..subcmd
+                end
+                cmd = cmd..'wait 1;input /lockstyle on'
+                disable('main','sub','ammo','range')
+                my_send_command(cmd)
+                --windower.add_to_chat(123,'lockcmd='..cmd)
+                --equip(sets.equip['LOCK'])
+                --windower.add_to_chat(123,'')
                 disable('main','sub','ammo','range')
             else
                 windower.add_to_chat(123,'lock '..args[2])
@@ -620,6 +662,10 @@ function self_command(command)
                 sets.equip.IDLE_DEF.back = 'メシストピンマント'
                 jb_flag = true
             end
+        elseif args[1] == 'si' then
+            my_send_command('mogmaster si blm')
+        elseif args[1] == 'move' then
+            equip(set_move(sets.aftercast.idle))
         end
     end
     if #args >= 2 then
@@ -665,6 +711,8 @@ function self_command(command)
                 jb_flag = true
             elseif param == 'bc' then
                 my_send_command('gs c idle idle_def;gs c elementmode full')
+                sets.equip.IDLE_DEF.back = 'リパルスマント'
+                jb_flag = false
             end
         elseif args[1] == 'getbuff' then
             local param = tonumber(args[2])

@@ -1,77 +1,169 @@
 function get_sets()
     set_language('japanese')
---着替えしたくないアビ・魔法のリスト
-    ignore_spells = T{
+    ancient_spells = T{
+        'トルネド','フリーズ','フレア','フラッド','バースト','クエイク',
+        'トルネドII','フリーズII','フレアII','フラッドII','バーストII','クエイクII',
     }
-    
---リキャストを監視したいアビ・魔法のリスト
+    replace_magic = {
+        ['ストンラ']='ストンガ',
+        ['ストンラII']='ストンジャ',
+        ['ウォタラ']='ウォタガ',
+        ['ウォタラII']='ウォタジャ',
+        ['エアロラ']='エアロガ',
+        ['エアロラII']='エアロジャ',
+        ['ファイラ']='ファイガ',
+        ['ファイラII']='ファイジャ',
+        ['ブリザラ']='ブリザガ',
+        ['ブリザラII']='ブリザジャ',
+        ['サンダラ']='サンダガ',
+        ['サンダラII']='サンダジャ',
+        --['ストーンVI']='ストンジャ',
+        --['ウォータVI']='ウォタジャ',
+        --['エアロVI']='エアロジャ',
+        --['ファイアVI']='ファイジャ',
+        --['ブリザドVI']='ブリザジャ',
+        --['サンダーVI']='サンダジャ',
+    } 
     watch_recast = T{
         'スタン','ドレイン','アスピル'
     }
-    
+    ignore_spells = T{
+        'ディア','ディアII','ディアガ'
+    }
 --FC_BASE
     local pre_base ={
-        back="スイスケープ",
+        main="ケラウノス",
+        sub="ビビドストラップ",
+        head="ハルスハット",            --8
+        hands="ヘリオスグローブ",       --4
+        body="アンフルローブ",
+        legs="ヘリオススパッツ",        --3
+        feet="ケロナブーツ",            --4
+        waist="ニヌルタサッシュ",
+        left_ear="胡蝶のイヤリング",
+        right_ear="ロケイシャスピアス",
+        left_ring="プロリクスリング",
+        right_ring="サンゴマリング",
+        back="スイスケープ",            --3
     }
     local pre_low = {
+        head="ナティラハット",
+        legs="アートシクロップス",
     }
-    
-    local pre_light = set_combine(pre_base, {})
-    local pre_dark  = set_combine(pre_base, {})
-    local pre_earth = set_combine(pre_base, {})
-    local pre_water = set_combine(pre_base, {})
-    local pre_wind  = set_combine(pre_base, {})
-    local pre_fire  = set_combine(pre_base, {})
-    local pre_ice   = set_combine(pre_base, {})
-    local pre_thunder = set_combine(pre_base, {})
     local mid_base = pre_base
-    local mid_light = set_combine(mid_base, {})
-    local mid_dark  = set_combine(mid_base, {})
-    local mid_earth = set_combine(mid_base, {})
-    local mid_water = set_combine(mid_base, {})
-    local mid_wind  = set_combine(mid_base, {})
-    local mid_fire  = set_combine(mid_base, {})
-    local mid_ice   = set_combine(mid_base, {})
-    local mid_thunder = set_combine(mid_base, {})
     
+    --光属性
+    local pre_light = set_combine(pre_base, {main="アーカI",})
+    local mid_light = set_combine(mid_base, {main="アーカII",})
+    local pre_healing = pre_light
+    
+    --風属性
+    local pre_wind = set_combine(pre_base, {main="バユバタI",})
+    local mid_wind = set_combine(mid_base, {main="バユバタII",})
 
---強化
+    --土属性
+    local pre_earth = set_combine(pre_base, {main="ビシュラバI",})
+    local mid_earth = set_combine(mid_base, {main="ビシュラバII",})
+    local pre_stoneskin = set_combine(pre_earth,{head="ウムシクハット",waist="ジーゲルサッシュ",})
+
+    --強化
     local enhance = {
+        main="麒麟棍",
+        sub="ビビドストラップ",
+        head="ウムシクハト",
+        body="アンフルローブ",
+        feet="ルベウスブーツ",
+        neck="コロッサストルク",
+        waist="オリンポスサッシュ",
+        left_ear="アンドアーピアス",
+        back="慈悲の羽衣",
     }
-    --強化魔法専用の詠唱短縮装備（属性ごとの短縮装備とset_combineされる)
-    local pre_enhance = {}
+    local baXX = enhance
+    local stoneskin = set_combine(enhance, {waist="ジーゲルサッシュ",})
     
-    local pre_stoneskin = set_combine(pre_earth, {})
-    local mid_stoneskin = set_combine(enhance, {})
-    
-    local regen = set_combine(enhance, {})
+--stun
+    local stun = {
+        main="ヴェナバラム",
+        sub="ビビドストラップ",
+        head="ナティラハット",
+        body="ヴァニアコタルディ",
+        hands="ヘリオスグローブ",
+        legs="アートシクロップス",
+        feet="アートシクブーツ",
+        neck="エーシルトルク",
+        waist="ニヌルタサッシュ",
+        left_ear="ロケイシャスピアス",
+        right_ear="胡蝶のイヤリング",
+        left_ring="プロリクスリング",
+        right_ring="サンゴマリング",
+        back="スイスケープ",
+    }
+    local stun_fc = set_combine(stun, {main="アパマジャII", body="アンフルローブ",})
+    local stun_recast = set_combine(stun,{main="アパマジャII",})
     
 --CURE
     local cure ={
+        main="アーカIV",
+        hands="ボクワスグローブ",
+        legs="ナレストルーズ",
     }
-    local pre_cure = set_combine(pre_light, {back="パートリケープ",})
 --弱体
     local enfeebling = {
+        main={ name="レブレイルグ+2", augments={'DMG:+6','CHR+4','Mag. Acc.+15',}},
+        sub="メフィテスグリップ",
+        range="オウレオール",
+        head="アートシクハット",
+        body="ＨＡコート+1",
+        hands="ヘリオスグローブ",
+        legs="アートシクロップス",
+        feet="アートシクブーツ",
+        neck="ワイケトルク",
+        waist="デモンリーサッシュ",
+        left_ear="ライストームピアス",
+        right_ear="サイストームピアス",
+        left_ring="バルラーンリング",
+        right_ring="サンゴマリング",
+        back="リフラクトケープ",
     }
---精霊
-    local element_acc={
-        main="エミネンスタッフ",
+    local dark_acc={
+        main="ケラウノス",
         sub="ワイズストラップ",
         neck="クアンプネックレス",
-        head="ハゴンデスハット",
-        body="ＨＡコート+1",
-        hands="ハゴンデスカフス",
+        head="ヘリオスバンド",
+        body="スピコナコート",
+        hands="ヘリオスグローブ",
         legs="ＨＡパンツ+1",
+        feet="ヘリオスブーツ",
         back="ベーンケープ",
-        ammo="ウィッチストーン",
-        waist="シアリングサッシュ",
+        ammo="ファントムタスラム",
+        waist="オティラサッシュ",
         left_ring="結氷の指輪",
-        right_ring="スノーリング",
+        right_ring="アキュメンリング",
         right_ear="ノーヴィオピアス",
         left_ear="フリオミシピアス",
     }
-    local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
-    local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
+--精霊
+    local element_acc={
+        main="ケラウノス",
+        sub="ワイズストラップ",
+        neck="クアンプネックレス",
+        head="ヘリオスバンド",
+        body="スピコナコート",
+        hands="ヘリオスグローブ",
+        legs="ＨＡパンツ+1",
+        feet="ヘリオスブーツ",
+        back="ベーンケープ",
+        ammo="ファントムタスラム",
+        waist="オティラサッシュ",
+        left_ring="結氷の指輪",
+        right_ring="アキュメンリング",
+        right_ear="ノーヴィオピアス",
+        left_ear="フリオミシピアス",
+    }
+    local element_attk = element_acc
+    local element_fullattk = element_attk
+    local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
+
 --属性帯
     local obi = {}
     --所持している属性帯の属性を列挙
@@ -90,340 +182,342 @@ function get_sets()
 --待機装備
     local idle = {
         main="アーススタッフ",
-        sub="ビビドストラップ",
-        head="ハゴンデスハット",
+        sub="ワイズストラップ",
+        head="ＨＡハット+1",
         body="ＨＡコート+1",
-        hands="ハゴンデスカフス",
+        hands="ヘリオスグローブ",
         legs="ＨＡパンツ+1",
         feet="ヘラルドゲートル",
         right_ear="血石のピアス",
     }
     local idle_def = set_combine(idle, 
         {
-        feet="ハゴンデスサボ",
+        feet="ヘリオスブーツ",
         neck="バイサカラー",
         left_ring="ダークリング",
         right_ring="ダークリング",
         back="チェビオットケープ",
-        
-        })
-    local idle_defmg = set_combine(idel_def,
-        {
-        })
+        });
+    local lock = {
+        main="ケラウノス",
+        sub="ワイズストラップ",
+        range=empty,ammo="ファントムタスラム",
+    }
+    
     sets.precast = {}
-    sets.precast['ケアル']= pre_cure
+    sets.precast['ケアル']= pre_light
+    sets.precast['スタン'] = stun
     sets.precast['ヘイスト'] = pre_wind
     sets.precast['ストンスキン'] = pre_stoneskin
+    sets.precast['インパクト'] = impact
     sets.precast.FC = {}
-    sets.precast.FC['FC_LOW'] = pre_low
     sets.precast.FC['光'] = pre_light
-    sets.precast.FC['闇'] = pre_dark
+    sets.precast.FC['闇'] = pre_base
     sets.precast.FC['風'] = pre_wind
     sets.precast.FC['土'] = pre_earth
-    sets.precast.FC['雷'] = pre_thuner
-    sets.precast.FC['水'] = pre_water
-    sets.precast.FC['火'] = pre_fire
-    sets.precast.FC['氷'] = pre_ice
-    sets.precast['インパクト'] = pre_impact
-    sets.precast.FC.enhance = pre_enhance
+    sets.precast.FC['雷'] = pre_base
+    sets.precast.FC['水'] = pre_base
+    sets.precast.FC['火'] = pre_base
+    sets.precast.FC['氷'] = pre_base
+    sets.precast.FC['FC_LOW'] = pre_low
     sets.midcast = {}
+    sets.midcast['インパクト'] = impact
     sets.midcast['強化魔法'] = enhance
+    sets.midcast['バ系'] = baXX
     sets.midcast['弱体魔法'] = enfeebling
     sets.midcast['神聖魔法'] = divine
-    sets.midcast['精霊魔法'] = element_acc
-    sets.midcast['リジェネ'] = regen
+    sets.midcast['暗黒魔法'] = dark_acc
     sets.midcast['ケアル'] = cure
     sets.midcast['ヘイスト'] = mid_wind
-    sets.midcast['ストンスキン'] = mid_stoneskin
-    sets.midcast['インパクト'] = mid_impact
+    sets.midcast['ストンスキン'] = stoneskin
+    sets.midcast.element = {}
+    sets.midcast.element.mode = 'ACC'
+    sets.midcast.element['古代'] = element_acc
+    sets.midcast.element['ACC'] = element_acc
+    sets.midcast.element['ATTK'] = element_attk
+    sets.midcast.element['FULL'] = element_fullattk
+    sets.midcast.element['VW'] = pre_base
     sets.midcast.RECAST = {}
-    sets.midcast.RECAST['光'] = mid_light
-    sets.midcast.RECAST['闇'] = mid_dark
+    sets.midcast.RECAST['光'] =mid_light
+    sets.midcast.RECAST['闇'] =mid_base
     sets.midcast.RECAST['風'] = mid_wind
     sets.midcast.RECAST['土'] = mid_earth
-    sets.midcast.RECAST['雷'] = mid_thunder
-    sets.midcast.RECAST['水'] = mid_water
-    sets.midcast.RECAST['火'] = mid_fire
-    sets.midcast.RECAST['氷'] = mid_ice
+    sets.midcast.RECAST['雷'] = mid_base
+    sets.midcast.RECAST['水'] = mid_base
+    sets.midcast.RECAST['火'] = mid_base
+    sets.midcast.RECAST['氷'] = mid_base
     sets.aftercast = {}
-    sets.aftercast.skip = false
     sets.aftercast.idle = nil    
     --コマンド着替え用 //gs c equip スタン とか
     sets.equip = {}
+    sets.equip.treasure = false
+    sets.equip.treasure_spells = T{'ストンガ'}
+    sets.equip['スタン'] = stun
+    sets.equip['スタンリキャ'] = stun_recast
+    sets.equip['スタンFC'] = stun_fc
+    sets.equip['強化魔法'] = enhance
     sets.equip['IDLE'] = idle
     sets.equip['IDLE_DEF'] = idle_def
-    sets.equip['IDLE_DEFMG'] = idle_defmg
     sets.equip.obi = obi
-    --マクロブック、セット変更
-    send_command('input /macro book 5;wait .2;input /macro set 1')
-    --キーバインド設定
-    bindKeys(true)
-
-    debugf = file.new('data/logs/debug.log',true)
-    if not debugf:exists() then
-        debugf:create()
-    end
-    refresh_equip()
+    sets.equip['LOCK'] = lock
     
+    --enable('main','sub','ammo')
+    rev_attk = { name="レブレイルグ+2", augments={'DMG:+7','"Mag.Atk.Bns."+24',}}
+    send_command('input /macro book 5;wait .2;input /macro set 1')
+    bindKeys(true)    
+    refresh_equip()
+    jb_flag = false
 end
 function bindKeys(f)
     if f then
         windower.add_to_chat(8,'bind key')
         send_command('bind ^, gs c idle')
+        send_command('bind ^/ gs c elementmode')
         send_command('bind ^[ gs c lock')
         send_command('bind ^] gs c unlock')
     else
         windower.add_to_chat(123,'unbind key')
         send_command('unbind ^,')
+        send_command('unbind ^/')
         send_command('unbind ^[')
         send_command('unbind ^]')
     end
 end
 function file_unload()
+    enable('main','sub','ammo','range')
     bindKeys(false)
 end
 
 function precast(spell)
-    --myGetProperties(spell,'splell', 0)
-    local set_equip = nil
-
+    --myGetProperties(spell)
     if ignore_spells:contains(spell.name) then return end
     if spell.type == 'JobAbility' then
-    elseif spell.type == 'BardSong' then
-        if buffactive['ナイチンゲール']  then
-            set_equip = set_song(spell)
-            sets.aftercast.skip = true
-        elseif spell.target.type == 'MONSTER' then
-            set_equip = sets.precast.FC.FC_LOW
-        else
-            set_equip = sets.precast.FC[spell.element]
-        end
-    elseif spell.type == 'Ninjutsu' then
-        if spell.cast_time > 0.75 then
-            set_equip = sets.precast.FC.magic[spell.element]
-        else
-            set_equip = sets.midcast.RECAST[spell.element]
-        end
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
-        windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
+        --windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
         if spell.skill == '回復魔法' then
             if string.find(spell.name, 'ケアル') then
-                set_equip = sets.precast['ケアル']
+                equip(sets.precast['ケアル'])
             elseif spell.name:find('レイズ') then
-                set_equip = sets.precast.FC[spell.element]
+                equip(sets.precast.FC[spell.element])
             elseif spell.cast_time > 0.75 then
-                set_equip = sets.precast[spell.skill]
+                equip(sets.precast[spell.skill])
             else
-                set_equip = sets.midcast[spell.skill]
+                equip(sets.midcast[spell.skill])
             end
         elseif spell.skill=='強化魔法' then
             if spell.name:startswith('バ') then
                 if spell.cast_time > 0.75 then
-                    set_equip = set_combine(sets.precast.FC[spell.element], sets.precast.FC.enhance)
+                    equip(sets.precast.FC[spell.element], {waist="ジーゲルサッシュ",})
                 else
-                    set_equip = sets.midcast['強化魔法']
+                    equip(sets.midcast['強化魔法'])
                 end
             elseif spell.name == 'ストンスキン' then
-                set_equip = set_combine(sets.precast['ストンスキン'], sets.precast.FC.enhance)
+                equip(sets.precast['ストンスキン'])
+                send_command('@wait 1.2;cancel 37')
             elseif spell.cast_time > 0.75 then
-                set_equip = sets.precast.FC[spell.element]
+                equip(sets.precast.FC[spell.element], {waist="ジーゲルサッシュ",})
             else
-                set_equip = sets.midcast.RECAST[spell.element]
+                equip(sets.midcast.RECAST[spell.element])
             end
+            cancel_buff(spell)
         elseif spell.name == 'スタン' then
-            set_equip = sets.precast['スタン']
+            equip(sets.precast['スタン'])
         elseif spell.skill=='精霊魔法' then
             if spell.name == 'インパクト' then
-                set_equip = sets.precast['インパクト']
-            elseif spell.cast_time > 2.0 then
-                set_equip = sets.precast.FC[spell.element]
+                equip(sets.precast['インパクト'])
+            elseif spell.cast_time > 1.5 then
+                equip(sets.precast.FC[spell.element])
             elseif spell.cast_time > 0.75 then
-                set_equip = sets.precast.FC.FC_LOW
+                equip(sets.precast.FC.FC_LOW)
             else
-                set_equip = set_element(spell)
+                equip(set_element(spell))
             end
         elseif spell.skill=='弱体魔法' or
                spell.skill=='神聖魔法' or 
                spell.skill=='暗黒魔法' then
             if spell.cast_time > 0.75 then
-                set_equip = sets.precast.FC[spell.element]
+                equip(sets.precast.FC[spell.element])
             else
-                set_equip = sets.midcast[spell.skill]
+                equip(sets.midcast[spell.skill])
             end
         elseif spell.cast_time > 0.75 then
-            set_equip = sets.precast.FC[spell.element]
+            equip(sets.precast.FC[spell.element])
         else
-            set_equip = sets.midcast.RECAST[spell.element]
+            equip(sets.midcast.RECAST[spell.element])
         end
     end
-    if set_equip ~= nil then
-        equip(set_equip)
-    end
-    
 end
 
 function midcast(spell)
     if ignore_spells:contains(spell.name) then return end
-    local set_equip = nil
+    local sets_equip = nil
     if spell.type == 'JobAbility' then
-    elseif spell.type == 'BardSong' then
-        if buffactive['ナイチンゲール'] then
-            --何もしない
-        else
-            set_equip = set_song(spell)
-        end
-    elseif spell.type == 'Ninjutsu' then
-        if spell.cast_time > 0.75 then
-            set_equip = sets.midcast.RECAST[spell.element]
-        end
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
         if spell.name == 'スタン' then
-            set_equip = sets.midcast['スタン']
+            sets_equip = sets.midcast['スタン']
         elseif spell.skill=='回復魔法' then
             if string.find(spell.name, 'ケアル') then
-                set_equip = sets.midcast['ケアル']
+                sets_equip = sets.midcast['ケアル']
             elseif spell.name:find('レイズ') then
-                set_equip = sets.midcast.RECAST[spell.element]
+                sets_equip = sets.midcast.RECAST[spell.element]
             elseif spell.cast_time > 0.75 then
-                windower.add_to_chat(123,'equip midcast healingmagic')
-                set_equip = sets.midcast[spell.skill]
+                --windower.add_to_chat(123,'equip midcast healingmagic')
+                sets_equip = sets.midcast[spell.skill]
             end
         elseif spell.skill== '強化魔法' then
             if string.startswith(spell.name, 'バ')
                or spell.name == 'ファランクス' then
-                set_equip = sets.midcast['強化魔法']
-            elseif spell.name:startswith('リジェネ') then
-                sets_equip = sets.midcast['リジェネ']
+                sets_equip = sets.midcast['強化魔法']
             elseif spell.name == 'ストンスキン' then
-                set_equip = sets.midcast['ストンスキン']
+                sets_equip = sets.midcast['ストンスキン']
             elseif  spell.cast_time > 0.75 then
-                set_equip = sets.midcast.RECAST[spell.element]
+                sets_equip = sets.midcast.RECAST[spell.element]
             end
         elseif spell.skill=='精霊魔法' then
             if spell.name == 'インパクト' then
-                set_equip = sets.midcast['インパクト']
+                equip(sets.midcast['インパクト'])
             elseif spell.cast_time > 0.75 then
-                set_equip = set_element(spell)
+                equip(set_element(spell))
             end
-        elseif spell.skill=='弱体魔法' or
-               spell.skill=='神聖魔法' then
+        elseif spell.skill=='弱体魔法' then
+            if spell.cast_time > 0.75 then
+                sets_equip = sets.midcast[spell.skill]
+            end
+        elseif spell.skill=='暗黒魔法' then
             if spell.cast_time > 0.75 then
                 set_equip = sets.midcast[spell.skill]
             end
-        elseif spell.skill=='暗黒魔法' then
-            if spell.name == 'メルトン' then
-                set_equip = sets.midcast['メルトン']
-            elseif spell.name == '虚誘掩殺の策' then
-                set_equip = sets.midcast.RECAST[spell.element]
-            elseif spell.cast_time > 0.75 then
-                set_equip = sets.midcast[spell.skill]
-            end
         else
-            set_equip = sets.midcast.RECAST[spell.element]
+            sets_equip = sets.midcast.RECAST[spell.element]
         end
     end
     
-    if set_equip ~= nil then
-        equip(set_equip)
+    if sets_equip ~= nil then
+        equip(sets_equip)
     end
 end
 
 function set_element(spell)
-    local set_equip = nil
-    set_equip = sets.midcast['精霊魔法']
+    local sets_equip = nil
     
-    if sets.equip.obi.weathers:contains(spell.element) then
-        --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
-        if world.weather_element == spell.element 
-            or world.day_element == spell.element
-            or buffactive[sets.equip.obi.buffs[spell.element]] then
-            if sets.equip.obi[spell.element] ~= nil then
-                set_equip = set_combine(set_equip, 
-                    sets.equip.obi[spell.element])
-            end
-         end
+    if sets.midcast.element.mode ~= 'VW' then
+        if ancient_spells:contains(spell.name) then
+            sets_equip = sets.midcast.element['古代']
+        elseif buffactive['精霊の印'] or buffactive['サテルソーサリー'] then
+            sets_equip = sets.midcast.element['ATTK']
+        else
+            sets_equip = sets.midcast.element[sets.midcast.element.mode]
+        end
+        if buffactive['魔力の雫'] or buffactive['魔力の泉'] then
+            sets_equip = set_combine(sets_equip, {body='ヴァニアコタルディ'})
+        end
+        if sets.equip.obi.weathers:contains(spell.element) then
+            --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
+            if world.weather_element == spell.element 
+                or buffactive[sets.equip.obi.buffs[spell.element]] then
+                if sets.equip.obi[spell.element] ~= nil then
+                    sets_equip = set_combine(sets_equip, 
+                        sets.equip.obi[spell.element])
+                end
+             end
+        end
     end
-    return set_equip
-end
-function set_song(spell)
-    local set_equip = nil
-    set_equip = sets.midcast.RECAST[spell.element]
-    return set_equip
+    if sets.equip.treasure 
+        and sets.equip.treasure_spells:contains(spell.name) then
+        sets_equip = set_combine(sets_equip, {waist="チャークベルト"})
+    end
+    if jb_flag then
+        set_equip = set_combine(set_equip, {back='アピトマント',})
+    end
+    
+    return sets_equip
 end
 
 function aftercast(spell)
-    if sets.aftercast.idle ~= nil and not sets.aftercast.skip then
-      equip(sets.aftercast.idle)
+    if sets.aftercast.idle ~= nil then
+        equip(sets.aftercast.idle)
     end
-    sets.aftercast.skip = false
-    --myGetProperties(spell,'splell', 0)
-    if watch_recast:contains(spell.name) and not spell.interrupted then
+    if spell.type and type(spell.type) == 'string' 
+        and spell.type:lower() ~= 'item' then
         my_send_command('@wait 0.1;gs c recast '..spell.id..' '..spell.name)
     end
 end
 
 function status_change(new,old)
 end
-function showrecast(spellid, spellname)
-    local recast = windower.ffxi.get_spell_recasts()
-    windower.add_to_chat(123,'recast::'..spellname..'('..spellid..')='..recast[spellid] / 60)
-    my_send_command('@wait '..tostring(recast[spellid] / 60)..';input /echo '..spellname..'詠唱可能')
-end
 
 function refresh_equip()
+    if player.equipment.back == 'メシストピンマント' then
+        disable('back')
+    else
+        enable('back')
+    end
 end
-
 function self_command(command)
-    local args = windower.from_shift_jis(command):split(' ')
+    --local args = windower.from_shift_jis(command):split(' ')
+    local args = command:split(' ')
     if #args >= 1 then
         if args[1] == 'lock' then
-            if #args == 1 then
-                windower.add_to_chat(123,'lock')
-                disable('main','sub','ammo','range')
-            else
-                windower.add_to_chat(123,'lock '..args[2])
-                disable(args[2])
+            equip(sets.equip['LOCK'])
+            --windower.add_to_chat(123,'lock')
+            local cmd = 'input /echo lock;'
+            local subcmd = ''
+            for key,val in pairs(sets.equip['LOCK'])
+            do
+                if val ~= empty then
+                    if key == 'sub' then
+                        subcmd = 'wait 1;input /equip '..key..' '..val..';'
+                    else
+                        cmd = cmd..'input /equip '..key..' '..val..';'
+                    end
+                end
             end
+            --equip(sets.equip['LOCK'])
+            if subcmd then
+                cmd = cmd..subcmd
+            end
+            cmd = cmd..'wait 1;input /lockstyle on'
+            disable('main','sub','ammo','range')
+            my_send_command(cmd)
         elseif args[1] == 'unlock' then
-            if #args == 1 then
-                windower.add_to_chat(123,'unlock')
-                enable('main','sub','ammo','range')
+            windower.add_to_chat(123,'unlock')
+            enable('main','sub','ammo','range')
+        elseif args[1] == 'togglemain' then
+            if type(sets.midcast.element['古代'].main) == 'string' and 
+                sets.midcast.element['古代'].main == "ヴェナバラム" then
+                windower.add_to_chat(0xCE,'main武器魔攻レヴ')
+                sets.midcast.element['古代'].main = rev_attk
+                sets.midcast.element['ACC'].main = rev_attk
+                sets.midcast.element['ATTK'].main = rev_attk
+                sets.midcast.element['FULL'].main = rev_attk
+             else
+                windower.add_to_chat(0xCE,'main武器ヴェナバラム')
+                sets.midcast.element['古代'].main = "ヴェナバラム"
+                sets.midcast.element['ACC'].main = "ヴェナバラム"
+                sets.midcast.element['ATTK'].main = "ヴェナバラム"
+                sets.midcast.element['FULL'].main = "ヴェナバラム"
+             end
+        elseif args[1] == 'treasure' then
+            if sets.equip.treasure then
+                sets.equip.treasure = false
+                windower.add_to_chat(8,tostring('トレハンOFF'))
             else
-                windower.add_to_chat(123,'unlock '..args[2])
-                enable(args[2])
+                sets.equip.treasure = true
+                windower.add_to_chat(8,tostring('トレハンON'))
             end
-        elseif args[1] == 'idle' then
-            if #args == 1 then
-                if sets.aftercast.idle == nil then
-                    windower.add_to_chat(123,'リフレ装備待機')
-                    sets.aftercast.idle = sets.equip.IDLE
-                elseif sets.aftercast.idle == sets.equip.IDLE then
-                    windower.add_to_chat(123,'カット装備待機')
-                    sets.aftercast.idle = sets.equip.IDLE_DEF
-                elseif sets.aftercast.idle == sets.equip.IDLE_DEF then
-                    windower.add_to_chat(123,'着替え待機なし')
-                    sets.aftercast.idle = nil
-                end
+        elseif args[1] == 'jb' then
+            if sets.equip.IDLE_DEF.back == 'アピトマント' then
+                windower.add_to_chat(123, '待機:背中＝リパルスマント')
+                sets.equip.IDLE_DEF.back = 'リパルスマント'
+                jb_flag = false
             else
-                local param = args[2]:lower()
-                if param == 'none' then
-                    windower.add_to_chat(123,'着替え待機なし')
-                    sets.aftercast.idle = nil
-                elseif param == 'idle' then
-                    windower.add_to_chat(123,'リフレ装備待機')
-                    sets.aftercast.idle = sets.equip.IDLE
-                elseif param == 'idle_def' then
-                    windower.add_to_chat(123,'カット装備待機')
-                    sets.aftercast.idle = sets.equip.IDLE_DEF
-                elseif param == 'idle_mg' then
-                    windower.add_to_chat(123,'魔法カット装備待機')
-                    sets.aftercast.idle = sets.equip.IDLE_DEFMG
-                elseif param == 'cure' then
-                   windower.add_to_chat(123,'set to idle_cure')
-                    sets.aftercast.idle = sets.precast['ケアル']
-                end
-                equip(sets.aftercast.idle)
+                windower.add_to_chat(123, '待機:背中＝メシストピンマント')
+                sets.equip.IDLE_DEF.back = 'アピトマント'
+                jb_flag = true
             end
+        elseif args[1] == 'si' then
+            windower.add_to_chat(8,'鞄整理')
+            my_send_command('mogmaster si blm')
         elseif args[1] == 'refresh' then
             refresh_equip()
         end
@@ -433,54 +527,116 @@ function self_command(command)
             if sets.equip[args[2]] ~= nil then
                 equip(sets.equip[args[2]])
             end
+        elseif args[1] == 'elementmode' then
+            if args[2] == 'ACC' then
+                sets.midcast.element.mode = 'ACC'
+            elseif args[2] == 'ATTK' then
+                sets.midcast.element.mode = 'ATTK'
+            elseif args[2] == 'FULL' then
+                sets.midcast.element.mode = 'FULL'
+            elseif args[2] == 'VW' then
+                sets.midcast.element.mode = 'VW'
+            end
+            equip(sets.midcast.element[sets.midcast.element.mode])
+        elseif args[1] == 'idle' then
+            local param = args[2]:lower()
+            if param == 'none' then
+                sets.aftercast.idle = nil
+            elseif param == 'idle' then
+               windower.add_to_chat(123,'set to idle')
+             sets.aftercast.idle = sets.equip.IDLE
+            elseif param == 'idle_def' then
+               windower.add_to_chat(123,'set to idle_def')
+                sets.aftercast.idle = sets.equip.IDLE_DEF
+            elseif param == 'cure' then
+               windower.add_to_chat(123,'set to idle_cure')
+                sets.aftercast.idle = sets.precast['ケアル']
+            end
+            equip(sets.aftercast.idle)
         elseif args[1] == 'recast' then
             local spellid = tonumber(args[2])
             local spellname = " "
             if #args[1] >= 3 then
                 spellname = args[3]
             end
-            showrecast(spellid, spellname)
+            local recast = windower.ffxi.get_spell_recasts()
+            windower.add_to_chat(123,'recast::'..spellname..'('..spellid..')='..recast[spellid] / 60)
+            my_send_command('@wait '..tostring(recast[spellid] / 60)..';input /echo '..spellname..'詠唱可能')
+        elseif args[1] == 'ra' then
+            if #args >= 3 then
+                local castspell=args[2]
+                if replace_magic[castspell] then
+                    castspell = replace_magic[castspell]
+                end
+                local cmd = nil
+                cmd = 'input /ma '..castspell..' '..args[3]
+                my_send_command(cmd)
+            end
+        elseif args[1] == 'content' then
+            local param = args[2]:lower()
+            if param == 'jb' then
+                sets.equip.IDLE_DEF.back = 'アピトピンマント'
+                jb_flag = true
+            elseif param == 'bc' then
+                my_send_command('gs c idle idle_def;gs c elementmode full')
+                jb_flag = false
+            end
         end
     end
 end
 
-indent='\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t'
-function myGetProperties(t,comment,level)
-    if not _settings.debug_mode then return end
+function myGetProperties(t)
+    if not _settings.debug_mode then
+        return
+    end
     if type(t) == 'table' then
-        local spaces=string.sub(indent,1,level)
-        local spaces2=string.sub(indent,1,level+1)
         local key,val
-        local f,err
-        f, err = debugf:append(spaces..comment..'={\n')
-        if not f then
-            add_to_chat(123, 'file.append error '..err)
-        end
         for key,val in pairs(t)
         do
             if type(val) == 'string' or type(val) == 'number' then
-               debugf:append(spaces2..key..'="'..val..'"\n')
+                debug_mode_chat(' '..key..'="'..val..'"')
             elseif type(val) == 'boolean' then
-                debugf:append(spaces2..key..'='..tostring(val)..'\n')
+                if val then
+                    debug_mode_chat(' '..key..'=true')
+                else
+                    debug_mode_chat(' '..key..'=false')
+                end
             elseif type(val) == 'table' then
-                myGetProperties(val, key,level+1)
+                debug_mode_chat(' '..key..'={')
+                myGetProperties(val)
+                debug_mode_chat(' }')
             else 
-                debugf:append(space2..key..' is '..type(val)..'\n')
+                debug_mode_chat(' '..key..' is '..type(val))
             end
         end
-        debugf:append(spaces..'}--end of '..comment..'\n')
     elseif type(t) == 'number' or type(t) == 'string' then
-        debugf:append(spaces..comment..' ="'..val..'"\n')
+        debug_mode_chat(' ="'..val..'"')
     elseif type(val) == 'boolean' then
-        debugf:append(spaces..comment..' ='..tostring(val)..'\n')
+        if val then
+            debug_mode_chat(' =true')
+        else
+            debug_mode_chat(' =false')
+        end
     else
-        debugf:append(spaces..comment..' type is '..type(val)..'\n')
+        debug_mode_chat(' type is '..type(val))
     end
 end
-windower.register_event('zone change',function (...)
-    my_send_command('@wait 10;gs c refresh')
-end)
-
 function my_send_command(cmd)
-    send_command(windower.to_shift_jis(cmd))
+    _my_send_command(cmd)
 end
+-----------------------------------------------------------------------------------
+--Name: debug_mode_chat(message)
+--Desc: Checks _settings.debug_mode and outputs the message if necessary
+--Args:
+---- message - The debug message this is all from helper_functions.lua
+-----------------------------------------------------------------------------------
+--Returns:
+---- none
+-----------------------------------------------------------------------------------
+function debug_mode_chat(message)
+    if _settings.debug_mode then
+        windower.add_to_chat(8,"GearSwap (Debug Mode): "..
+            tostring(message))
+    end
+end
+include('script/script/common.lua')

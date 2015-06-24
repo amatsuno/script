@@ -15,6 +15,8 @@ getbuffs = {
     ['風'] = T{
         'input /ma インデフォーカス <me>;wait 6;input /ma リフレシュ <me>',
         'input /ma ストンスキン <me>',
+        'input /ma アクアベール <me>',
+        'input /ma インデアキュメン <me>;wait 6;input /ma リフレシュ <me>',
     },
     ['黒'] = T{
         'input /ma ファランクス <me>; wait 6;input /ma リフレシュ <me>',

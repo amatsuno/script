@@ -31,8 +31,8 @@ function get_sets()
     local mid_base = set_combine(pre_base, {body="ヘリオスジャケット",})
     --精霊用
     local fc_element = {
-        head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+7%',}},
-        hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+23','"Fast Cast"+4','Magic burst mdg.+7%',}},
+        head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+8%',}},
+        hands={ name="ヘリオスグローブ", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','"Fast Cast"+5','INT+10',}},
         body="ヘリオスジャケット",
         legs="アートシクロップス",
         feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
@@ -164,7 +164,7 @@ function get_sets()
     local element_acc={
     main="ケラウノス",
     sub="エルダーグリップ+1",
-    head="ＡＲペタソス+1",
+    head={ name="ヘリオスバンド", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Occult Acumen"+6','INT+10',}},
     body="ＳＰコート+1",
     hands="ＨＡカフス+1",
     legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
@@ -180,18 +180,20 @@ function get_sets()
     }
     local element_attk = set_combine(
           element_acc,
-          {hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+9','INT+9',}},
+          {
+            hands={ name="ヘリオスグローブ", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','"Fast Cast"+5','INT+10',}},
           })
     local element_fullattk = set_combine(
           element_attk
         , { head={ name="ＨＡハット+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -4%','"Mag.Atk.Bns."+25',}},
+            hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+9','INT+9',}},
             legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -2%','"Mag.Atk.Bns."+22',}},
            feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+25','"Occult Acumen"+9','INT+10',}},
             neck="水影の首飾り",
             range=empty,ammo="オンブルタスラム+1",
             right_ring="女王の指輪+1",})
     local element_mb = {
-        head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+7%',}},
+        head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+8%',}},
         hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+23','"Fast Cast"+4','Magic burst mdg.+7%',}},
         feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst mdg.+10%',}},
         neck="水影の首飾り",
@@ -259,10 +261,10 @@ function get_sets()
         sub="エルダーグリップ+1",
         range=empty,ammo="オンブルタスラム+1",
     }
---MP装備
+--MP装備（ミルキル）
     local equip_mp = {
         head="妖蟲の髪飾り+1",
-        body="アートシクジュバ",
+        body="ウェーザーローブ+1",
         hands="オトミグローブ",
         legs="アートシクロップス",
         feet="リーガルパンプス+1",
@@ -271,7 +273,7 @@ function get_sets()
         left_ear="ブラキュラピアス",
         right_ear="ロケイシャスピアス",
         left_ring="サンゴマリング",
-        right_ring="ビフロストリング",
+        right_ring="メフィタスリング",
         back="ベーンケープ",
     }
     sets.ws = {}
@@ -567,10 +569,26 @@ function self_command(command)
     if #args >= 1 then
         if args[1] == 'lock' then
             if #args == 1 then
-                windower.add_to_chat(123,'lock')
-                equip(sets.equip['LOCK'])
+                --windower.add_to_chat(123,'lock')
+                local cmd = 'input /echo lock;'
+                local subcmd = ''
+                for key,val in pairs(sets.equip['LOCK'])
+                do
+                    if val ~= empty then
+                        if key == 'sub' then
+                            subcmd = 'wait 1;input /equip '..key..' '..val..';'
+                        else
+                            cmd = cmd..'input /equip '..key..' '..val..';'
+                        end
+                    end
+                end
+                --equip(sets.equip['LOCK'])
+                if subcmd then
+                    cmd = cmd..subcmd
+                end
+                cmd = cmd..'wait 1;input /lockstyle on'
                 disable('main','sub','ammo','range')
-                my_send_command('@wait 1;input /lockstyle on')
+                my_send_command(cmd)
             else
                 windower.add_to_chat(123,'lock '..args[2])
                 disable(args[2])
@@ -693,6 +711,8 @@ function self_command(command)
             end
         elseif args[1] == 'move' then
             equip(set_move(sets.aftercast.idle))
+        elseif args[1] == 'si' then
+            my_send_command('mogmaster si blm')
         end
     end
     if #args >= 2 then

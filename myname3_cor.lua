@@ -425,6 +425,8 @@ function self_command(command)
                 end
                 equip(sets.aftercast.idle)
             end
+        elseif args[1] == 'si' then
+            my_send_command('mogmaster si cor')
         end
     end
     if #args >= 2 then

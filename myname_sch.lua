@@ -64,8 +64,8 @@ function get_sets()
         body="アンフルローブ",
     }
     local fc_element = {
-        head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+7%',}},
-        hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+23','"Fast Cast"+4','Magic burst mdg.+7%',}},
+        head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+8%',}},
+        hands={ name="ヘリオスグローブ", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','"Fast Cast"+5','INT+10',}},
         body="ヘリオスジャケット",
         legs="アートシクロップス",
         feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
@@ -110,7 +110,7 @@ function get_sets()
     local stoneskin = set_combine(enhance, {waist="ジーゲルサッシュ",})
 --stun
     local stun = {
-            main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
+            main={ main="ケラウノス", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="メフィテスグリップ",
         range="オウレオール",
         head="ＰＤボード+1",
@@ -148,7 +148,7 @@ function get_sets()
     }
 --弱体
     local enfeebling = {
-            main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
+            main={ main="ケラウノス", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="メフィテスグリップ",
         range="オウレオール",
         head="テルキネキャップ",
@@ -230,16 +230,16 @@ function get_sets()
     local divine = enfeebling
     local equip_mp = {
         head="妖蟲の髪飾り+1",
-        body="ヘリオスジャケット",
+        body="ウェーザーローブ+1",
         hands="オトミグローブ",
         legs="アートシクロップス",
         feet="ＰＤローファー+1",
         neck="オルンミラトルク",
         waist="山吹の帯",
-        left_ear="胡蝶のイヤリング",
+        left_ear="ブラキュラピアス",
         right_ear="ロケイシャスピアス",
         left_ring="サンゴマリング",
-        right_ring="ビフロストリング",
+        right_ring="メフィタスリング",
         back="慈悲の羽衣",
     }
 
@@ -250,7 +250,6 @@ function get_sets()
     sets.precast['スタン'] = stun
     sets.precast['連環計'] = renkan
     sets.precast['ヘイスト'] = pre_wind
-    sets.precast['インパクト'] = pre_impact
     sets.precast.FC = {}
     sets.precast.FC['光'] = pre_light
     sets.precast.FC['闇'] = pre_base
@@ -364,7 +363,7 @@ function init_element()
         main= "ケラウノス",
         sub="メフィテスグリップ",
         range="オウレオール",
-        head="テルキネキャップ",
+        head={ name="ヘリオスバンド", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Occult Acumen"+6','INT+10',}},
         body="ヘリオスジャケット",
         hands="ＨＡカフス+1",
         legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
@@ -396,12 +395,14 @@ function init_element()
     }
     local element_attk = set_combine(
             element_acc,
-            {   hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+9','INT+9',}},
+            {
+                hands={ name="ヘリオスグローブ", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','"Fast Cast"+5','INT+10',}},
                 left_ring="女王の指輪+1",
            })
     local element_fullattk = set_combine(
           element_attk,
           {head="ＨＡハット+1",sub="エルダーグリップ+1",neck="水影の首飾り",
+           hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+9','INT+9',}},
            feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+25','"Occult Acumen"+9','INT+10',}},
            legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -2%','"Mag.Atk.Bns."+22',}},
            left_ear="怯懦の耳", right_ear="フリオミシピアス",
@@ -409,7 +410,7 @@ function init_element()
            ammo="オンブルタスラム+1",})
     --MB装備
     local element_mb = {
-        head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+7%',}},
+        head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+8%',}},
         hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+23','"Fast Cast"+4','Magic burst mdg.+7%',}},
         feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst mdg.+10%',}},
         neck="水影の首飾り",
@@ -417,10 +418,12 @@ function init_element()
     }
     --インパクト
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
-    local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
+    local mid_impact = set_combine(element_full, {head=empty, body="トワイライトプリス",})
     if sets.midcast.element.mpreduce then
         element_fullattk = set_combine(element_fullattk, {body='セイズルコタルディ',})
     end
+    sets.precast['インパクト'] = pre_impact
+    sets.midcast['インパクト'] = mid_impact
 
     sets.midcast.element['ACC'] = element_acc
     sets.midcast.element['ATTK'] = element_attk
@@ -626,7 +629,7 @@ function set_element(spell)
             sets_equip = set_combine(sets_equip, {back='メシストピンマント',})
         end
         
-        if mb and os.time() - mb.time < 5 and mb.element[spell.element] then
+        if mb and os.time() - mb.time < 9 and mb.element[spell.element] then
             windower.add_to_chat(8, 'MBモード！！！！'..spell.element)
             sets_equip = set_combine(sets_equip, sets.midcast.element.MBURST)
         end
@@ -694,8 +697,27 @@ function self_command(command)
                 windower.add_to_chat(123,'lock '..args[2])
                 disable(args[2])
             else
-                equip(sets.equip['LOCK'])
-                windower.add_to_chat(123,'lock')
+                --equip(sets.equip['LOCK'])
+                --windower.add_to_chat(123,'lock')
+                local cmd = 'input /echo lock;'
+                local subcmd = ''
+                for key,val in pairs(sets.equip['LOCK'])
+                do
+                    if val ~= empty then
+                        if key == 'sub' then
+                            subcmd = 'wait 1;input /equip '..key..' '..val..';'
+                        else
+                            cmd = cmd..'input /equip '..key..' '..val..';'
+                        end
+                    end
+                end
+                --equip(sets.equip['LOCK'])
+                if subcmd then
+                    cmd = cmd..subcmd
+                end
+                cmd = cmd..'wait 1;input /lockstyle on'
+                disable('main','sub','ammo','range')
+                my_send_command(cmd)
                 disable('main','sub','ammo','range')
             end
         elseif args[1] == 'unlock' then
@@ -834,6 +856,8 @@ function self_command(command)
                 sets.midcast.element.mpreduce = true
             end
             init_element()
+        elseif args[1] == 'si' then
+            my_send_command('mogmaster si sch')
         end
     end
     if #args >= 2 then

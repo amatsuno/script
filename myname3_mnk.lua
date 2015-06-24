@@ -23,13 +23,13 @@ function get_sets()
         ['リジェネ'] = 'リジェネV'
     }
     local base = {
-        main="エミネンバグナウ",
+        main="オフルマズド",
         ammo="ヘイストピニオン+1",
-        head={ name="テーオンシャポー", augments={'Accuracy+12','"Triple Atk."+1',}},
-        body="ＳＮタバード+1",
-        hands={ name="テーオングローブ", augments={'Accuracy+5','System: 1 ID: 356 Val: 5',}},
-        legs="エスピルホーズ",
-        feet="エスピルソックス",
+        head="テーオンシャポー",
+        body="テーオンタバード",
+        hands="テーオングローブ",
+        legs="テーオンタイツ",
+        feet="テーオンブーツ",
         neck="クジャクの護符",
         waist="ウィンドバフベルト",
         left_ear="ブランデシュピアス",
@@ -58,8 +58,9 @@ function get_sets()
         {
             head="ウェフェラクレット",
             body="ウェフェラローブ",
-            hands="ウェフェラカフス",
+            hands="テーオングローブ",
             legs="ウェフェラスロップ",
+            feet="ウェフェラクロッグ",
             left_ring="ダークリング",
             right_ring="ダークリング",
         })
@@ -97,7 +98,9 @@ function get_sets()
     sets.equip = {}
     sets.equip.treasure = treasure;
     send_command('input /macro book 10;wait .2;input /macro set 1')
+    send_command('mogmaster si mnk')
     initCounter()
+    jb_flag = flag
 end
 function initCounter()
 --カウンター定義
@@ -173,10 +176,16 @@ end
 function aftercast(spell)
     local equips = nil
     if player.status=='Engaged' then
+        equips =set_fight()
         equip(set_fight())
     else
-        equip(sets.idle.idle)
+        equips = sets.idle.idle
     end
+    if jb_flag then
+        equips = set_combine(equips, {back='アピトマント',})
+    end
+    equip(equips)
+    
 end
 function status_change(new,old)
     if T{'Idle','Resting'}:contains(new) then
@@ -233,51 +242,8 @@ function set_eva()
 end
 
 function execbuff(buff)
-    if use_sub.pc == nil or buff == nil then return end
-    local buffspell = buff_spells[buff]
-    if  buffspell ~= nil then
-        if buff == 'リジェネ' then
-            command = 'wait 1;send '..use_sub.pc..' /ja 令狸執鼠の章 <me>'
-                    ..';wait 1;send '..use_sub.pc..' /ma '..buffspell..' '..player.name
-        else
-            command = 'wait 1;send '..use_sub.pc..' /ma '..buffspell..' '..player.name
-        end
-        send_command(windower.to_shift_jis(command))
-    end
 end
 function getDebuff()
-    if buffactive['麻痺'] then
-        return '麻痺'
-    elseif buffactive['石化'] then
-        return '石化'
-    elseif buffactive['悪疫'] then
-        return '悪疫'
-    elseif buffactive['スロウ'] then
-        return 'スロウ'
-    elseif buffactive['暗闇'] then
-        return '暗闇'
-    elseif buffactive['バインド'] then
-        return 'バインド'
-    elseif buffactive['静寂'] then
-        return '静寂'
-    elseif buffactive['ヘヴィ'] then
-        return 'ヘヴィ'
-    elseif buffactive['防御力ダウン'] 
-        or buffactive['魔法防御力ダウン'] 
-        or buffactive['攻撃力ダウン']
-        or buffactive['魔法命中率ダウン'] 
-        or buffactive['命中率ダウン']then
-        return 'イレース回復'
-    elseif buffactive['バイオ'] then
-        return 'イレース回復'
-    elseif buffactive['毒'] then
-        return '毒'
-    elseif buffactive['ドラウン'] or buffactive['バーン'] or buffactive['チョーク'] 
-        or buffactive['ラスプ'] or buffactive['ショック'] or buffactive['フロスト'] then
-        return 'ドラウン'
-    else
-        return nil
-    end
 end
 function getNeedBuff()
     if not buffactive['プロテス'] then
@@ -332,33 +298,13 @@ end
 function self_command(command)
     if command == 'toggle TP set' then
         if sets.engaged.fight == sets.engaged.normal then
-            windower.add_to_chat(0xCE, '命中')
-            sets.engaged.fight = sets.engaged.normal2
+            windower.add_to_chat(0xCE, '魔回避')
+            sets.engaged.fight = sets.engaged.mgdef
             initCounter()
-            --counter.action.phdef.interruptaction.equip=sets.engaged.fight 
-            --counter.action.phdef.finishaction.equip=sets.engaged.fight 
-            equip({range=empty,ammo='ホーンドタスラム',})
-        elseif sets.engaged.fight == sets.engaged.normal2 then
-            windower.add_to_chat(0xCE, '回避')
-            sets.engaged.fight = sets.engaged.evation
-            --counter.action.phdef.interruptaction.equip=sets.engaged.fight 
-            --counter.action.phdef.finishaction.equip=sets.engaged.fight 
-            initCounter()
-            equip({range='ベスタスベーン',ammo=empty,})
-        elseif sets.engaged.fight == sets.engaged.evation then
-            windower.add_to_chat(0xCE, '防御')
-            sets.engaged.fight = sets.engaged.def
-            --counter.action.phdef.interruptaction.equip=sets.engaged.fight 
-            --counter.action.phdef.finishaction.equip=sets.engaged.fight 
-            initCounter()
-            equip({range='ベスタスベーン',ammo=empty,})
         else
             windower.add_to_chat(0xCE, '通常')
             sets.engaged.fight = sets.engaged.normal
-            --counter.action.phdef.interruptaction.equip=sets.engaged.fight 
-            --counter.action.phdef.finishaction.equip=sets.engaged.fight 
             initCounter()
-            equip({range='ベスタスベーン',ammo=empty,})
         end
         if sets.engaged.fight ~= nil then
             equip(set_fight())
@@ -396,6 +342,26 @@ function self_command(command)
                 use_sub.recover = false
             end
         end                
+    elseif command == 'si' then
+        my_send_command('mogmaster si mnk')
+    elseif command == 'jb' then
+        if sets.idle.idle.back == 'アピトマント' then
+            windower.add_to_chat(123, '待機:背中＝リパルスマント')
+            sets.idle.idle.back = 'リパルスマント'
+            sets.engaged.mgdef.back = 'リパルスマント'
+            jb_flag = false
+        else
+            windower.add_to_chat(123, '待機:背中＝アピトマント')
+            sets.idle.idle.back = 'アピトマント'
+            sets.engaged.mgdef.back = 'アピトマント'
+            jb_flag = true
+        end
+    elseif command == 'content jb' then
+        windower.add_to_chat(123, 'ジョブポ')
+        sets.idle.idle.back = 'アピトマント'
+        sets.engaged.mgdef.back = 'アピトマント'
+        jb_flag = true
+        my_send_command('@wait 1;gs equip sets.idle.idle')
     end
 end
              
@@ -405,4 +371,8 @@ windower.register_event('hp change', function(new_hp, old_hp)
         recover_hp(rhp)
     end
 end)
+function my_send_command(cmd)
+    _my_send_command(cmd)
+end
+include('script/script/common.lua')
 include('lib/counter_action.lua')

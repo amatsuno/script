@@ -872,6 +872,8 @@ function self_command(command)
             equip(set_move(sets.aftercast.idle))
         elseif args[1] == 'plaer' then
             dumpProperties(player, 'player', 0)
+        elseif args[1] == 'si' then
+            my_send_command('mogmaster si geo')
         end
     end
     if #args >= 2 then
@@ -902,6 +904,8 @@ function self_command(command)
                 jb_flag = true
             elseif param == 'bc' then
                 my_send_command('gs c idle idle_def;gs c elementmode full')
+                sets.equip.IDLE_DEF.back = 'チェビオットケープ'
+                jb_flag = false
             end
         end
     end

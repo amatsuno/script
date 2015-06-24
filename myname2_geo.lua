@@ -763,6 +763,8 @@ function self_command(command)
             end
         elseif args[1] == 'move' then
             equip(set_move(sets.aftercast.idle))
+        elseif args[1] == 'si' then
+            my_send_command('mogmaster si geo')
         end
     end
     if #args >= 2 then

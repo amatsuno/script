@@ -24,17 +24,22 @@ function get_sets()
     }
     local base = {
         head="ウァールマスク",
-        body="タウマスコート",
-        hands="ＰＤアムレット+1",
-        legs="マニボゾブレー",
-        feet="プランダプーレーヌ",
+        body="テーオンタバード",
+        hands="テーオングローブ",
+        legs="テーオンタイツ",
+        feet="テーオンブーツ",
         waist="ウィンドバフベルト",
         left_ear="ダッジョンピアス",
         right_ear="ハートシーカピアス",
         left_ring="エポナリング",
         right_ring="ラジャスリング",
-        back="エスリングマント",
+        back="ケッニケープ",
     }
+    local ws_base = set_combine(base,
+        {
+            legs="マニボゾブレー",
+            back="エスリングマント",
+        })
 --戦闘時
     local normal = set_combine(base,
         {
@@ -45,7 +50,6 @@ function get_sets()
         {
            neck='アガサヤカラー',
            body="エメットハーネス",
-           hands="ブレムテグローブ",
            feet="カークソレギンス",
            waist="フレフランサッシュ",
            back="ケッニケープ",
@@ -73,12 +77,13 @@ function get_sets()
     local mgdef = set_combine(def,
         {
             head="ウェフェラクレット",
+            hands="テーオングローブ",
             body="ウェフェラローブ",
-            legs="ウェフェラスロップ",
+            legs="フィーストホーズ",
             feet="ウェフェラクロッグ",
         })
 --WS装備
-    local we_exenterator = set_combine(base,
+    local we_exenterator = set_combine(ws_base,
         {
             neck="ブリーズゴルゲット",
             hands="ＰＤアムレット+1",
@@ -88,11 +93,10 @@ function get_sets()
             waist="チュカバベルト",
             back="ケッニケープ",
         })
-    local we_Evisceration = set_combine(base,
+    local we_Evisceration = set_combine(ws_base,
         {
             hands="ブレムテグローブ",
-            body="エメットハーネス",
-            feet="プランダプーレーヌ",
+            body="テーオンタバード",
             back="ヴェスピッドマント",
         })
     local we_rudra = we_Evisceration
@@ -376,7 +380,7 @@ function self_command(command)
             equip({range='レイダーブーメラン',ammo=empty,})
         elseif sets.engaged.fight == sets.engaged.evation then
             windower.add_to_chat(0xCE, '防御')
-            sets.engaged.fight = sets.engaged.def
+            sets.engaged.fight = sets.engaged.mgdef
             --counter.action.phdef.interruptaction.equip=sets.engaged.fight 
             --counter.action.phdef.finishaction.equip=sets.engaged.fight 
             initCounter()
@@ -392,6 +396,9 @@ function self_command(command)
         if sets.engaged.fight ~= nil then
             equip(set_fight())
         end
+    elseif command == 'mgdef' then
+        windower.add_to_chat(0xCE, '魔防')
+        sets.engaged.fight = sets.engaged.mgdef
     elseif command == 'evation' then
         windower.add_to_chat(0xCE, '回避防御')
         equip(set_eva())
