@@ -374,7 +374,7 @@ function init_element()
     local element_attk = set_combine(
           element_acc
         , {
-            legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -2%','"Mag.Atk.Bns."+22',}},
+                legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -2%','"Mag.Atk.Bns."+28',}},
             left_ring="女王の指輪+1",
           })
     local element_fullattk = set_combine(
@@ -732,10 +732,30 @@ function self_command(command)
     if #args >= 1 then
         if args[1] == 'lock' then
             if #args == 1 then
-                windower.add_to_chat(123,'lock')
+                --windower.add_to_chat(123,'lock')
+                local cmd = '@wait 1;input /echo lock;'
+                local subcmd = ''
+                for key,val in pairs(sets.equip['LOCK'])
+                do
+                    if val ~= empty then
+                        if key == 'sub' then
+                            subcmd = 'wait 1;input /equip '..key..' '..val..';'
+                        else
+                            if type(val) == 'table' then
+                                cmd = cmd..'input /equip '..key..' '..val.name..';'
+                            else
+                                cmd = cmd..'input /equip '..key..' '..val..';'
+                            end
+                        end
+                    end
+                end
                 equip(sets.equip['LOCK'])
+                if subcmd then
+                    cmd = cmd..subcmd
+                end
+                cmd = cmd..'wait 1;input /lockstyle on'
                 disable('main','sub','ammo','range')
-                my_send_command('@wait 1;input /lockstyle on')
+                my_send_command(cmd)
             else
                 windower.add_to_chat(123,'lock '..args[2])
                 disable(args[2])
@@ -850,14 +870,24 @@ function self_command(command)
                 equip(sets.midcast.element[sets.midcast.element.mode])
             end
         elseif args[1] == 'mpreduce' then
-            if sets.midcast.element.mpreduce then
-                windower.add_to_chat(123,'MPモード通常')
-                sets.midcast.element.mpreduce = false
-            else
-                windower.add_to_chat(123,'MPモード節約')
-                sets.midcast.element.mpreduce = true
-            end
-            init_element()
+            if #args == 1 then
+                if sets.midcast.element.mpreduce then
+                    windower.add_to_chat(123,'MPモード通常')
+                    sets.midcast.element.mpreduce = false
+                else
+                    windower.add_to_chat(123,'MPモード節約')
+                    sets.midcast.element.mpreduce = true
+                end
+             else
+                if args[2] == 'on' then
+                    windower.add_to_chat(123,'MPモード節約')
+                    sets.midcast.element.mpreduce = true
+                else
+                    windower.add_to_chat(123,'MPモード通常')
+                    sets.midcast.element.mpreduce = false
+                end
+             end
+             init_element()
         elseif args[1] == 'jb' then
             if sets.equip.IDLE_DEF.back == 'メシストピンマント' then
                 windower.add_to_chat(123, '待機:背中＝チェビオットケープ')
@@ -900,6 +930,7 @@ function self_command(command)
         elseif args[1] == 'content' then
             local param = args[2]:lower()
             if param == 'jb' then
+                my_send_command('gs c idle idle_def;gs c elementmode full;gs c mpreduce on')
                 sets.equip.IDLE_DEF.back = 'メシストピンマント'
                 jb_flag = true
             elseif param == 'bc' then

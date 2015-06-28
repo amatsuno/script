@@ -23,7 +23,7 @@ function get_sets()
         ['リジェネ'] = 'リジェネV'
     }
     local base = {
-        head="ウァールマスク",
+        head="テーオンシャポー",
         body="テーオンタバード",
         hands="テーオングローブ",
         legs="テーオンタイツ",
@@ -37,6 +37,7 @@ function get_sets()
     }
     local ws_base = set_combine(base,
         {
+            head="ウァールマスク",
             legs="マニボゾブレー",
             back="エスリングマント",
         })

@@ -511,7 +511,7 @@ function self_command(command)
                 sets.equip.IDLE_DEF.back = 'リパルスマント'
                 jb_flag = false
             else
-                windower.add_to_chat(123, '待機:背中＝メシストピンマント')
+                windower.add_to_chat(123, '待機:背中＝アピトマント')
                 sets.equip.IDLE_DEF.back = 'アピトマント'
                 jb_flag = true
             end
@@ -575,12 +575,15 @@ function self_command(command)
         elseif args[1] == 'content' then
             local param = args[2]:lower()
             if param == 'jb' then
-                sets.equip.IDLE_DEF.back = 'アピトピンマント'
+                sets.equip.IDLE_DEF.back = 'アピトマント'
                 jb_flag = true
             elseif param == 'bc' then
                 my_send_command('gs c idle idle_def;gs c elementmode full')
                 jb_flag = false
             end
+        elseif args[1] == 'getbuff' then
+            local param = tonumber(args[2])
+            get_buff(param)
         end
     end
 end

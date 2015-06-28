@@ -190,7 +190,7 @@ function get_sets()
     local meltdown = set_combine(dark_acc
         ,{  hands="ハゴンデスカフス",
             body="ＨＡコート+1",
-            legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -2%','"Mag.Atk.Bns."+22',}},
+                legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -2%','"Mag.Atk.Bns."+28',}},
             feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst mdg.+10%',}},
             head="妖蟲の髪飾り+1",
             sub="ズーゾーウグリップ",
@@ -252,7 +252,7 @@ function get_sets()
     sets.precast['ヘイスト'] = pre_wind
     sets.precast.FC = {}
     sets.precast.FC['光'] = pre_light
-    sets.precast.FC['闇'] = pre_base
+    sets.precast.FC['闇'] = pre_dark
     sets.precast.FC['風'] = pre_wind
     sets.precast.FC['土'] = pre_earth
     sets.precast.FC['ストンスキン'] = pre_stoneskin
@@ -383,7 +383,7 @@ function init_element()
         head="ＨＡハット+1",
         body="ＨＡコート+1",
         hands="ＨＡカフス+1",
-        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -2%','"Mag.Atk.Bns."+22',}},
+            legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -2%','"Mag.Atk.Bns."+28',}},
         feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
         neck="黄昏の光輪",
         waist="山吹の帯",
@@ -404,7 +404,7 @@ function init_element()
           {head="ＨＡハット+1",sub="エルダーグリップ+1",neck="水影の首飾り",
            hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+9','INT+9',}},
            feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+25','"Occult Acumen"+9','INT+10',}},
-           legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -2%','"Mag.Atk.Bns."+22',}},
+               legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -2%','"Mag.Atk.Bns."+28',}},
            left_ear="怯懦の耳", right_ear="フリオミシピアス",
            right_ring="女王の指輪+1",
            ammo="オンブルタスラム+1",})
@@ -417,7 +417,8 @@ function init_element()
         right_ring="夢神の指輪",
     }
     --インパクト
-    local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
+    local pre_impact = set_combine(sets.precast.FC['闇'], 
+        {head=empty, body="トワイライトプリス",})
     local mid_impact = set_combine(element_full, {head=empty, body="トワイライトプリス",})
     if sets.midcast.element.mpreduce then
         element_fullattk = set_combine(element_fullattk, {body='セイズルコタルディ',})
