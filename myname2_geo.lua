@@ -146,7 +146,7 @@ function get_sets()
     local element_fullattk = set_combine(
           element_attk,
           { head="ヘリオスバンド",
-            left_ear="ヘカテーピアス",
+            left_ear="バーカロルピアス",
             right_ear="フリオミシピアス",
             sub="ズーゾーウグリップ",
           })

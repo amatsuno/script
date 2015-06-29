@@ -38,7 +38,7 @@ function get_sets()
         body="アンフルローブ",
         legs="アートシクロップス",
         waist="ニヌルタサッシュ",
-        left_ear="胡蝶のイヤリング",
+        left_ear="バーカロルピアス",
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
@@ -153,8 +153,8 @@ function get_sets()
     local element_attk=set_combine(element_acc,
         {sub="ズーゾーウグリップ",
         head="ヘリオスバンド",hands="ＷＣグローブ+1", 
-        left_ear="フリオミシピアス",
-        right_ear="ヘカテーピアス",
+        right_ear="フリオミシピアス",
+        left_ear="バーカロルピアス",
         })
     local element_full=set_combine(element_attk,
         {
@@ -237,7 +237,7 @@ function get_sets()
         feet="リーガルパンプス+1",
         neck="オルンミラトルク",
         waist="神術帯+1",
-        left_ear="胡蝶のイヤリング",
+        left_ear="バーカロルピアス",
         right_ear="ロケイシャスピアス",
         left_ring="サンゴマリング",
         right_ring="ダークリング",

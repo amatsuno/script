@@ -382,8 +382,8 @@ function init_element()
         , { head={ name="ＨＡハット+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -4%','"Mag.Atk.Bns."+25',}},
             hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+9','INT+9',}},
             sub="エルダーグリップ+1",neck="水影の首飾り",
-            left_ear="怯懦の耳",
-            right_ear="フリオミシピアス",
+            right_ear="バーカロルピアス",
+            left_ear="フリオミシピアス",
             range=empty,ammo="オンブルタスラム+1",
             right_ring="女王の指輪+1",})
     local element_mb = {

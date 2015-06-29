@@ -387,8 +387,8 @@ function init_element()
         feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
         neck="黄昏の光輪",
         waist="山吹の帯",
-        left_ear="怯懦の耳",
-        right_ear="フリオミシピアス",
+        right_ear="バーカロルピアス",
+        left_ear="フリオミシピアス",
         left_ring="守りの指輪",
         right_ring="女王の指輪+1",
         back={ name="ブックワームケープ", augments={'INT+3','MND+4','Helix eff. dur. +19',}},
@@ -405,7 +405,8 @@ function init_element()
            hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+9','INT+9',}},
            feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+25','"Occult Acumen"+9','INT+10',}},
                legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -2%','"Mag.Atk.Bns."+28',}},
-           left_ear="怯懦の耳", right_ear="フリオミシピアス",
+           right_ear="バーカロルピアス",
+           left_ear="フリオミシピアス",
            right_ring="女王の指輪+1",
            ammo="オンブルタスラム+1",})
     --MB装備

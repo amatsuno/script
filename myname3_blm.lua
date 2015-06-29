@@ -40,7 +40,7 @@ function get_sets()
         legs="ヘリオススパッツ",        --3
         feet="ケロナブーツ",            --4
         waist="ニヌルタサッシュ",
-        left_ear="胡蝶のイヤリング",
+        left_ear="バーカロルピアス",
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
@@ -139,8 +139,8 @@ function get_sets()
         waist="オティラサッシュ",
         left_ring="結氷の指輪",
         right_ring="アキュメンリング",
-        right_ear="ノーヴィオピアス",
-        left_ear="フリオミシピアス",
+        left_ear="バーカロルピアス",
+        right_ear="フリオミシピアス",
     }
 --精霊
     local element_acc={
@@ -157,8 +157,8 @@ function get_sets()
         waist="オティラサッシュ",
         left_ring="結氷の指輪",
         right_ring="アキュメンリング",
-        right_ear="ノーヴィオピアス",
-        left_ear="フリオミシピアス",
+        left_ear="バーカロルピアス",
+        right_ear="フリオミシピアス",
     }
     local element_attk = element_acc
     local element_fullattk = element_attk

@@ -37,7 +37,7 @@ function get_sets()
         legs="アートシクロップス",
         feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
         neck="ボルトサージトルク",
-        left_ear="エンチャンピアス+1",
+        right_ear="バーカロルピアス",
         back="スイスケープ+1",
      }
     --光属性
@@ -172,7 +172,7 @@ function get_sets()
     neck="エディネクラス",
     range="オウレオール",
     waist="山吹の帯",
-    left_ear="怯懦の耳",
+    left_ear="バーカロルピアス",
     right_ear="フリオミシピアス",
     left_ring="女王の指輪+1",
     right_ring="ウェーザーリング",
