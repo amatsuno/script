@@ -54,7 +54,7 @@ function get_sets()
     local mid_earth = set_combine(mid_base, {main="ビシュラバII",})
     local pre_stoneskin = set_combine(pre_earth,{head="ウムシクハット",waist="ジーゲルサッシュ",})
 
-    --強化
+--強化
     local enhance = {
         main="麒麟棍",
         sub="ビビドストラップ",
@@ -65,6 +65,11 @@ function get_sets()
         waist="オリンポスサッシュ",
         left_ear="アンドアーピアス",
         back="慈悲の羽衣",
+    }
+    local enhance_expandtime={
+        body='テルキネシャジュブ',
+        legs={ name="テルキネブラコーニ", augments={'Enh. Mag. eff. dur. +7',}},
+        feet="テルキネピガッシュ",
     }
     local baXX = enhance
     local stoneskin = set_combine(enhance, {waist="ジーゲルサッシュ",})
@@ -103,6 +108,7 @@ function get_sets()
     local cure ={
         main="アーカIV",
         hands="ボクワスグローブ",
+        body="テルキネシャジュブ",
         legs="ナレストルーズ",
     }
 --弱体
@@ -299,6 +305,7 @@ function get_sets()
     sets.midcast = {}
     sets.midcast['インパクト'] = impact
     sets.midcast['強化魔法'] = enhance
+    sets.midcast['強化魔法効果時間'] = enhance_expandtime
     sets.midcast['バ系'] = baXX
     sets.midcast['弱体魔法'] = enfeebling
     sets.midcast['スリプル'] = enfeebling
@@ -384,6 +391,12 @@ function precast(spell)
         if sets.ws[spell.ja] then
             equip(sets.ws[spell.ja])
         end
+    elseif spell.type == 'BardSong' then
+        if spell.cast_time > 0.75 then
+            equip(sets.precast.FC[spell.element])
+        else
+            equip(sets.midcast['弱体魔法'])
+        end
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
         add_to_chat(123,'name='..spell.ja..' skill='..spell.skill..' casttime='..spell.cast_time)
         if spell.skill == '回復魔法' then
@@ -447,6 +460,8 @@ function midcast(spell)
     if ignore_spells:contains(spell.ja) then return end
     local sets_equip = nil
     if spell.type == 'JobAbility' then
+    elseif spell.type == 'BardSong' then
+        sets_equip = sets.midcast['弱体魔法']
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
         if spell.ja == 'スタン' then
             sets_equip = sets.midcast['スタン']

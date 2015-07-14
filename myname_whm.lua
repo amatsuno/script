@@ -63,6 +63,12 @@ function get_sets()
         right_ring="ダークリング",
         back="メンディングケープ",
     }
+    local enhance_expandtime={
+        body='テルキネシャジュブ',
+        legs={ name="テルキネブラコーニ", augments={'Enh. Mag. eff. dur. +7',}},
+        feet="テルキネピガッシュ",
+    }
+    
     local baXX = set_combine(enhance, {body="エーベルブリオー"})
     local protectshell = set_combine(mid_light, 
         {legs="パエティパンタロン", feet='ＰＩダックビル+1',right_ring="シェルターリング"})
@@ -182,6 +188,7 @@ function get_sets()
     sets.midcast = {}
     sets.midcast['ケアル'] = midcure
     sets.midcast['強化魔法'] = enhance
+    sets.midcast['強化魔法効果時間'] = enhance_expandtime
     sets.midcast['プロシェル'] = protectshell
     sets.midcast['バ系'] = baXX
     sets.midcast['弱体魔法'] = enfeebling

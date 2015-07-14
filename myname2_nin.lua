@@ -23,11 +23,11 @@ function get_sets()
         ['リジェネ'] = 'リジェネV'
     }
     local base = {
-        head="ウァールマスク",
-        body="タウマスコート",
-        hands="ブレムテグローブ",
-        legs="マニボゾブレー",
-        feet="カークソレギンス",
+        head="テーオンシャポー",
+        body="テーオンタバード",
+        hands="テーオングローブ",
+        legs="テーオンタイツ",
+        feet="テーオンブーツ",
         waist="ウィンドバフベルト",
         left_ear="ダッジョンピアス",
         right_ear="ハートシーカピアス",
@@ -35,6 +35,13 @@ function get_sets()
         right_ring="ラジャスリング",
         back="エスリングマント",
     }
+    local ws_base = set_combine(base,
+        {
+            head="ウァールマスク",
+            legs="マニボゾブレー",
+            back="エスリングマント",
+        })
+    
 --戦闘時
     local normal = set_combine(base,
         {
@@ -69,14 +76,14 @@ function get_sets()
             body="ウェフェラローブ",
         })
 --WS装備
-    local ws_hi = set_combine(base,
+    local ws_hi = set_combine(ws_base,
         {
             neck="ブリーズゴルゲット",
            body="エメットハーネス",
             left_ring="突風の指輪",
             waist="チュカバベルト",
         })
-    local we_Evisceration = set_combine(base,
+    local we_Evisceration = set_combine(ws_base,
         {
             hands="ブレムテグローブ",
             body="エメットハーネス",
@@ -85,6 +92,11 @@ function get_sets()
         })
     local we_rudra = we_Evisceration
 --
+    local fc_ninjyutu = {
+        body="テーオンタバード",
+        hands="望月手甲",
+        neck="オルンミラトルク",
+    }
     local idle = {
         back="リパルスマント",
         feet="段蔵の脛当",
@@ -101,6 +113,9 @@ function get_sets()
     sets.ws['ルドラストーム'] = we_rudra
     sets.idle = {}
     sets.idle.idle = idle
+    sets.precast = {}
+    sets.precast.FC = {}
+    sets.precast.FC['忍術'] = fc_ninjyutu
     sets.engaged = {}
     sets.engaged.treasure = false
     sets.engaged.fight = normal
@@ -112,7 +127,8 @@ function get_sets()
     sets.engaged.def_eva = evation
     sets.equip = {}
     sets.equip.treasure = treasure;
-    send_command('input /macro book 3;wait .2;input /macro set 1')
+    send_command('input /macro book 2;wait .2;input /macro set 1')
+    send_command('@wait 0.5;mogmaster si nin')
     initCounter()
 end
 function initCounter()
@@ -169,20 +185,23 @@ function precast(spell)
         if sets.ws[spell.name] then
             equips = sets.ws[spell.name]
         end
+    elseif spell.type == 'Ninjutsu' then
+        if spell.cast_time > 0.75 then
+            equip(sets.precast.FC['忍術'])
+        end
     end
-    if equips ~= nil then
-        equip(equips)
-    end
-	if spell.name == '空蝉の術:壱' and buffactive['分身'] then
-		send_command('@wait 3;cancel 66;')
-	elseif spell.name == '空蝉の術:壱' and buffactive['分身(2)'] then
-		send_command('@wait 3;cancel 444;')
-	elseif spell.name == '空蝉の術:壱' and buffactive['分身(3)'] then
-		send_command('@wait 3;cancel 445;')
-	elseif spell.name == '空蝉の術:壱' and buffactive['分身(4+)'] then
-		send_command('@wait 3;cancel 446;')
-	end
     
+    if spell.name:startswith('空蝉') then
+    	if spell.name == '空蝉の術:壱' and buffactive['分身'] then
+    		send_command('@wait 3;cancel 66;')
+    	elseif spell.name == '空蝉の術:壱' and buffactive['分身(2)'] then
+    		send_command('@wait 3;cancel 444;')
+    	elseif spell.name == '空蝉の術:壱' and buffactive['分身(3)'] then
+    		send_command('@wait 3;cancel 445;')
+    	elseif spell.name == '空蝉の術:壱' and buffactive['分身(4+)'] then
+    		send_command('@wait 3;cancel 446;')
+    	end
+    end
 end
 function aftercast(spell)
     local equips = nil

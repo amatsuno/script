@@ -128,7 +128,7 @@ function get_sets()
         right_ring="サンゴマリング",
         back="ベーンケープ",
         range=empty,
-        ammo="ガストリタスラム",        
+        ammo="ガストリタスラム+1",        
     }
     
 --精霊
@@ -148,7 +148,7 @@ function get_sets()
         right_ring="サンゴマリング",
         back="ベーンケープ",
         range=empty,
-        ammo="ガストリタスラム",        
+        ammo="ガストリタスラム+1",        
     }
     local element_attk=set_combine(element_acc,
         {sub="ズーゾーウグリップ",
@@ -226,7 +226,7 @@ function get_sets()
     local lock = {
         main="ケラウノス",
         sub="ズーゾーウグリップ",
-        range=empty,ammo="ドシスタスラム",
+        range=empty,ammo="ガストリタスラム+1",
         }
 --MP装備（ミルキル）
     local equip_mp = {

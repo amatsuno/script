@@ -7,6 +7,26 @@ function get_sets()
     watch_recast = T{
         'スタン','ドレイン','アスピル'
     }
+    expandtime_spells=T{
+        'アクアベール',
+        'ヘイスト',
+        '砂塵の陣',
+        '豪雨の陣',
+        '烈風の陣',
+        '熱波の陣',
+        '吹雪の陣',
+        '疾雷の陣',
+        '妖霧の陣',
+        '極光の陣',
+        '砂塵の陣II',
+        '豪雨の陣II',
+        '烈風の陣II',
+        '熱波の陣II',
+        '吹雪の陣II',
+        '疾雷の陣II',
+        '妖霧の陣II',
+        '極光の陣II',
+    }
     
 --待機装備
     local idle = {
@@ -101,10 +121,17 @@ function get_sets()
         waist="オリンポスサッシュ",
         back="慈悲の羽衣",
     })
+    local enhance_expandtime={
+        body='テルキネシャジュブ',
+        legs={ name="テルキネブラコーニ", augments={'Enh. Mag. eff. dur. +7',}},
+        feet="テルキネピガッシュ",
+    }
     local baXX = enhance
     local regen = set_combine(enhance, 
         {
             head="ＡＢボネット+1",body='テルキネシャジュブ',
+            legs={ name="テルキネブラコーニ", augments={'Enh. Mag. eff. dur. +7',}},
+            feet="テルキネピガッシュ",
             back={ name="ブックワームケープ", augments={'INT+2','MND+2','"Regen" potency+10',}},
         })
     local stoneskin = set_combine(enhance, {waist="ジーゲルサッシュ",})
@@ -267,6 +294,7 @@ function get_sets()
     sets.midcast['スタン'] = stun
     sets.midcast['インパクト'] = mid_impact
     sets.midcast['強化魔法'] = enhance
+    sets.midcast['強化魔法効果時間'] = enhance_expandtime
     sets.midcast['バ系'] = baXX
     sets.midcast['弱体魔法'] = enfeebling
     sets.midcast['神聖魔法'] = divine
@@ -349,13 +377,13 @@ function init_element()
         body="イスキミアシャブル",
         hands="ＨＡカフス+1",
         legs="アートシクロップス",
-        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+24','"Fast Cast"+3','INT+6',}},
+        feet="ＨＡサボ+1",
         neck="ボルトサージトルク",
         waist="オヴェイトロープ",
         left_ear="エンチャンピアス+1",
         right_ear="グアチピアス",
         right_ring="ウェーザーリング",
-        left_ring="女王の指輪+1",
+        left_ring="サンゴマリング",
         back={ name="ブックワームケープ", augments={'INT+3','MND+4','Helix eff. dur. +19',}},
     }
 
@@ -477,8 +505,13 @@ function precast(spell)
                 if spell.cast_time > 0.75 then
                     equip(sets.precast.FC[spell.element], {waist="ジーゲルサッシュ",})
                 else
-                    equip(sets.midcast['強化魔法'])
+                    local sets_equip = sets.midcast['強化魔法']
+                    if expandtime_spells:contains(spell.name) then 
+                        sets_equip = set_combine(sets_equip, sets.midcast['強化魔法効果時間'] )
+                    end
+                    equip(sets_equip)
                 end
+                
             elseif spell.name == 'ストンスキン' then
                 equip(sets.precast.FC['ストンスキン'])
             elseif spell.cast_time > 0.75 then
@@ -553,7 +586,14 @@ function midcast(spell)
             elseif spell.name:startswith('リジェネ') then
                 sets_equip = sets.midcast['リジェネ']
             elseif  spell.cast_time > 0.75 then
-                sets_equip = sets.midcast.RECAST[spell.element]
+                if expandtime_spells:contains(spell.name) then 
+                    sets_equip = set_combine(
+                        sets.midcast.RECAST[spell.element], 
+                        sets.midcast['強化魔法効果時間'] )
+                    windower.add_to_chat(8,'効果時間延長')
+                else
+                    sets_equip = sets.midcast.RECAST[spell.element]
+                end
             end
             if buffactive['令狸執鼠の章'] then
                 sets_equip = set_combine(sets_equip, {hands="ＡＢブレーサー+1",})

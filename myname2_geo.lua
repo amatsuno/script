@@ -787,6 +787,9 @@ function self_command(command)
             elseif param == 'bc' then
                 my_send_command('gs c idle idle_def;gs c elementmode full')
             end
+        elseif args[1] == 'getbuff' then
+            local param = tonumber(args[2])
+            get_buff(param)
         end
     end
 end

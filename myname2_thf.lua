@@ -22,6 +22,9 @@ function get_sets()
         ['ヘイスト'] = 'ヘイスト',
         ['リジェネ'] = 'リジェネV'
     }
+    local multi={waist='ウィンドバフベルト',}
+    local dual={waist='パテンシアサッシュ',}
+    
     local base = {
         head="テーオンシャポー",
         body="テーオンタバード",
@@ -130,6 +133,8 @@ function get_sets()
     sets.engaged.def_eva = evation
     sets.equip = {}
     sets.equip.treasure = treasure;
+    sets.equip.dual=dual
+    sets.equip.multi=multi
     send_command('input /macro book 3;wait .2;input /macro set 1')
     initCounter()
 end
@@ -183,7 +188,9 @@ function initCounter()
 end
 function precast(spell)
     local equips = nil
-    if sets.JA[spell.name] then
+    if spell.name:find('ステップ') then
+        equips = sets.equip.treasure
+    elseif sets.JA[spell.name] then
         equips = sets.JA[spell.name]
     elseif spell.type=="WeaponSkill" then
         if sets.ws[spell.name] then
@@ -252,11 +259,18 @@ function buff_change(buff, gain)
     end
 end
 function set_fight()
+    set_equip = sets.engaged.fight
     if sets.engaged.treasure then
-        return set_combine(sets.engaged.fight, sets.equip.treasure)
+        set_equip = set_combine(sets.engaged.fight, sets.equip.dual)
+        set_equip = set_combine(set_equip, sets.equip.treasure)
     else
-        return sets.engaged.fight
+        if buffactive['ヘイスト'] and buffactive['ヘイストサンバ'] then
+            set_equip = set_combine(sets.engaged.fight, sets.equip.multi)
+        else
+            set_equip = set_combine(sets.engaged.fight, sets.equip.dual)
+        end
     end
+    return set_equip
 end
 function set_eva()
     if sets.engaged.treasure then
@@ -431,6 +445,8 @@ function self_command(command)
         recover()
     elseif command == 'gain' then
         gain()
+    elseif command == 'si' then
+        my_send_command('mogmaster si thf')
     elseif command:startswith('recover') then
         if use_sub.pc ~= nil then
             if not use_sub.recover then
@@ -443,7 +459,9 @@ function self_command(command)
         end                
     end
 end
-             
+function my_send_command(cmd)
+    send_command(windower.to_shift_jis(cmd))
+end
 windower.register_event('hp change', function(new_hp, old_hp)
     local rhp = player.max_hp - player.hp
     if rhp > 100 and player.hpp < 70 then
