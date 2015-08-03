@@ -11,7 +11,7 @@ function get_sets()
 --待機装備
     local idle = {
         main="アーススタッフ",
-        head="槌の髪飾り",
+        head="ビファウルクラウン",
         body="ＨＡコート+1",
         hands="ＧＯミテーヌ+1",
         legs="アシドゥイズボン",

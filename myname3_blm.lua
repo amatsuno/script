@@ -32,15 +32,17 @@ function get_sets()
     }
 --FC_BASE
     local pre_base ={
+        --36
         main="ケラウノス",
         sub="ビビドストラップ",
         head="ハルスハット",            --8
         hands="ヘリオスグローブ",       --4
-        body="アンフルローブ",
+        body="ヘリオスジャケット",      --6
         legs="ヘリオススパッツ",        --3
         feet="ケロナブーツ",            --4
         waist="ニヌルタサッシュ",
-        left_ear="バーカロルピアス",
+        neck="オルンミラトルク",        --5
+        left_ear="バーカロルピアス",    --3
         right_ear="ロケイシャスピアス",
         left_ring="プロリクスリング",
         right_ring="サンゴマリング",
@@ -127,10 +129,10 @@ function get_sets()
     }
     local dark_acc={
         main="ケラウノス",
-        sub="ワイズストラップ",
+        sub="Ｂ．ストラップ+1",
         neck="クアンプネックレス",
         head="ヘリオスバンド",
-        body="スピコナコート",
+        body="ＳＰコート+1",
         hands="ヘリオスグローブ",
         legs="ＨＡパンツ+1",
         feet="ヘリオスブーツ",
@@ -145,10 +147,10 @@ function get_sets()
 --精霊
     local element_acc={
         main="ケラウノス",
-        sub="ワイズストラップ",
+        sub="Ｂ．ストラップ+1",
         neck="クアンプネックレス",
         head="ヘリオスバンド",
-        body="スピコナコート",
+        body="ＳＰコート+1",
         hands="ヘリオスグローブ",
         legs="ＨＡパンツ+1",
         feet="ヘリオスブーツ",
@@ -182,17 +184,17 @@ function get_sets()
 --待機装備
     local idle = {
         main="アーススタッフ",
-        sub="ワイズストラップ",
+        sub="Ｂ．ストラップ+1",
         head="ＨＡハット+1",
         body="ＨＡコート+1",
-        hands="ヘリオスグローブ",
+        hands="ＨＡカフス+1",
         legs="ＨＡパンツ+1",
         feet="ヘラルドゲートル",
         right_ear="血石のピアス",
     }
     local idle_def = set_combine(idle, 
         {
-        feet="ヘリオスブーツ",
+        feet="ＨＡサボ+1",
         neck="バイサカラー",
         left_ring="ダークリング",
         right_ring="ダークリング",
@@ -200,7 +202,7 @@ function get_sets()
         });
     local lock = {
         main="ケラウノス",
-        sub="ワイズストラップ",
+        sub="Ｂ．ストラップ+1",
         range=empty,ammo="ファントムタスラム",
     }
     

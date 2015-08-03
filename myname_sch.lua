@@ -27,13 +27,22 @@ function get_sets()
         '妖霧の陣II',
         '極光の陣II',
     }
+    --timersで監視する歌を列挙
+    watchtime_spells = T{
+        'リジェネ',
+        'リジェネII',
+        'リジェネIII',
+        'リジェネIV',
+        'リジェネV',
+        'ヘイスト',
+    }
     
 --待機装備
     local idle = {
         main="アーススタッフ",
         sub="ビビドストラップ",
         ammo="インカントストーン",
-        head="槌の髪飾り",
+        head="ビファウルクラウン",
         body="ＨＡコート+1",
         hands="ＨＡカフス+1",
         legs="アシドゥイズボン",
@@ -167,12 +176,14 @@ function get_sets()
         })
     
 --CURE
-    local cure ={
+    local cure =set_combine(
+        idle_def,
+        {
         main="アーカIV",
         head="ＧＥカウビーン+1",
         body="ＧＥブリオー+1",
         hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
-    }
+        })
 --弱体
     local enfeebling = {
             main={ main="ケラウノス", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
@@ -255,15 +266,16 @@ function get_sets()
     obi.buffs2['雷'] = '疾雷の陣II'
 --神聖
     local divine = enfeebling
+--WSミルキル用
     local equip_mp = {
         head="妖蟲の髪飾り+1",
         body="ウェーザーローブ+1",
         hands="オトミグローブ",
         legs="アートシクロップス",
-        feet="ＰＤローファー+1",
+        feet="ＡＢローファー+1",
         neck="オルンミラトルク",
         waist="山吹の帯",
-        left_ear="ブラキュラピアス",
+        left_ear="エテオレートピアス",
         right_ear="ロケイシャスピアス",
         left_ring="サンゴマリング",
         right_ring="メフィタスリング",
@@ -335,6 +347,9 @@ function get_sets()
 
     bindKeys(true)    
 
+    --歌残り時間監視タイマー
+	timer_reg = {}
+
     debugf = file.new('data/logs/debug.log',true)
     if not debugf:exists() then
         debugf:create()
@@ -391,7 +406,7 @@ function init_element()
         main= "ケラウノス",
         sub="メフィテスグリップ",
         range="オウレオール",
-        head={ name="ヘリオスバンド", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Occult Acumen"+6','INT+10',}},
+        head={ name="ヘリオスバンド", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Occult Acumen"+9','INT+10',}},
         body="ヘリオスジャケット",
         hands="ＨＡカフス+1",
         legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
@@ -440,10 +455,16 @@ function init_element()
     --MB装備
     local element_mb = {
         head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+8%',}},
-        hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+23','"Fast Cast"+4','Magic burst mdg.+7%',}},
+        hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+4','Magic burst mdg.+7%',}},
         feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst mdg.+10%',}},
         neck="水影の首飾り",
         right_ring="夢神の指輪",
+    }
+    --計略用
+    local helix = {
+       right_ear="怯懦の耳",
+       left_ear="フリオミシピアス",
+       waist="山吹の帯",
     }
     --インパクト
     local pre_impact = set_combine(sets.precast.FC['闇'], 
@@ -454,13 +475,13 @@ function init_element()
     end
     sets.precast['インパクト'] = pre_impact
     sets.midcast['インパクト'] = mid_impact
-
+    sets.midcast.element['計略'] = helix
     sets.midcast.element['ACC'] = element_acc
     sets.midcast.element['ATTK'] = element_attk
     sets.midcast.element['FULL'] = element_fullattk
     sets.midcast.element['BC'] = element_bc
     sets.midcast.element['VG_CHAIN'] = element_vg_chain
-    sets.midcast.element['VG'] = element_attk
+    sets.midcast.element['VG'] = element_acc
     sets.midcast.element['MBURST'] = element_mb
 end
 
@@ -489,7 +510,7 @@ function precast(spell)
         end
         cancel_buff(spell)
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
-        windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
+        --windower.add_to_chat(123,'name='..spell.name..' skill='..spell.skill..' casttime='..spell.cast_time)
         if spell.skill == '回復魔法' then
             if string.find(spell.name, 'ケアル') then
                 equip(sets.precast['ケアル'])
@@ -573,7 +594,7 @@ function midcast(spell)
             elseif spell.name:find('レイズ') then
                 sets_equip = sets.midcast.RECAST[spell.element]
             elseif spell.cast_time > 0.75 then
-                windower.add_to_chat(123,'equip midcast healingmagic')
+                --windower.add_to_chat(123,'equip midcast healingmagic')
                 sets_equip = sets.midcast[spell.skill]
             end
         elseif spell.skill== '強化魔法' then
@@ -661,7 +682,15 @@ function set_element(spell)
                     sets_equip = set_combine(sets_equip, 
                         sets.equip.obi[spell.element])
                 end
+                if buffactive['虚誘掩殺の策'] then
+                    sets_equip = set_combine(sets_equip, 
+                        {feet='ＡＢローファー+1',})
+                end
              end
+        end
+        if spell.name:endswith('の計') then
+            windower.add_to_chat(8, '計略！！'..spell.element)
+            sets_equip = set_combine(sets_equip, sets.midcast.element['計略'])
         end
         if sets.equip.treasure 
             and sets.equip.treasure_spells:contains(spell.name) then
@@ -680,6 +709,11 @@ function set_element(spell)
 end
 
 function aftercast(spell)
+    if not spell.interrupted then
+        if watchtime_spells:contains(spell.name) then
+            update_timer(spell)
+        end
+    end
     if sets.aftercast.idle ~= nil then
         local target = windower.ffxi.get_mob_by_target('t')
         if target and 
@@ -693,6 +727,64 @@ function aftercast(spell)
     myGetProperties(spell,'splell', 0)
     if watch_recast:contains(spell.name) and not spell.interrupted then
         my_send_command('@wait 0.1;gs c recast '..spell.id..' '..spell.name)
+    end
+end
+function update_timer(spell)
+	local t = os.time()
+    local timer_name = spell.name..'::'..spell.target.name
+	
+	local dur = calculate_duration(spell)
+	windower.add_to_chat(0xCE, "効果時間 "..timer_name..' '..dur)
+	-- 効果時間切れの歌を削除
+	local tempreg = {}
+	for i,v in pairs(timer_reg) do
+		if v < t then tempreg[i] = true end
+	end
+	for i,v in pairs(tempreg) do
+		timer_reg[i] = nil
+	end
+	if timer_reg[timer_name] then
+	    --カスタムタイマーを操作するときはSJISに変換すると文字化けする！！
+		send_command('timers delete "'..timer_name..'"')
+		timer_reg[timer_name] = t + dur
+		send_command('timers create "'..timer_name..'" '..dur..' down')
+	else
+		timer_reg[timer_name] = t+dur
+		send_command('timers create "'..timer_name..'" '..dur..' down')
+	end
+end
+
+function calculate_duration(spell)
+    local duration = 0
+    local multi = 1.0
+    if spell.type == 'Geomancy' then
+        duration = 180
+        mult = 1.0
+        return duration * mult
+    else
+        if spell.name:startswith('リジェネ') then
+            local multi = 1.0
+            if spell.name == 'リジェネ' then
+                duration = 75
+            else
+                duration = 60
+            end
+            --jobpoint
+            if buffactive['白のグリモア'] then
+                duration = duration +78
+            end
+            if player.equipment.body == 'テルキネシャジュブ' then
+                duration = duration + 12
+            end
+        else
+            duration = spell.duration
+        end
+        if buffactive['令狸執鼠の章'] then
+            multi = 2.55
+        end
+        --強化延長
+        multi = multi *1.25
+        return duration * multi
     end
 end
 

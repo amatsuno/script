@@ -272,7 +272,7 @@ function get_sets()
     sets.midcast.element.mode = 'ATTK'
     sets.midcast.element['ACC']  = element_acc
     sets.midcast.element['ATTK'] = element_attk
-    sets.midcast.element['FULL'] = element_attk
+    sets.midcast.element['FULL'] = element_full
     sets.midcast['リジェネ'] = regen
     sets.midcast['ケアル'] = cure
     sets.midcast['スタン'] = stun

@@ -3,6 +3,7 @@ function get_sets()
     use_sub = {}
     use_sub.recover = false
     use_sub.pc = nil
+    use_sub.job = nil
 
     recover_spells = {}
     recover_spells['麻痺'] = 'パラナ'
@@ -233,10 +234,14 @@ function status_change(new,old)
         end
     elseif new == 'Engaged' then
         if use_sub.pc ~= nil then
-            send_command('send '..use_sub.pc..' exec stopfollow.txt'
-                ..';wait 0.5;send '..use_sub.pc..' /as '..player.name
-                )
-            gain()
+            if use_sub.job == 'rng' then
+                send_command('send '..use_sub.pc..' gs c ra dmmy '..tostring(player.target.id))
+            else
+                send_command('send '..use_sub.pc..' exec stopfollow.txt'
+                    ..';wait 0.5;send '..use_sub.pc..' /as '..player.name
+                    )
+                gain()
+            end
         end
         equip(set_fight())
     end
@@ -252,7 +257,7 @@ function buff_change(buff, gain)
         end
     else
         --lose buff
-        if player.status == 'Engaged' then
+        if player.status == 'Engaged' and use_sub.job ~= 'rng' then
             execbuff(buff)
         end
         
@@ -439,6 +444,10 @@ function self_command(command)
         elseif #args >= 3 then
             windower.add_to_chat(0xCE, '２アカ使用 pc='..args[3])
             use_sub.pc = args[3]
+            if #args >= 4 then
+                use_sub.job = args[4]
+            end
+            windower.add_to_chat(0xCE, '２アカ使用 pc='..args[3]..'job='..tostring(use_sub.job))
             use_sub.recover = true
         end
     elseif command == 'stna' then
@@ -447,6 +456,12 @@ function self_command(command)
         gain()
     elseif command == 'si' then
         my_send_command('mogmaster si thf')
+    elseif command == 'assist' then
+        if use_sub.pc then
+            local cmd = 'send '..use_sub.pc..' gs c ra dmmy '..tostring(player.target.id)
+            add_to_chat(123, 'cmd='..cmd)
+            my_send_command(cmd)
+        end
     elseif command:startswith('recover') then
         if use_sub.pc ~= nil then
             if not use_sub.recover then

@@ -37,7 +37,7 @@ function get_sets()
         legs="アートシクロップス",
         feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
         neck="ボルトサージトルク",
-        right_ear="バーカロルピアス",
+        left_ear="バーカロルピアス",
         back="スイスケープ+1",
      }
     --光属性
@@ -123,8 +123,8 @@ function get_sets()
         neck="ワイケトルク",
         range="オウレオール",
         waist="オヴェイトロープ",
-        left_ear="ライストームピアス",
-        right_ear="サイストームピアス",
+        left_ear="バーカロルピアス",
+    	right_ear="グアチピアス",
         left_ring="サンゴマリング",
         right_ring="ウェーザーリング",
         back="ベーンケープ",
@@ -159,8 +159,8 @@ function get_sets()
         neck="エーシルトルク",
         range="オウレオール",
         waist="オヴェイトロープ",
-        left_ear="ライストームピアス",
-        right_ear="サイストームピアス",
+        left_ear="バーカロルピアス",
+    	right_ear="グアチピアス",
         left_ring="サンゴマリング",
         right_ring="ウェーザーリング",
         back="慈悲の羽衣",
@@ -170,7 +170,7 @@ function get_sets()
     local element_acc={
     main="ケラウノス",
     sub="エルダーグリップ+1",
-    head={ name="ヘリオスバンド", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Occult Acumen"+6','INT+10',}},
+    head={ name="ヘリオスバンド", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Occult Acumen"+9','INT+10',}},
     body="ＳＰコート+1",
     hands="ＨＡカフス+1",
     legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
@@ -179,7 +179,7 @@ function get_sets()
     range="オウレオール",
     waist="山吹の帯",
     left_ear="バーカロルピアス",
-    right_ear="フリオミシピアス",
+	right_ear="グアチピアス",
     left_ring="女王の指輪+1",
     right_ring="ウェーザーリング",
     back="トーロケープ",
@@ -188,6 +188,7 @@ function get_sets()
           element_acc,
           {
             hands={ name="ヘリオスグローブ", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','"Fast Cast"+5','INT+10',}},
+            right_ear="フリオミシピアス",
           })
     local element_fullattk = set_combine(
           element_attk
@@ -200,7 +201,7 @@ function get_sets()
             right_ring="女王の指輪+1",})
     local element_mb = {
         head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+8%',}},
-        hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+23','"Fast Cast"+4','Magic burst mdg.+7%',}},
+        hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+4','Magic burst mdg.+7%',}},
         feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst mdg.+10%',}},
         neck="水影の首飾り",
         right_ring="夢神の指輪",
@@ -236,7 +237,7 @@ function get_sets()
     local idle = {
         main="アーススタッフ",
         sub="ビビドストラップ",
-        head="槌の髪飾り",
+        head="ビファウルクラウン",
         body="ＨＡコート+1",
         legs="アシドゥイズボン",
         feet="ヘラルドゲートル",

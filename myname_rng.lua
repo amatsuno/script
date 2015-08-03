@@ -46,19 +46,22 @@ function get_sets()
         legs="ナティラトラウザ",
         waist="インパルスベルト",
         feet={ name="テーオンブーツ", augments={'"Snapshot"+5','"Snapshot"+5',}},
-        back={ name="ルシャンケープ", augments={'STR+4','AGI+2','"Store TP"+2','"Snapshot"+1',}},
+        back={ name="ルシャンケープ", augments={'STR+1','AGI+1','"Store TP"+2','"Snapshot"+2',}},
     }
 --着弾
     local rng = {
         head="ＡＲベレー+1",
         body="ＡＭカバン+1",
-        hands="アルルナグローブ+1",
+        hands={ name="テーオングローブ", augments={'Rng.Acc.+20 Rng.Atk.+20','Crit.hit rate+2','STR+5 AGI+5',}},
         legs="ＡＭブラーグ+1",
-        feet={ name="テーオンブーツ", augments={'Rng.Acc.+18 Rng.Atk.+18','Crit.hit rate+3','STR+6 AGI+6',}},
-        neck="ガウドリネックレス",
+        feet={ name="テーオンブーツ", augments={'Rng.Acc.+20 Rng.Atk.+20','Crit.hit rate+3','STR+6 AGI+6',}},
         left_ring="ハイドゥクリング",
         right_ring="ハイドゥクリング",
-        waist="チャークベルト",
+        --neck="ガウドリネックレス",
+        neck="エルデションレンズ",
+        waist="イラニッドベルト",
+        left_ear="エナベートピアス",
+        right_ear="マタンキイヤリング",
         back={ name="ルシャンケープ", augments={'STR+4','AGI+1','"Store TP"+3',}},
     }
     sets.ja = {}
@@ -213,6 +216,15 @@ function self_command(command)
                     sets.aftercast.idle = sets.precast['ケアル']
                 end
                 equip(sets.aftercast.idle)
+            end
+        elseif args[1] == 'ra' then
+            if #args >= 3 then
+                cmd = 'input /assist <p1>;wait 2;input /a on;'
+                cmd = cmd..'wait 1;setkey numpad8 down;wait 0.3; setkey numpad8 up;'
+                cmd = cmd..'wait 1;'
+                cmd = cmd..';ara assist '..args[3]
+                windower.add_to_chat(123,'cmd:'..cmd)
+                my_send_command(cmd)
             end
         elseif args[1] == 'move' then
             equip(set_move(sets.aftercast.idle))
