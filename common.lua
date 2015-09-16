@@ -23,6 +23,13 @@ getbuffs = {
         'input /ma ファランクス <me>; wait 6;input /ma リフレシュ <me>',
         'input /ma ストンスキン <me>',
         'input /ma アクアベール <me>',
+        'input /ma ファランクス <me>; wait 6;input /ma リフレシュ <me>',
+    },
+    ['学'] = T{
+        'input /ma 虚誘掩殺の策 <me>',
+        'input /ma ストンスキン <me>',
+        'input /ma アクアベール <me>',
+        'input /ma ファランクス <me>; wait 6;input /ma リフレシュ <me>',
     },
 }
 function get_buff(n)
@@ -104,7 +111,48 @@ function dumpProperties(t,comment,level)
         dumpf:append(spaces..comment..' type is '..tostring(type(t))..'\n')
     end
 end
+function chkDist()
+	local pt = windower.ffxi.get_party()
+	local masterPC = pt['p1']
+	if (masterPC == nil) then
+		return true
+	end
+	local me = pt['p0']
+	
+	local masterPos = getPos(masterPC)
+	local myPos = getPos(me)
+	if (masterPos ~= nil) and (myPos ~= nil) then
+		local distance = getDistance(masterPos, myPos)
+		if distance and distance < 4 then
+		    return true
+		end
+	end
+	return false
+end
+function getPos(member)
+	local ret = {}
+	if not member or not member['mob'] then
+		ret = nil
+	else
+		ret = {
+			 member['mob']['x']
+			,member['mob']['y']
+			,member['mob']['z']
+		}
+	end
+	return ret
+end
 
+function getDistance(m1, m2)
+    if m1 and m2 then
+    	local x = m1[1] - m2[1]
+    	local y = m1[2] - m2[2]
+    	local z = m1[3] - m2[3]
+    	return math.sqrt(x*x+y*y+z*z) 
+    else
+        return nil
+    end
+end
 function _my_send_command(cmd)
     send_command(windower.to_shift_jis(cmd))
 end

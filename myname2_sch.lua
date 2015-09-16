@@ -235,6 +235,8 @@ function bindKeys(f)
         send_command('bind ^[ gs c lock')
         send_command('bind ^] gs c unlock')
         send_command('bind ^q gs c addendum')
+        send_command('bind ^o gs c aoe')
+        send_command('bind ^@ gs c expand')
     else
         windower.add_to_chat(123,'unbind key')
         send_command('unbind ^, gs c idle')
@@ -243,6 +245,8 @@ function bindKeys(f)
         send_command('unbind ^[ gs c lock')
         send_command('unbind ^] gs c unlock')
         send_command('unbind ^q')
+        send_command('unbind ^o')
+        send_command('unbind ^@')
     end
 end
 function file_unload()
@@ -341,7 +345,7 @@ function midcast(spell)
             elseif spell.name:find('レイズ') then
                 sets_equip = sets.midcast.RECAST[spell.element]
             elseif spell.cast_time > 0.75 then
-                windower.add_to_chat(123,'equip midcast healingmagic')
+                --windower.add_to_chat(123,'equip midcast healingmagic')
                 sets_equip = sets.midcast[spell.skill]
             end
         elseif spell.skill== '強化魔法' then
@@ -529,6 +533,22 @@ function self_command(command)
                 my_send_command('input /ja 黒の補遺 <me>')
             else
                 windower.add_to_chat(8, '------グリモアがかかってない！！---------')
+            end
+        elseif args[1] == 'aoe' then
+            if buffactive['白のグリモア'] or buffactive['白の補遺'] then
+                windower.add_to_chat(123,'強化回復魔法の範囲化')
+                my_send_command('input /ja 女神降臨の章 <me>')
+            elseif buffactive['黒のグリモア'] or buffactive['黒の補遺'] then
+                windower.add_to_chat(123,'弱体暗黒魔法の範囲化')
+                my_send_command('input /ja 精霊光来の章 <me>')
+            end
+        elseif args[1] == 'expand' then
+            if buffactive['白のグリモア'] or buffactive['白の補遺'] then
+                windower.add_to_chat(123,'強化魔法の効果時間延長')
+                my_send_command('input /ja 令狸執鼠の章 <me>')
+            elseif buffactive['黒のグリモア'] or buffactive['黒の補遺'] then
+                windower.add_to_chat(123,'連携属性付与')
+                my_send_command('input /ja 震天動地の章 <me>')
             end
         end
     end

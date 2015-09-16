@@ -14,7 +14,8 @@ function get_sets()
         sub="ビビドストラップ",
         head="ナティラハット",
         body="アンフルローブ",
-        legs="アートシクロップス",
+        hands={ name="ヘリオスグローブ", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','"Fast Cast"+5','INT+10',}},
+        legs="サイクロスラッパ",
         feet="リーガルパンプス+1",
         waist="ニヌルタサッシュ",
         left_ear="エンチャンピアス+1",
@@ -26,7 +27,7 @@ function get_sets()
     }
     local pre_low = {
         head="ナティラハット",
-        legs="アートシクロップス",
+        legs="サイクロスラッパ",
     }
     local mid_base = set_combine(pre_base, {body="ヘリオスジャケット",})
     --精霊用
@@ -34,7 +35,7 @@ function get_sets()
         head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+8%',}},
         hands={ name="ヘリオスグローブ", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','"Fast Cast"+5','INT+10',}},
         body="ヘリオスジャケット",
-        legs="アートシクロップス",
+        legs="サイクロスラッパ",
         feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
         neck="ボルトサージトルク",
         left_ear="バーカロルピアス",
@@ -76,12 +77,12 @@ function get_sets()
     
 --stun
     local stun = {
-            main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
+        main="ケラウノス",
         sub="メフィテスグリップ",
         head="ナティラハット",
         body="ヘリオスジャケット",
-        hands="ＨＡカフス+1",
-        legs="アートシクロップス",
+        hands={ name="ヘリオスグローブ", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','"Fast Cast"+5','INT+10',}},
+        legs="サイクロスラッパ",
         feet="リーガルパンプス+1",
         waist="ニヌルタサッシュ",
         neck="オルンミラトルク",
@@ -100,7 +101,8 @@ function get_sets()
     	})
     local stun_acc2 = set_combine(stun_acc1,
     	{
-	        head="アートシクハット",
+            head={ name="ヘリオスバンド", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Occult Acumen"+9','INT+10',}},
+            hands="ＨＡカフス+1",
     	 	neck="エーシルトルク",
     	})
     
@@ -110,15 +112,18 @@ function get_sets()
         hands="ボクワスグローブ",
         body="テルキネシャジュブ",
         legs="ナレストルーズ",
+        feet='ヴァニヤクロッグ',
     }
+    local pre_cure = set_combine(
+        pre_light, {back='パートリケープ',feet='ヴァニヤクロッグ',})
 --弱体
     local enfeebling = {
-            main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
+        main="ケラウノス",
         sub="メフィテスグリップ",
-        head="アートシクハット",
+        head={ name="ヘリオスバンド", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Occult Acumen"+9','INT+10',}},
         body="イスキミアシャブル",
         hands="ＨＡカフス+1",
-        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
+        legs='サイクロスラッパ',
         feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
         neck="ワイケトルク",
         range="オウレオール",
@@ -130,12 +135,12 @@ function get_sets()
         back="ベーンケープ",
     }
     local pre_sleep ={
-        main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
+        main="ケラウノス",
         sub="メフィテスグリップ",
         head="ナティラハット",
         hands="ＨＡカフス+1",
         body="ヘリオスジャケット",
-        legs="アートシクロップス",
+        legs="サイクロスラッパ",
         feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
         waist="オヴェイトロープ",
         left_ear="エンチャンピアス+1",
@@ -154,7 +159,7 @@ function get_sets()
         head="妖蟲の髪飾り+1",
         body="ヘリオスジャケット",
         hands="ＨＡカフス+1",
-        legs="アートシクロップス",
+        legs="サイクロスラッパ",
         feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
         neck="エーシルトルク",
         range="オウレオール",
@@ -273,12 +278,12 @@ function get_sets()
         head="妖蟲の髪飾り+1",
         body="ウェーザーローブ+1",
         hands="オトミグローブ",
-        legs="アートシクロップス",
+        legs="サイクロスラッパ",
         feet="リーガルパンプス+1",
         neck="オルンミラトルク",
         waist="山吹の帯",
-        left_ear="ブラキュラピアス",
-        right_ear="ロケイシャスピアス",
+        left_ear="胡蝶のイヤリング",
+        right_ear="エテオレートピアス",
         left_ring="サンゴマリング",
         right_ring="メフィタスリング",
         back="ベーンケープ",
@@ -286,7 +291,7 @@ function get_sets()
     sets.ws = {}
     sets.ws['ミルキル'] = equip_mp
     sets.precast = {}
-    sets.precast['ケアル']= pre_light
+    sets.precast['ケアル']= pre_cure
     sets.precast['スタン'] = stun
     sets.precast['ヘイスト'] = pre_wind
     sets.precast['ストンスキン'] = pre_stoneskin
@@ -729,6 +734,22 @@ function self_command(command)
             equip(set_move(sets.aftercast.idle))
         elseif args[1] == 'si' then
             my_send_command('mogmaster si blm')
+        elseif args[1] == 'setmb' then
+            windower.add_to_chat(123, 'MB mode')
+    	    mb = {
+    	        flag = true,
+    	        time = os.time(),
+    	        count = 0,
+    		    element = {
+    		        ['火'] = true,
+    		        ['風'] = true,
+    		        ['雷'] = true,
+    		        ['光'] = true,
+    		        ['闇'] = true,
+    		        ['土'] = true,
+    		        ['氷'] = true,
+    		    },
+    		}
         end
     end
     if #args >= 2 then

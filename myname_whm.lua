@@ -81,7 +81,7 @@ function get_sets()
         body="エーベルブリオー",
         hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
         legs="シファヒジパンツ",
-        feet="ケアルクロッグ",
+        feet="ヴァニヤクロッグ",
         neck="アケソチョーカー",
         waist="ウィトフルベルト",
         left_ear="ラウンデルピアス",
@@ -95,7 +95,7 @@ function get_sets()
             body="ＧＥブリオー+1",
         })
     if player.sub_job == '赤' then
-        cure = set_combine(cure, {left_ear="胡蝶のイヤリング",feet='ＰＩダックビル+1'})
+        cure = set_combine(cure, {left_ear="胡蝶のイヤリング",})
     end
     local midcure = set_combine(cure,
         {

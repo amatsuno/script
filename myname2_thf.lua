@@ -5,6 +5,13 @@ function get_sets()
     use_sub.pc = nil
     use_sub.job = nil
 
+    local pre_base ={
+        neck="摩喉羅伽の数珠",
+        head="ハルスハット",
+        body="テーオンタバード",
+        left_ear='ロケイシャスピアス',
+    }
+
     recover_spells = {}
     recover_spells['麻痺'] = 'パラナ'
     recover_spells['暗闇'] = 'ブライナ'
@@ -53,11 +60,10 @@ function get_sets()
         })
     local normal2 = set_combine(base,
         {
-           neck='アガサヤカラー',
-           body="エメットハーネス",
-           feet="カークソレギンス",
-           waist="フレフランサッシュ",
-           back="ケッニケープ",
+            neck='アガサヤカラー',
+            body="エメットハーネス",
+            left_ring="ダークリング",
+            right_ring="ダークリング",
         })
     local treasure = {
             hands="ＰＤアムレット+1",
@@ -87,6 +93,11 @@ function get_sets()
             legs="フィーストホーズ",
             feet="ウェフェラクロッグ",
         })
+    local mgdef2 = set_combine(def,
+        {
+            head="ウェフェラクレット",
+        })
+    
 --WS装備
     local we_exenterator = set_combine(ws_base,
         {
@@ -96,12 +107,14 @@ function get_sets()
             feet="ＩＵゲートル+1",
             left_ring="突風の指輪",
             waist="チュカバベルト",
+            left_ear='胡蝶のイヤリング',
             back="ケッニケープ",
         })
     local we_Evisceration = set_combine(ws_base,
         {
             hands="ブレムテグローブ",
             body="テーオンタバード",
+            left_ear='胡蝶のイヤリング',
             back="ヴェスピッドマント",
         })
     local we_rudra = we_Evisceration
@@ -121,6 +134,8 @@ function get_sets()
     sets.ws['エクゼンテレター'] = we_exenterator
     sets.ws['エヴィサレーション'] = we_Evisceration
     sets.ws['ルドラストーム'] = we_rudra
+    sets.precast = {}
+    sets.precast.FC = pre_base
     sets.idle = {}
     sets.idle.idle = idle
     sets.engaged = {}
@@ -131,6 +146,7 @@ function get_sets()
     sets.engaged.evation = evation
     sets.engaged.def = def
     sets.engaged.mgdef = mgdef
+    sets.engaged.mgdef2 = mgdef2
     sets.engaged.def_eva = evation
     sets.equip = {}
     sets.equip.treasure = treasure;
@@ -160,6 +176,7 @@ function initCounter()
             1600,    --en="Poison Pick",ja="ポイズンピック"},
             2096,
             2099,
+            401,924,1659,       --ドレッドダイヴ
         },
         target={'SELF'},
     }
@@ -186,6 +203,19 @@ function initCounter()
         {equip=sets.engaged.mgdef,}
     counter.action.mgdef.interruptaction = counter.action.phdef.interruptaction
     counter.action.mgdef.finishaction = counter.action.phdef.interruptaction
+
+    counter.action.mgdef2={
+        condition = {
+            only_self_target = true,
+            spell={
+                403,926,1661,   --ストームウィンド
+            },
+            target={'SELF'},
+        },
+        preaction= {equip=sets.engaged.mgdef2,},
+        interruptaction = counter.action.phdef.interruptaction,
+        finishaction = counter.action.phdef.interruptaction,
+    }
 end
 function precast(spell)
     local equips = nil
@@ -197,6 +227,8 @@ function precast(spell)
         if sets.ws[spell.name] then
             equips = sets.ws[spell.name]
         end
+    elseif spell.type == 'Ninjutsu' then
+        equip(sets.precast.FC)
     end
     if equips ~= nil then
         equip(equips)
@@ -212,6 +244,12 @@ function precast(spell)
 	end
     
 end
+function midcast(spell)
+    if spell.type == 'Ninjutsu' then
+        equip(sets.engaged.mgdef)
+    end
+end
+
 function aftercast(spell)
     local equips = nil
     if player.status=='Engaged' then

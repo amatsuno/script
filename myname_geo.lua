@@ -29,6 +29,8 @@ function get_sets()
         {
         head="ＨＡハット+1",
         legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
+        left_ear="ハンドラーピアス",
+        right_ear="ハンドラーピアス+1",
         
         })
     local pet = {
@@ -64,6 +66,7 @@ function get_sets()
         sub="ビビドストラップ",
         head="ナティラハット",
         body="アンフルローブ",
+        hands={ name="ヘリオスグローブ", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','"Fast Cast"+5','INT+10',}},
         legs="ＧＯパンツ+1",
         feet="リーガルパンプス+1",
         neck="ボルトサージトルク",
@@ -74,6 +77,10 @@ function get_sets()
         right_ring="ダークリング",
         back="龍脈の外套",
     }
+    local mid_base =set_combine(pre_base, {
+        body="ヘリオスジャケット",
+        right_ring="ウェーザーリング",
+    })
     local pre_low = {
         head="ナティラハット",
         body="ヘリオスジャケット",
@@ -92,7 +99,7 @@ function get_sets()
     local pre_fire  = set_combine(pre_base, {})
     local pre_ice   = set_combine(pre_base, {})
     local pre_thunder = set_combine(pre_base, {})
-    local mid_base = pre_base
+
     local mid_light = set_combine(mid_base, {main="アーカII",})
     local mid_dark  = set_combine(mid_base, {})
     local mid_earth = set_combine(mid_base, {main="ビシュラバII",})
@@ -127,16 +134,17 @@ function get_sets()
         main="アーカIV",
         hands="ボクワスグローブ",
         legs="ナレストルーズ",
+        feet='ヴァニヤクロッグ',
     }
-    local pre_cure = set_combine(pre_light, {})
+    local pre_cure = set_combine(pre_light, {back='パートリケープ',feet='ヴァニヤクロッグ',})
 --弱体
     local enfeebling = {
             main={ name="レブレイルグ+2", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
         sub="メフィテスグリップ",
-        head="テルキネキャップ",
+        head="ビファウルクラウン",
         body="イスキミアシャブル",
         hands="ＨＡカフス+1",
-        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
+        legs='サイクロスラッパ',
         feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
         neck="ワイケトルク",
         waist="オヴェイトロープ",
@@ -154,7 +162,7 @@ function get_sets()
         head="妖蟲の髪飾り+1",
         body="ヘリオスジャケット",
         hands="ＨＡカフス+1",
-        legs="アートシクロップス",
+        legs="サイクロスラッパ",
         feet="アートシクブーツ",
         neck="エーシルトルク",
         waist="オヴェイトロープ",
@@ -191,11 +199,11 @@ function get_sets()
         sub="メフィテスグリップ",
         head="ナティラハット",
         body="ヘリオスジャケット",
-        hands="ＨＡカフス+1",
+        hands={ name="ヘリオスグローブ", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','"Fast Cast"+5','INT+10',}},
         legs="ＧＯパンツ+1",
-        feet="リーガルパンプス+1",
+        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
         neck="オルンミラトルク",
-        waist="ウィトフルベルト",
+        waist="ニヌルタサッシュ",
         right_ear="ロケイシャスピアス",
         left_ear="エンチャンピアス+1",
         left_ring="プロリクスリング",
@@ -206,14 +214,16 @@ function get_sets()
     	{
             waist="ニヌルタサッシュ",
     		left_ring="サンゴマリング",
-    		legs="アートシクロップス",
+    		legs="サイクロスラッパ",
             neck="ボルトサージトルク",
     		right_ear="グアチピアス",
             feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
+            range="オウレオール",
     	})
     local stun_acc2 = set_combine(stun_acc1,
     	{
     		head="テルキネキャップ",
+            hands="ＨＡカフス+1",
     	})
     
 --属性帯

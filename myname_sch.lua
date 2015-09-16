@@ -77,7 +77,7 @@ function get_sets()
         head="ナティラハット",
         body="アンフルローブ",
         hands="ＧＥゲージ+1",
-        legs="アートシクロップス",
+        legs="サイクロスラッパ",
         feet="ＰＤローファー+1",
         waist="ニヌルタサッシュ",
         neck="オルンミラトルク",
@@ -92,16 +92,7 @@ function get_sets()
         head="ナティラハット",
         body="アンフルローブ",
     }
-    local fc_element = {
-        head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+8%',}},
-        hands={ name="ヘリオスグローブ", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','"Fast Cast"+5','INT+10',}},
-        body="ヘリオスジャケット",
-        legs="アートシクロップス",
-        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
-        neck="ボルトサージトルク",
-        left_ear="エンチャンピアス+1",
-        back="スイスケープ+1",
-     }
+    local fc_element = set_combine(pre_base, {right_ear="バーカロルピアス",})
     
     local mid_base = set_combine(pre_base, {body="ヘリオスジャケット",})
     --闇属性
@@ -146,13 +137,13 @@ function get_sets()
     local stoneskin = set_combine(enhance, {waist="ジーゲルサッシュ",})
 --stun
     local stun = {
-            main={ main="ケラウノス", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
+        main="ケラウノス",
         sub="メフィテスグリップ",
         range="オウレオール",
         head="ＰＤボード+1",
         body="ヘリオスジャケット",
-        hands="ＨＡカフス+1",
-        legs="アートシクロップス",
+        hands={ name="ヘリオスグローブ", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','"Fast Cast"+5','INT+10',}},
+        legs="サイクロスラッパ",
         feet="ＰＤローファー+1",
         neck="オルンミラトルク",
         waist="ニヌルタサッシュ",
@@ -166,12 +157,14 @@ function get_sets()
     local stun_acc1 = set_combine(stun, {
         
         head="ナティラハット",
+        neck="ボルトサージトルク",
+        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
         left_ring="サンゴマリング",
     })
     local stun_acc2 = set_combine(stun_acc1,
         {
         head="テルキネキャップ",
-        feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
+        hands="ＨＡカフス+1",
 		back={ name="ブックワームケープ", augments={'INT+3','MND+4','Helix eff. dur. +19',}},
         })
     
@@ -183,7 +176,11 @@ function get_sets()
         head="ＧＥカウビーン+1",
         body="ＧＥブリオー+1",
         hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
+        feet="ヴァニヤクロッグ",
         })
+    local pre_cure = set_combine(
+        pre_light,
+        {back="パートリケープ",feet="ヴァニヤクロッグ",})
 --弱体
     local enfeebling = {
             main={ main="ケラウノス", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
@@ -271,12 +268,12 @@ function get_sets()
         head="妖蟲の髪飾り+1",
         body="ウェーザーローブ+1",
         hands="オトミグローブ",
-        legs="アートシクロップス",
+        legs="サイクロスラッパ",
         feet="ＡＢローファー+1",
         neck="オルンミラトルク",
         waist="山吹の帯",
-        left_ear="エテオレートピアス",
-        right_ear="ロケイシャスピアス",
+        left_ear="胡蝶のイヤリング",
+        right_ear="エテオレートピアス",
         left_ring="サンゴマリング",
         right_ring="メフィタスリング",
         back="慈悲の羽衣",
@@ -285,7 +282,7 @@ function get_sets()
     sets.ws = {}
     sets.ws['ミルキル'] = equip_mp
     sets.precast = {}
-    sets.precast['ケアル']= pre_light
+    sets.precast['ケアル']= pre_cure
     sets.precast['スタン'] = stun
     sets.precast['連環計'] = renkan
     sets.precast['ヘイスト'] = pre_wind
@@ -367,6 +364,8 @@ function bindKeys(f)
         send_command('bind ^[ gs c lock')
         send_command('bind ^] gs c unlock')
         send_command('bind ^q gs c addendum')
+        send_command('bind ^o gs c aoe')
+        send_command('bind ^; gs c expand')
     else
         windower.add_to_chat(123,'unbind key')
         send_command('unbind ^y')
@@ -377,6 +376,8 @@ function bindKeys(f)
         send_command('unbind ^[')
         send_command('unbind ^]')
         send_command('unbind ^q')
+        send_command('unbind ^o')
+        send_command('unbind ^; ')
     end
 end
 function file_unload()
@@ -391,7 +392,7 @@ function init_element()
         head="テルキネキャップ",
         body="イスキミアシャブル",
         hands="ＨＡカフス+1",
-        legs="アートシクロップス",
+        legs="サイクロスラッパ",
         feet="ＨＡサボ+1",
         neck="ボルトサージトルク",
         waist="オヴェイトロープ",
@@ -407,7 +408,7 @@ function init_element()
         sub="メフィテスグリップ",
         range="オウレオール",
         head={ name="ヘリオスバンド", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Occult Acumen"+9','INT+10',}},
-        body="ヘリオスジャケット",
+        body="ウィッチングローブ",
         hands="ＨＡカフス+1",
         legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
         feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
@@ -553,7 +554,7 @@ function precast(spell)
             if spell.name == 'インパクト' then
                 equip(sets.precast['インパクト'])
             elseif spell.cast_time > 2.0 then
-                equip(sets.precast.FC[spell.element])
+                equip(sets.precast.FC.element)
             elseif spell.cast_time > 0.75 then
                 equip(sets.precast.FC.FC_LOW)
             else
@@ -587,7 +588,11 @@ function midcast(spell)
         end
     elseif spell.type == 'WhiteMagic' or spell.type == 'BlackMagic' then
         if spell.name == 'スタン' then
-            sets_equip = sets.midcast['スタン']
+            if buffactive['疾風迅雷の章'] then
+                sets_equip = set_combine(sets.midcast['スタン'], {feet="ＰＤローファー+1",})
+            else
+                sets_equip = sets.midcast['スタン']
+            end
         elseif spell.skill=='回復魔法' then
             if string.find(spell.name, 'ケアル') then
                 sets_equip = sets.midcast['ケアル']
@@ -688,7 +693,7 @@ function set_element(spell)
                 end
              end
         end
-        if spell.name:endswith('の計') then
+        if spell.name:find('の計') then
             windower.add_to_chat(8, '計略！！'..spell.element)
             sets_equip = set_combine(sets_equip, sets.midcast.element['計略'])
         end
@@ -765,12 +770,12 @@ function calculate_duration(spell)
         if spell.name:startswith('リジェネ') then
             local multi = 1.0
             if spell.name == 'リジェネ' then
-                duration = 75
+                duration = 75+15
             else
-                duration = 60
+                duration = 60+15
             end
             --jobpoint
-            if buffactive['白のグリモア'] then
+            if buffactive['白のグリモア'] or buffactive['白の補遺'] then
                 duration = duration +78
             end
             if player.equipment.body == 'テルキネシャジュブ' then
@@ -967,6 +972,22 @@ function self_command(command)
             else
                 windower.add_to_chat(8, '------グリモアがかかってない！！---------')
             end
+        elseif args[1] == 'aoe' then
+            if buffactive['白のグリモア'] or buffactive['白の補遺'] then
+                windower.add_to_chat(123,'強化回復魔法の範囲化')
+                my_send_command('input /ja 女神降臨の章 <me>')
+            elseif buffactive['黒のグリモア'] or buffactive['黒の補遺'] then
+                windower.add_to_chat(123,'弱体暗黒魔法の範囲化')
+                my_send_command('input /ja 精霊光来の章 <me>')
+            end
+        elseif args[1] == 'expand' then
+            if buffactive['白のグリモア'] or buffactive['白の補遺'] then
+                windower.add_to_chat(123,'強化魔法の効果時間延長')
+                my_send_command('input /ja 令狸執鼠の章 <me>')
+            elseif buffactive['黒のグリモア'] or buffactive['黒の補遺'] then
+                windower.add_to_chat(123,'連携属性付与')
+                my_send_command('input /ja 震天動地の章 <me>')
+            end
         elseif args[1] == 'refresh' then
             refresh_equip()
         elseif args[1] == 'jb' then
@@ -1028,6 +1049,9 @@ function self_command(command)
             elseif param == 'bc' then
                 my_send_command('gs c idle idle_def;gs c elementmode bc')
             end
+        elseif args[1] == 'getbuff' then
+            local param = tonumber(args[2])
+            get_buff(param)
         end
         
     end

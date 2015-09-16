@@ -284,6 +284,8 @@ function get_sets()
         debugf:create()
     end
     jb_flag = false
+    halt=false
+    follow=false
     
     keep_geo = {
         ['インデ'] = {
@@ -322,6 +324,23 @@ end
 function file_unload()
     enable('main','sub','ammo','range')
     bindKeys(false)
+end
+function pretarget(spell)
+    --windower.add_to_chat(8,'pret follow='..tostring(follow)..'chkDsit='..tostring(chkDist()))
+    if follow and chkDist()==false then
+        if spell.type == 'WhiteMagic' 
+            or spell.type == 'BlackMagic' 
+            or spell.type == 'Geomancy' 
+            then
+            if halt == false then
+                cancel_spell()
+                halt=true
+                my_send_command('flwl halt;wait 2;'
+                    ..'input /ma '..spell.name..' '..spell.target.id
+                    ..';wait '..spell.cast_time..';flwl cont')
+            end
+        end
+    end
 end
 
 function precast(spell)
@@ -549,6 +568,10 @@ function aftercast(spell)
             keep_geo['ジオ'].flag =true
         end
     end
+    if halt then
+        my_send_command('flwl cont')
+        halt=false
+    end
 end
 function check_geo(keep)
     local currenttime=os.time()
@@ -747,6 +770,10 @@ function self_command(command)
                 end
                 local cmd = nil
                 cmd = 'input /ma '..args[2]..' '..args[3]
+                if follow and chkDist() == false then
+                    halt=true
+                    cmd = 'flwl halt;wait 2;'..cmd
+                end
                 my_send_command(cmd)
             end
         elseif args[1] == 'break_luopan' then
@@ -790,6 +817,16 @@ function self_command(command)
         elseif args[1] == 'getbuff' then
             local param = tonumber(args[2])
             get_buff(param)
+        elseif args[1] == 'follow' then
+            if args[2] == 'start' then
+                follow=true
+                my_send_command('flwl s')
+            else
+                if follow then
+                    my_send_command('flwl e')
+                end
+                follow=false
+            end
         end
     end
 end

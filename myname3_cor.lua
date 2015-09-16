@@ -12,6 +12,23 @@ function get_sets()
         'コルセアズロール','ワーロックスロール','ウィザーズロール',
         'ボルターズロール',
     }
+    rolls = {
+        ['コルセアズロール'] = {lucky=5, unlucky=9,},
+        ['ウィザーズロール'] = {lucky=5, unlucky=9,},
+        ['エボカーズロール'] = {lucky=5, unlucky=9,},
+        ['ワーロックスロール'] = {lucky=4, unlucky=8,},
+       
+        ['ビーストロール'] = {lucky=4, unlucky=8,},
+        ['ドラケンロール'] = {lucky=4, unlucky=8,},
+        ['パペットロール'] = {lucky=3, unlucky=7,},
+        ['コンパニオンロール'] = {lucky=2,unluck=10,},
+        
+        ['ファイターズロール']={lucky=5, unlucky=9,},
+        ['カオスロール']={lucky=4, unlucky=8,},
+        ['アライズロール']={lucky=3, unlucky=10,},
+        ['タクティックロール'] = {lucky=5,unlucky=8,},
+        ['ボルターズロール'] = {lucky=3, unlucky=9,},
+    }
 --待機装備
     local idle = {
         head='ウェフェラクレット',
@@ -19,7 +36,7 @@ function get_sets()
         hands='ウェフェラカフス',
         legs='ウェフェラスロップ',
         feet='ウェフェラクロッグ',
-        back='アピトマント',
+        back='メシストピンマント',
     }
     local idle_def = set_combine(idle, 
         {
@@ -65,6 +82,7 @@ function get_sets()
 
 --roll
     local roll = set_combine(idle, {
+        head='ラヌントリコルヌ',
         hands="ＮＡガントリー+1",
         left_ring='バラタリアリング',
         back="ガンスリンガマント",
@@ -441,8 +459,22 @@ function self_command(command)
                 spellname = args[3]
             end
             showrecast(spellid, spellname)
+        elseif args[1] == 'doubleup' then
+            local cmd= '@wait '..tostring(waittime())..';'
+                ..'input /ja ダブルアップ <me>'
+            windower.add_to_chat(8,cmd)
+            my_send_command(cmd)
+        elseif args[1] == 'snakeeye' then
+            if getReady(197) then
+                local cmd= '@wait 2;input /ja スネークアイ <me>;'
+                    ..'wait 2;input /ja ダブルアップ <me>'
+                my_send_command(cmd)
+            end
         end
     end
+end
+function buff_change(buff, gain)
+    --windower.add_to_chat(123, buff..tostring(gain))
 end
 
 indent='\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t'
@@ -481,4 +513,53 @@ end
 function my_send_command(cmd)
     send_command(windower.to_shift_jis(cmd))
 end
+function getReady(abi)
+    local recast = windower.ffxi.get_ability_recasts()
+    if recast[abi] then
+        if recast[abi] > 0 then
+            return false
+        else
+            return true
+        end
+    else
+        return true
+    end
+end
+function waittime()
+    local recast = windower.ffxi.get_ability_recasts()
+    dumpProperties(recast, 'recast abi', 0)
+    --[194] = {id=194,en="Double-Up",ja="ダブルアップ",action_id=123},
+    local t = 2.5
+    if recast[194] and recast[194] > 2 then
+        t = recast[194] + 0.5
+    end
+    return t
+end
+
+windower.register_event('action', function(act)
+	dumpProperties(act, 'action', 0)
+    if act.category == 6 then
+        local abiname = gearswap.res.job_abilities[act.param].ja
+        if rolls[abiname] 
+            and act.targets[1] and act.targets[1].actions[1] then
+            local result = act.targets[1].actions[1].param
+            --出目-->act.targets[1].actions[1].param
+            windower.add_to_chat(8,abiname..'：'..result
+                ..'○'..rolls[abiname].lucky
+                ..'×'..rolls[abiname].unlucky)
+            if result == rolls[abiname].lucky then
+                windower.add_to_chat(8,'Lucky！')
+            elseif result < 6 then
+                windower.add_to_chat(8,'ダブルアップgo！')
+                local cmd= '@wait 0.1;gs c doubleup '..abiname
+                my_send_command(cmd)
+            elseif result == rolls[abiname].unlucky then
+                windower.add_to_chat(8,'アンラッキー回避go！')
+                local cmd= '@wait 0.1;gs c snakeeye '..abiname
+                my_send_command(cmd)
+            end
+        end
+    end
+end)
+
 include('script/script/common.lua')

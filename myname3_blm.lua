@@ -129,7 +129,7 @@ function get_sets()
     }
     local dark_acc={
         main="ケラウノス",
-        sub="Ｂ．ストラップ+1",
+        sub="ヴィサングリップ",
         neck="クアンプネックレス",
         head="ヘリオスバンド",
         body="ＳＰコート+1",
@@ -147,7 +147,7 @@ function get_sets()
 --精霊
     local element_acc={
         main="ケラウノス",
-        sub="Ｂ．ストラップ+1",
+        sub="ヴィサングリップ",
         neck="クアンプネックレス",
         head="ヘリオスバンド",
         body="ＳＰコート+1",
@@ -269,6 +269,8 @@ function get_sets()
     bindKeys(true)    
     refresh_equip()
     jb_flag = false
+    follow=false
+    halt=false
 end
 function bindKeys(f)
     if f then
@@ -288,6 +290,23 @@ end
 function file_unload()
     enable('main','sub','ammo','range')
     bindKeys(false)
+end
+function pretarget(spell)
+    --windower.add_to_chat(8,'pret follow='..tostring(follow)..'chkDsit='..tostring(chkDist()))
+    if follow and chkDist()==false then
+        if spell.type == 'WhiteMagic' 
+            or spell.type == 'BlackMagic' 
+            or spell.type == 'Geomancy' 
+            then
+            if halt == false and spell.target and spell.target.id then
+                cancel_spell()
+                halt=true
+                my_send_command('flwl halt;wait 2;'
+                    ..'input /ma '..spell.name..' '..spell.target.id
+                    ..';wait '..spell.cast_time..';flwl cont')
+            end
+        end
+    end
 end
 
 function precast(spell)
@@ -443,6 +462,10 @@ function aftercast(spell)
         and spell.type:lower() ~= 'item' then
         my_send_command('@wait 0.1;gs c recast '..spell.id..' '..spell.name)
     end
+    if halt then
+        my_send_command('flwl cont')
+        halt=false
+    end
 end
 
 function status_change(new,old)
@@ -572,6 +595,10 @@ function self_command(command)
                 end
                 local cmd = nil
                 cmd = 'input /ma '..castspell..' '..args[3]
+                if follow and chkDist() == false then
+                    halt=true
+                    cmd = 'flwl halt;wait 2;'..cmd
+                end
                 my_send_command(cmd)
             end
         elseif args[1] == 'content' then
@@ -586,6 +613,18 @@ function self_command(command)
         elseif args[1] == 'getbuff' then
             local param = tonumber(args[2])
             get_buff(param)
+        elseif args[1] == 'follow' then
+            if args[2] == 'start' then
+                follow=true
+                windower.add_to_chat(8, '追跡モード')
+                my_send_command('flwl s')
+            else
+                windower.add_to_chat(8, '待機モード')
+                if follow then
+                    my_send_command('flwl e')
+                end
+                follow=false
+            end
         end
     end
 end
