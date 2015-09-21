@@ -44,7 +44,7 @@ function get_sets()
         ammo="インカントストーン",
         head="ビファウルクラウン",
         body="ＨＡコート+1",
-        hands="ＨＡカフス+1",
+        hands={ name="ＧＥゲージ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -4%','"Cure" potency +8%',}},
         legs="アシドゥイズボン",
         feet="ヘラルドゲートル",
         neck="黄昏の光輪",
@@ -76,7 +76,7 @@ function get_sets()
         ammo="インカントストーン",
         head="ナティラハット",
         body="アンフルローブ",
-        hands="ＧＥゲージ+1",
+        hands={ name="ＧＥゲージ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -4%','"Cure" potency +8%',}},
         legs="サイクロスラッパ",
         feet="ＰＤローファー+1",
         waist="ニヌルタサッシュ",
@@ -123,6 +123,7 @@ function get_sets()
     })
     local enhance_expandtime={
         body='テルキネシャジュブ',
+        hands='テルキネグローブ',
         legs={ name="テルキネブラコーニ", augments={'Enh. Mag. eff. dur. +7',}},
         feet="テルキネピガッシュ",
     }
@@ -134,7 +135,9 @@ function get_sets()
             feet="テルキネピガッシュ",
             back={ name="ブックワームケープ", augments={'INT+2','MND+2','"Regen" potency+10',}},
         })
-    local stoneskin = set_combine(enhance, {waist="ジーゲルサッシュ",})
+    local stoneskin = set_combine(enhance, {
+            neck='ノデンズゴルゲット',
+            waist="ジーゲルサッシュ",})
 --stun
     local stun = {
         main="ケラウノス",
@@ -172,10 +175,9 @@ function get_sets()
     local cure =set_combine(
         idle_def,
         {
-        main="アーカIV",
         head="ＧＥカウビーン+1",
         body="ＧＥブリオー+1",
-        hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
+        hands='テルキネグローブ',
         feet="ヴァニヤクロッグ",
         })
     local pre_cure = set_combine(
@@ -183,13 +185,13 @@ function get_sets()
         {back="パートリケープ",feet="ヴァニヤクロッグ",})
 --弱体
     local enfeebling = {
-            main={ main="ケラウノス", augments={'DMG:+14','MND+1','Mag. Acc.+25',}},
+        main="ケラウノス",
         sub="メフィテスグリップ",
         range="オウレオール",
         head="テルキネキャップ",
         body="イスキミアシャブル",
         hands="ＨＡカフス+1",
-        legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
+        legs="サイクロスラッパ",
         feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
         neck="ワイケトルク",
         waist="オヴェイトロープ",
@@ -223,9 +225,10 @@ function get_sets()
         back={ name="ブックワームケープ", augments={'INT+3','MND+4','Helix eff. dur. +19',}},
     }
     local meltdown = set_combine(dark_acc
-        ,{  hands="ハゴンデスカフス",
-            body="ＨＡコート+1",
-                legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -2%','"Mag.Atk.Bns."+28',}},
+        ,{
+            hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+4','Magic burst mdg.+7%',}},
+            body="ウィッチングローブ",
+            legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -2%','"Mag.Atk.Bns."+28',}},
             feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst mdg.+10%',}},
             head="妖蟲の髪飾り+1",
             sub="ズーゾーウグリップ",
@@ -420,6 +423,11 @@ function init_element()
         left_ring="サンゴマリング",
         back={ name="ブックワームケープ", augments={'INT+3','MND+4','Helix eff. dur. +19',}},
     }
+    local element_vg=set_combine(element_acc,
+        {
+        legs="サイクロスラッパ",
+        })
+    
     local element_bc={
         main= "ケラウノス",
         sub="メフィテスグリップ",
@@ -482,7 +490,7 @@ function init_element()
     sets.midcast.element['FULL'] = element_fullattk
     sets.midcast.element['BC'] = element_bc
     sets.midcast.element['VG_CHAIN'] = element_vg_chain
-    sets.midcast.element['VG'] = element_acc
+    sets.midcast.element['VG'] = element_vg
     sets.midcast.element['MBURST'] = element_mb
 end
 
@@ -654,7 +662,10 @@ end
 
 function set_element(spell)
     local sets_equip = nil
-    if sets.midcast.element.mode == 'VG' then
+    if sets.midcast.element.mode == 'VG' 
+        and spell.target.name ~= 'Plouton'
+        and spell.target.name ~= 'Perfidien'
+    then
         if buffactive['震天動地の章'] then
             sets_equip = sets.midcast.element['VG_CHAIN']
         else
@@ -1046,8 +1057,9 @@ function self_command(command)
             if param == 'jb' then
                 sets.equip.IDLE_DEF.back = 'メシストピンマント'
                 jb_flag = true
+                my_send_command('gs c idle idle_def;gs c elementmode FULL;gs c lock')
             elseif param == 'bc' then
-                my_send_command('gs c idle idle_def;gs c elementmode bc')
+                my_send_command('gs c idle idle_def;gs c elementmode bc;gs c lock')
             end
         elseif args[1] == 'getbuff' then
             local param = tonumber(args[2])

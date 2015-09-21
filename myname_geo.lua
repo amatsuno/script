@@ -364,7 +364,7 @@ function file_unload()
 end
 function init_element()
     local element_acc={
-    main={ name="レブレイルグ+2", augments={'DMG:+17','INT+4','"Mag.Atk.Bns."+25',}},
+    main={ name="レブレイルグ+2", augments={'DMG:+18','INT+8','"Mag.Atk.Bns."+27',}},
         sub="メフィテスグリップ",
         head="ナティラハット",
         body="ヘリオスジャケット",
@@ -940,11 +940,11 @@ function self_command(command)
         elseif args[1] == 'content' then
             local param = args[2]:lower()
             if param == 'jb' then
-                my_send_command('gs c idle idle_def;gs c elementmode full;gs c mpreduce on')
+                my_send_command('gs c idle idle_def;gs c elementmode full;gs c mpreduce on;gs c unlock')
                 sets.equip.IDLE_DEF.back = 'メシストピンマント'
                 jb_flag = true
             elseif param == 'bc' then
-                my_send_command('gs c idle idle_def;gs c elementmode full')
+                my_send_command('gs c idle idle_def;gs c elementmode full;gs c unlock')
                 sets.equip.IDLE_DEF.back = 'チェビオットケープ'
                 jb_flag = false
             end

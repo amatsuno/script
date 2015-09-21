@@ -394,6 +394,18 @@ function self_command(command)
                 end
                 equip(sets.aftercast.idle)
             end
+        elseif args[1] == 'jb' then
+            if sets.equip.IDLE_DEF.back == 'メシストピンマント' then
+                windower.add_to_chat(123, '待機:背中＝チェビオットケープ')
+                sets.equip.IDLE_DEF.back = 'チェビオットケープ'
+                jb_flag = false
+            else
+                windower.add_to_chat(123, '待機:背中＝メシストピンマント')
+                sets.equip.IDLE_DEF.back = 'メシストピンマント'
+                jb_flag = true
+            end
+        elseif args[1] == 'si' then
+            my_send_command('mogmaster si blm')
         end
     end
     if #args >= 2 then

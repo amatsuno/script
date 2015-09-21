@@ -72,7 +72,7 @@ function get_sets()
     local enhance = {
         main="麒麟棍",
         sub="ビビドストラップ",
-        body="アンフルローブ",
+        body="テルキネシャジュブ",
         feet="リーガルパンプス+1",
         neck="コロッサストルク",
         waist="オリンポスサッシュ",
@@ -160,6 +160,11 @@ function get_sets()
         {
         right_ring="アキュメンリング",
         back="トーロケープ",})
+    local element_mb = {
+        hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+25','"Occult Acumen"+5','Magic burst mdg.+10%',}},
+        right_ring="夢神の指輪",
+    }
+        
     local pre_impact = set_combine(pre_dark, {head=empty, body="トワイライトプリス",})
     local mid_impact = set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 --stun
@@ -273,6 +278,7 @@ function get_sets()
     sets.midcast.element['ACC']  = element_acc
     sets.midcast.element['ATTK'] = element_attk
     sets.midcast.element['FULL'] = element_full
+    sets.midcast.element['MBURST'] = element_mb
     sets.midcast['リジェネ'] = regen
     sets.midcast['ケアル'] = cure
     sets.midcast['スタン'] = stun
@@ -521,6 +527,11 @@ function set_element(spell)
     if jb_flag then
         set_equip = set_combine(set_equip, {back='メシストピンマント',})
     end
+    if mb and os.time() - mb.time < 9 and mb.element[spell.element] then
+        windower.add_to_chat(8, 'MBモード！！！！'..spell.element)
+        set_equip = set_combine(set_equip, sets.midcast.element.MBURST)
+    end
+    
     return set_equip
 end
 function set_song(spell)
@@ -689,6 +700,8 @@ function self_command(command)
             my_send_command('mogmaster si blm')
         elseif args[1] == 'move' then
             equip(set_move(sets.aftercast.idle))
+        elseif args[1] == 'setmb' then
+            set_mb()
         end
     end
     if #args >= 2 then
@@ -735,9 +748,10 @@ function self_command(command)
             local param = args[2]:lower()
             if param == 'jb' then
                 sets.equip.IDLE_DEF.back = 'メシストピンマント'
+                my_send_command('gs c idle idle_def;gs c elementmode full;gs c lock')
                 jb_flag = true
             elseif param == 'bc' then
-                my_send_command('gs c idle idle_def;gs c elementmode full')
+                my_send_command('gs c idle idle_def;gs c elementmode full;gs c lock')
                 sets.equip.IDLE_DEF.back = 'リパルスマント'
                 jb_flag = false
             end

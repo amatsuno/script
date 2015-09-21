@@ -800,9 +800,9 @@ function self_command(command)
             if param == 'jb' then
                 sets.equip.IDLE_DEF.back = 'メシストピンマント'
                 jb_flag = true
-                my_send_command('input /lockstyle on')
+                my_send_command('input /lockstyle on;gs c unlock')
             elseif param == 'bc' then
-                my_send_command('gs c idle idle_def;gs c elementmode full;input /lockstyle on')
+                my_send_command('gs c idle idle_def;gs c elementmode full;gs c unlock;input /lockstyle on')
             end
         elseif args[1] == 'getbuff' then
             local param = tonumber(args[2])

@@ -11,7 +11,7 @@ function get_sets()
         ammo="インカントストーン",
         head="ナティラハット",
         body="ＭＫジュバ+1",
-        hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
+        hands={ name="ＧＥゲージ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -4%','"Cure" potency +8%',}},
         legs="アートシクロップス",
         feet="リーガルパンプス+1",
         neck="オルンミラトルク",
@@ -72,6 +72,9 @@ function get_sets()
     local baXX = set_combine(enhance, {body="エーベルブリオー"})
     local protectshell = set_combine(mid_light, 
         {legs="パエティパンタロン", feet='ＰＩダックビル+1',right_ring="シェルターリング"})
+    local stoneskin = set_combine(enhance, {
+            neck='ノデンズゴルゲット',
+            waist="ジーゲルサッシュ",})
 --CURE
     local cure ={
         main="タマシチ",
@@ -79,7 +82,7 @@ function get_sets()
         ammo="インカントストーン",
         head="ＧＥカウビーン+1",
         body="エーベルブリオー",
-        hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
+        hands={ name="ＧＥゲージ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -4%','"Cure" potency +8%',}},
         legs="シファヒジパンツ",
         feet="ヴァニヤクロッグ",
         neck="アケソチョーカー",
@@ -131,7 +134,7 @@ function get_sets()
         ammo="インカントストーン",
         head="ナティラハット",
         body="ヘリオスジャケット",
-        hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
+        hands={ name="ＧＥゲージ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -4%','"Cure" potency +8%',}},
         legs="アートシクロップス",
         feet="リーガルパンプス+1",
         neck="オルンミラトルク",
@@ -148,7 +151,7 @@ function get_sets()
         range="オウレオール",
         head="ビファウルクラウン",
         body="ＧＥブリオー+1",
-        hands={ name="ゲンデサゲージ", augments={'Phys. dmg. taken -4%','"Cure" potency +8%',}},
+        hands={ name="ＧＥゲージ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -4%','"Cure" potency +8%',}},
         legs="アシドゥイズボン",
         feet="ヘラルドゲートル",
         neck="黄昏の光輪",
@@ -185,6 +188,7 @@ function get_sets()
     sets.precast.FC['火'] = pre_base
     sets.precast.FC['氷'] = pre_base
     sets.precast.FC['FC_LOW'] = pre_low
+    sets.precast['ストンスキン'] = pre_stoneskin
     sets.midcast = {}
     sets.midcast['ケアル'] = midcure
     sets.midcast['強化魔法'] = enhance
@@ -195,6 +199,7 @@ function get_sets()
     sets.midcast['神聖魔法'] = divine
     sets.midcast['回復魔法'] = mid_healing
     sets.midcast['ヘイスト'] = mid_wind
+    sets.midcast['ストンスキン'] = stoneskin
     sets.midcast.RECAST = {}
     sets.midcast.RECAST['光'] =mid_light
     sets.midcast.RECAST['闇'] =mid_base
@@ -275,6 +280,8 @@ function precast(spell)
                 else
                     equip(sets.midcast['バ系'])
                 end
+            elseif spell.ja == 'ストンスキン' then
+                equip(sets.precast['ストンスキン'])
             elseif spell.cast_time > 0.75 then
                 equip(sets.precast.FC[spell.element], {waist="ジーゲルサッシュ",})
             else
@@ -325,8 +332,9 @@ function midcast(spell)
                 if spell.cast_time > 0.75 then
                     equip(sets.midcast['バ系'])
                 end
-            elseif (spell.name == 'ストンスキン' 
-                    or spell.name == 'ファランクス'
+            elseif spell.ja == 'ストンスキン' then
+                equip(sets.midcast['ストンスキン'])
+            elseif (spell.name == 'ファランクス'
                     or spell.name:startswith('アディ'))
                 and sets.midcast[spell.skill] ~= nil then
                 equip(sets.midcast['強化魔法'])

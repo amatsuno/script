@@ -165,6 +165,7 @@ function get_sets()
     local element_attk = element_acc
     local element_fullattk = element_attk
     local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
+    local element_mb = {}
 
 --属性帯
     local obi = {}
@@ -239,6 +240,7 @@ function get_sets()
     sets.midcast.element['ATTK'] = element_attk
     sets.midcast.element['FULL'] = element_fullattk
     sets.midcast.element['VW'] = pre_base
+    sets.midcast.element['MBURST'] = element_mb
     sets.midcast.RECAST = {}
     sets.midcast.RECAST['光'] =mid_light
     sets.midcast.RECAST['闇'] =mid_base
@@ -448,7 +450,11 @@ function set_element(spell)
         sets_equip = set_combine(sets_equip, {waist="チャークベルト"})
     end
     if jb_flag then
-        set_equip = set_combine(set_equip, {back='アピトマント',})
+        sets_equip = set_combine(sets_equip, {back='メシストピンマント',})
+    end
+    if mb and os.time() - mb.time < 9 and mb.element[spell.element] then
+        windower.add_to_chat(8, 'MBモード！！！！'..spell.element)
+        sets_equip = set_combine(sets_equip, sets.midcast.element.MBURST)
     end
     
     return sets_equip
@@ -531,13 +537,13 @@ function self_command(command)
                 windower.add_to_chat(8,tostring('トレハンON'))
             end
         elseif args[1] == 'jb' then
-            if sets.equip.IDLE_DEF.back == 'アピトマント' then
+            if sets.equip.IDLE_DEF.back == 'メシストピンマント' then
                 windower.add_to_chat(123, '待機:背中＝リパルスマント')
                 sets.equip.IDLE_DEF.back = 'リパルスマント'
                 jb_flag = false
             else
-                windower.add_to_chat(123, '待機:背中＝アピトマント')
-                sets.equip.IDLE_DEF.back = 'アピトマント'
+                windower.add_to_chat(123, '待機:背中＝メシストピンマント')
+                sets.equip.IDLE_DEF.back = 'メシストピンマント'
                 jb_flag = true
             end
         elseif args[1] == 'si' then
@@ -545,6 +551,8 @@ function self_command(command)
             my_send_command('mogmaster si blm')
         elseif args[1] == 'refresh' then
             refresh_equip()
+        elseif args[1] == 'setmb' then
+            set_mb()
         end
     end
     if #args >= 2 then
@@ -604,10 +612,11 @@ function self_command(command)
         elseif args[1] == 'content' then
             local param = args[2]:lower()
             if param == 'jb' then
-                sets.equip.IDLE_DEF.back = 'アピトマント'
+                sets.equip.IDLE_DEF.back = 'メシストピンマント'
                 jb_flag = true
+                my_send_command('gs c idle idle_def;gs c elementmode full;')
             elseif param == 'bc' then
-                my_send_command('gs c idle idle_def;gs c elementmode full')
+                my_send_command('gs c idle idle_def;gs c elementmode full;')
                 jb_flag = false
             end
         elseif args[1] == 'getbuff' then
@@ -684,3 +693,4 @@ function debug_mode_chat(message)
     end
 end
 include('script/script/common.lua')
+include('lib/counter.lua')

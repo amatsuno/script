@@ -59,9 +59,11 @@ function get_sets()
     local enhance = {
         main="麒麟棍",
         sub="ビビドストラップ",
-        head="ウムシクハト",
+        head="ウムシクハット",
         body="テルキネシャジュブ",
+        hands='テルキネグローブ',
         feet="リーガルパンプス+1",
+        legs={ name="テルキネブラコーニ", augments={'Enh. Mag. eff. dur. +7',}},
         neck="コロッサストルク",
         waist="オリンポスサッシュ",
         left_ear="アンドアーピアス",
@@ -69,11 +71,14 @@ function get_sets()
     }
     local enhance_expandtime={
         body='テルキネシャジュブ',
+        hands='テルキネグローブ',
         legs={ name="テルキネブラコーニ", augments={'Enh. Mag. eff. dur. +7',}},
         feet="テルキネピガッシュ",
     }
     local baXX = enhance
-    local stoneskin = set_combine(enhance, {waist="ジーゲルサッシュ",})
+    local stoneskin = set_combine(enhance, {
+            neck='ノデンズゴルゲット',
+            waist="ジーゲルサッシュ",})
     
 --stun
     local stun = {
@@ -96,6 +101,7 @@ function get_sets()
     local stun_acc1 = set_combine(stun, 
     	{
             feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
+            neck="ボルトサージトルク",
  	        left_ring="サンゴマリング",
         	right_ear="グアチピアス",
     	})
@@ -103,16 +109,16 @@ function get_sets()
     	{
             head={ name="ヘリオスバンド", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Occult Acumen"+9','INT+10',}},
             hands="ＨＡカフス+1",
-    	 	neck="エーシルトルク",
     	})
     
 --CURE
     local cure ={
         main="アーカIV",
-        hands="ボクワスグローブ",
+        hands="テルキネグローブ",
         body="テルキネシャジュブ",
         legs="ナレストルーズ",
         feet='ヴァニヤクロッグ',
+        neck='ノデンズゴルゲット',
     }
     local pre_cure = set_combine(
         pre_light, {back='パートリケープ',feet='ヴァニヤクロッグ',})
@@ -161,7 +167,7 @@ function get_sets()
         hands="ＨＡカフス+1",
         legs="サイクロスラッパ",
         feet={ name="ヘリオスブーツ", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','"Fast Cast"+5','INT+7 MND+7',}},
-        neck="エーシルトルク",
+        neck="ボルトサージトルク",
         range="オウレオール",
         waist="オヴェイトロープ",
         left_ear="バーカロルピアス",
@@ -199,8 +205,8 @@ function get_sets()
           element_attk
         , { head={ name="ＨＡハット+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -4%','"Mag.Atk.Bns."+25',}},
             hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+9','INT+9',}},
-                legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -2%','"Mag.Atk.Bns."+28',}},
-           feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+25','"Occult Acumen"+9','INT+10',}},
+            legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -2%','"Mag.Atk.Bns."+28',}},
+            feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+25','"Occult Acumen"+9','INT+10',}},
             neck="水影の首飾り",
             range=empty,ammo="オンブルタスラム+1",
             right_ring="女王の指輪+1",})
@@ -211,6 +217,7 @@ function get_sets()
         neck="水影の首飾り",
         right_ring="夢神の指輪",
     }
+    local element_body_notconserve = {body="ウィッチングローブ",}
 
     local impact=set_combine(element_acc, {head=empty, body="トワイライトプリス",})
 
@@ -327,6 +334,7 @@ function get_sets()
     sets.midcast.element['FULL'] = element_fullattk
     sets.midcast.element['VW'] = pre_base
     sets.midcast.element['MBURST'] = element_mb
+    sets.midcast.element['NOTCONSERVE'] = element_body_notconserve
     sets.midcast.RECAST = {}
     sets.midcast.RECAST['光'] =mid_light
     sets.midcast.RECAST['闇'] =mid_base
@@ -369,6 +377,7 @@ end
 function bindKeys(f)
     if f then
         windower.add_to_chat(8,'bind key')
+        send_command('bind ^u gs c setmb')
         send_command('bind ^y gs c treasure')
         send_command('bind ^, gs c idle')
         send_command('bind ^. gs c stunmode')
@@ -377,6 +386,7 @@ function bindKeys(f)
         send_command('bind ^] gs c unlock')
     else
         windower.add_to_chat(123,'unbind key')
+        send_command('unbind ^u')
         send_command('unbind ^y')
         send_command('unbind ^,')
         send_command('unbind ^/')
@@ -515,7 +525,27 @@ function midcast(spell)
         equip(sets_equip)
     end
 end
-
+function isConserveMp()
+    if buffactive['魔力の雫'] or buffactive['魔力の泉'] then
+        return false
+    end
+    local recast = windower.ffxi.get_ability_recasts()
+    --[49] = {id=49,en="Convert",ja="コンバート",action_id=83},
+    if player.sub_job == '赤' then
+        if recast[49] and recast[49] > 0 then
+            --リキャスト待ち
+            if player.vitals.tp > 1000 then
+                local minmpp = 100 - 30*(player.vitals.tp/1000)
+                if player.vitals.mpp > minmpp then
+                    return false
+                end
+            end
+        else
+            return false
+        end
+    end
+    return true
+end
 function set_element(spell)
     local sets_equip = nil
     
@@ -525,8 +555,8 @@ function set_element(spell)
         else
             sets_equip = sets.midcast.element[sets.midcast.element.mode]
         end
-        if buffactive['魔力の雫'] or buffactive['魔力の泉'] then
-            sets_equip = set_combine(sets_equip, {body='ヘリオスジャケット'})
+        if not isConserveMp() then
+            sets_equip = set_combine(sets_equip, sets.midcast.element['NOTCONSERVE'])
         end
         if sets.equip.obi.weathers:contains(spell.element) then
             --天候が属性と一致するか、陣がかかってる場合、属性帯を使用
@@ -534,7 +564,7 @@ function set_element(spell)
                 or world.day_element == spell.element
                 or buffactive[sets.equip.obi.buffs[spell.element]] then
                 if sets.equip.obi[spell.element] ~= nil then
-                    add_to_chat(8, '属性一致→帯使用')
+                    --add_to_chat(8, '属性一致→帯使用')
                     sets_equip = set_combine(sets_equip, 
                         sets.equip.obi[spell.element])
                 end
@@ -775,9 +805,10 @@ function self_command(command)
             local param = args[2]:lower()
             if param == 'jb' then
                 sets.equip.IDLE_DEF.back = 'メシストピンマント'
+                my_send_command('gs c idle idle_def;gs c elementmode full;gs c lock')
                 jb_flag = true
             elseif param == 'bc' then
-                my_send_command('gs c idle idle_def;gs c elementmode full')
+                my_send_command('gs c idle idle_def;gs c elementmode full;gs c lock')
             end
         elseif args[1] == 'getbuff' then
             local param = tonumber(args[2])
