@@ -81,9 +81,9 @@ end
 indent='\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t'
 function dumpProperties(t,comment,level)
     if not _settings.debug_mode then return end
+    local spaces=string.sub(indent,1,level)
+    local spaces2=string.sub(indent,1,level+1)
     if type(t) == 'table' then
-        local spaces=string.sub(indent,1,level)
-        local spaces2=string.sub(indent,1,level+1)
         local key,val
         local f,err
         f, err = dumpf:append(spaces..comment..'={\n')

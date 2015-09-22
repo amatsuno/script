@@ -63,7 +63,7 @@ function get_sets()
         {
         head="ＨＡハット+1",
         legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -4%','Magic dmg. taken -2%','Mag. Acc.+26',}},
-        feet="ＨＡサボ+1",
+        feet="ＧＥガロッシュ+1",
         });
     local lock = {
         main="ケラウノス",
@@ -396,7 +396,7 @@ function init_element()
         body="イスキミアシャブル",
         hands="ＨＡカフス+1",
         legs="サイクロスラッパ",
-        feet="ＨＡサボ+1",
+        feet="ＰＤローファー+1",
         neck="ボルトサージトルク",
         waist="オヴェイトロープ",
         left_ear="エンチャンピアス+1",

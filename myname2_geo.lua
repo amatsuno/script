@@ -8,6 +8,11 @@ function get_sets()
         'スタン','ドレイン','アスピル'
     }
     reiv_neck='レフジネックレス+1'
+    expandtime_spells=T{
+        'アクアベール',
+        'ヘイスト',
+    }
+
 --待機装備
     local idle = {
         main="アーススタッフ",
@@ -86,13 +91,16 @@ function get_sets()
     local enhance = set_combine(idle_def, {
         main="麒麟棍",
         sub="フルキオグリップ",
-        body="アンフルローブ",
+        body="テルキネシャジュブ",
         feet="リーガルパンプス+1",
         neck="コロッサストルク",
         waist="オリンポスサッシュ",
         back="慈悲の羽衣",})
     --強化魔法専用の詠唱短縮装備（属性ごとの短縮装備とset_combineされる)
     local pre_enhance = {}
+    local enhance_expandtime={
+        body='テルキネシャジュブ',
+    }
     
     local pre_stoneskin = set_combine(pre_earth, {})
     local mid_stoneskin = set_combine(enhance, {})
@@ -238,6 +246,7 @@ function get_sets()
     sets.precast.FC.enhance = pre_enhance
     sets.midcast = {}
     sets.midcast['強化魔法'] = enhance
+    sets.midcast['強化魔法効果時間'] = enhance_expandtime
     sets.midcast['弱体魔法'] = enfeebling
     sets.midcast['神聖魔法'] = divine
     sets.midcast['精霊魔法'] = element_acc
@@ -383,6 +392,9 @@ function precast(spell)
                     set_equip = set_combine(sets.precast.FC[spell.element], sets.precast.FC.enhance)
                 else
                     set_equip = sets.midcast['強化魔法']
+                    if expandtime_spells:contains(spell.name) then 
+                        set_equip = set_combine(set_equip, sets.midcast['強化魔法効果時間'] )
+                    end
                 end
             elseif spell.name == 'ストンスキン' then
                 set_equip = set_combine(sets.precast['ストンスキン'], sets.precast.FC.enhance)
@@ -460,7 +472,14 @@ function midcast(spell)
             elseif spell.name == 'ストンスキン' then
                 set_equip = sets.midcast['ストンスキン']
             elseif  spell.cast_time > 0.75 then
-                set_equip = sets.midcast.RECAST[spell.element]
+                if expandtime_spells:contains(spell.name) then 
+                    set_equip = set_combine(
+                        sets.midcast.RECAST[spell.element], 
+                        sets.midcast['強化魔法効果時間'] )
+                    windower.add_to_chat(8,'効果時間延長')
+                else
+                    set_equip = sets.midcast.RECAST[spell.element]
+                end
             end
         elseif spell.skill=='精霊魔法' then
             if spell.name == 'インパクト' then
@@ -789,6 +808,7 @@ function self_command(command)
                 jb_flag = false
             end
         elseif args[1] == 'move' then
+            --dumpProperties(player, 'player', 0)
             equip(set_move(sets.aftercast.idle))
         elseif args[1] == 'si' then
             my_send_command('mogmaster si geo')

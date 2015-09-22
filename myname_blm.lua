@@ -8,6 +8,10 @@ function get_sets()
     ignore_spells = T{
         'ディア','ディアII','ディアガ'
     }
+    expandtime_spells=T{
+        'アクアベール',
+        'ヘイスト',
+    }
 --FC_BASE
     local pre_base ={
         main="ケラウノス",
@@ -372,6 +376,7 @@ function get_sets()
         debugf:create()
     end
     jb_flag = false
+    lock_weapon=false
 
 end
 function bindKeys(f)
@@ -430,7 +435,11 @@ function precast(spell)
                 if spell.cast_time > 0.75 then
                     equip(sets.precast.FC[spell.element], {waist="ジーゲルサッシュ",})
                 else
-                    equip(sets.midcast['強化魔法'])
+                    local sets_equip = sets.midcast['強化魔法']
+                    if expandtime_spells:contains(spell.name) then 
+                        sets_equip = set_combine(sets_equip, sets.midcast['強化魔法効果時間'] )
+                    end
+                    equip(sets_equip)
                 end
             elseif spell.ja == 'ストンスキン' then
                 equip(sets.precast['ストンスキン'])
@@ -497,7 +506,14 @@ function midcast(spell)
             elseif spell.ja == 'ストンスキン' then
                 sets_equip = sets.midcast['ストンスキン']
             elseif  spell.cast_time > 0.75 then
-                sets_equip = sets.midcast.RECAST[spell.element]
+                if expandtime_spells:contains(spell.name) then 
+                    sets_equip = set_combine(
+                        sets.midcast.RECAST[spell.element], 
+                        sets.midcast['強化魔法効果時間'] )
+                    windower.add_to_chat(8,'効果時間延長')
+                else
+                    sets_equip = sets.midcast.RECAST[spell.element]
+                end
             end
         elseif spell.skill=='精霊魔法' then
             if spell.ja == 'インパクト' then
@@ -528,6 +544,10 @@ end
 function isConserveMp()
     if buffactive['魔力の雫'] or buffactive['魔力の泉'] then
         return false
+    end
+    --MP40%以下、または武器ロックなしのときは無条件にMP節約
+    if player.vitals.mpp < 40 or lock_weapon == false then
+        return true
     end
     local recast = windower.ffxi.get_ability_recasts()
     --[49] = {id=49,en="Convert",ja="コンバート",action_id=83},
@@ -640,6 +660,7 @@ function self_command(command)
                 cmd = cmd..'wait 1;input /lockstyle on'
                 disable('main','sub','ammo','range')
                 my_send_command(cmd)
+                lock_weapon = true
             else
                 windower.add_to_chat(123,'lock '..args[2])
                 disable(args[2])
@@ -648,6 +669,7 @@ function self_command(command)
             if #args == 1 then
                 windower.add_to_chat(123,'unlock')
                 enable('main','sub','ammo','range')
+                lock_weapon = false
             else
                 windower.add_to_chat(123,'unlock '..args[2])
                 enable(args[2])
