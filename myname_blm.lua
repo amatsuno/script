@@ -36,7 +36,7 @@ function get_sets()
     local mid_base = set_combine(pre_base, {body="ヘリオスジャケット",})
     --精霊用
     local fc_element = {
-        head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+8%',}},
+        head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst dmg.+8%',}},
         hands={ name="ヘリオスグローブ", augments={'Mag. Acc.+20 "Mag.Atk.Bns."+20','"Fast Cast"+5','INT+10',}},
         body="ヘリオスジャケット",
         legs="サイクロスラッパ",
@@ -215,9 +215,9 @@ function get_sets()
             range=empty,ammo="オンブルタスラム+1",
             right_ring="女王の指輪+1",})
     local element_mb = {
-        head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+8%',}},
-        hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+4','Magic burst mdg.+7%',}},
-        feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst mdg.+10%',}},
+        head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst dmg.+8%',}},
+        hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+4','Magic burst dmg.+7%',}},
+        feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst dmg.+10%',}},
         neck="水影の首飾り",
         right_ring="夢神の指輪",
     }

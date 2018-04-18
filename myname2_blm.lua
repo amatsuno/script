@@ -168,7 +168,7 @@ function get_sets()
         right_ring="アキュメンリング",
         back="トーロケープ",})
     local element_mb = {
-        hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+25','"Occult Acumen"+5','Magic burst mdg.+10%',}},
+        hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+25','"Occult Acumen"+5','Magic burst dmg.+10%',}},
         right_ring="夢神の指輪",
     }
         

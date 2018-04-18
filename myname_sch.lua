@@ -226,10 +226,10 @@ function get_sets()
     }
     local meltdown = set_combine(dark_acc
         ,{
-            hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+4','Magic burst mdg.+7%',}},
+            hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+4','Magic burst dmg.+7%',}},
             body="ウィッチングローブ",
             legs={ name="ＨＡパンツ+1", augments={'Phys. dmg. taken -3%','Magic dmg. taken -2%','"Mag.Atk.Bns."+28',}},
-            feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst mdg.+10%',}},
+            feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst dmg.+10%',}},
             head="妖蟲の髪飾り+1",
             sub="ズーゾーウグリップ",
             neck="水影の首飾り",
@@ -463,9 +463,9 @@ function init_element()
            ammo="オンブルタスラム+1",})
     --MB装備
     local element_mb = {
-        head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst mdg.+8%',}},
-        hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+4','Magic burst mdg.+7%',}},
-        feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst mdg.+10%',}},
+        head={ name="ヘリオスバンド", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+5','Magic burst dmg.+8%',}},
+        hands={ name="ヘリオスグローブ", augments={'"Mag.Atk.Bns."+24','"Fast Cast"+4','Magic burst dmg.+7%',}},
+        feet={ name="ヘリオスブーツ", augments={'"Mag.Atk.Bns."+24','"Occult Acumen"+7','Magic burst dmg.+10%',}},
         neck="水影の首飾り",
         right_ring="夢神の指輪",
     }
